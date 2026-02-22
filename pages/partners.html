@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parceiros – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .plans-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .plan-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:2rem; position:relative; overflow:hidden; transition:var(--transition); }
+    .plan-card.featured { border-color:var(--primary); background:linear-gradient(135deg,rgba(0,120,212,0.15),rgba(0,180,216,0.08)); }
+    .plan-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-glow); }
+    .plan-badge { position:absolute;top:1rem;right:1rem;background:var(--gradient);color:#fff;font-size:0.7rem;font-weight:700;padding:0.25rem 0.6rem;border-radius:100px; }
+    .plan-price { font-size:2.5rem; font-weight:800; color:var(--primary); margin:1rem 0 0.25rem; }
+    .plan-period { font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem; }
+    .plan-features { margin-bottom:2rem; }
+    .plan-features li { display:flex; gap:0.75rem; align-items:flex-start; margin-bottom:0.75rem; font-size:0.9rem; color:var(--text-muted); }
+    .plan-features li::before { content:'✓'; color:var(--success); font-weight:700; flex-shrink:0; }
+    .partners-showcase { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.25rem; }
+    .partner-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.5rem; text-align:center; transition:var(--transition); }
+    .partner-card:hover { border-color:var(--primary); transform:translateY(-3px); }
+    .partner-emoji { font-size:2.5rem; margin-bottom:0.75rem; }
+    .partner-name { font-weight:700; margin-bottom:0.25rem; }
+    .partner-cat { font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem; }
+    .partner-rating { color:var(--warning); font-size:0.85rem; }
+    @media(max-width:768px){.plans-grid{grid-template-columns:1fr;}}
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></a>
+      <a href="login.html" class="btn-outline">Entrar</a>
+      <a href="register.html" class="btn-primary">Cadastrar</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <h1>Programa de <span class="gradient-text">Parceiros</span></h1>
+    <p>Registe a sua loja virtual na HepoMarket e alcance milhares de clientes em Angola e internacionalmente.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Planos & Preços</span>
+      <h2>Escolha o plano ideal para o seu negócio</h2>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card" data-animate>
+        <h3>Básico</h3>
+        <div class="plan-price">Grátis</div>
+        <div class="plan-period">para sempre</div>
+        <ul class="plan-features">
+          <li>Até 10 produtos listados</li><li>Painel básico de vendas</li>
+          <li>Suporte por e-mail</li><li>Comissão HepoMarket: 8%</li>
+          <li>1 foto por produto</li>
+        </ul>
+        <a href="register.html" class="btn-outline" style="display:block;text-align:center;padding:0.8rem;border-radius:10px;">Começar Grátis</a>
+      </div>
+      <div class="plan-card featured" data-animate>
+        <span class="plan-badge">⭐ Mais Popular</span>
+        <h3>Profissional</h3>
+        <div class="plan-price">15.000 <span style="font-size:1rem">Kz</span></div>
+        <div class="plan-period">por mês</div>
+        <ul class="plan-features">
+          <li>Produtos ilimitados</li><li>Painel avançado + analytics</li>
+          <li>Suporte prioritário 24/7</li><li>Comissão HepoMarket: 5%</li>
+          <li>10 fotos por produto</li><li>Destaque nas pesquisas</li><li>Relatórios de vendas</li>
+        </ul>
+        <a href="register.html" class="btn-primary" style="display:block;text-align:center;padding:0.8rem;border-radius:10px;">Começar Agora</a>
+      </div>
+      <div class="plan-card" data-animate>
+        <h3>Premium</h3>
+        <div class="plan-price">35.000 <span style="font-size:1rem">Kz</span></div>
+        <div class="plan-period">por mês</div>
+        <ul class="plan-features">
+          <li>Tudo do Profissional</li><li>Loja personalizada</li>
+          <li>Gestor de conta dedicado</li><li>Comissão HepoMarket: 3%</li>
+          <li>Publicidade gratuita</li><li>API de integração</li><li>Relatórios avançados</li>
+        </ul>
+        <a href="contact.html" class="btn-outline" style="display:block;text-align:center;padding:0.8rem;border-radius:10px;">Contactar Vendas</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="background:var(--dark-2);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Parceiros Actuais</span>
+      <h2>Os nossos parceiros em destaque</h2>
+    </div>
+    <div class="partners-showcase">
+      <div class="partner-card" data-animate><div class="partner-emoji">📱</div><div class="partner-name">TechLuanda</div><div class="partner-cat">Tecnologia</div><div class="partner-rating">★★★★★</div></div>
+      <div class="partner-card" data-animate><div class="partner-emoji">💻</div><div class="partner-name">InfoCacuaco</div><div class="partner-cat">Informática</div><div class="partner-rating">★★★★☆</div></div>
+      <div class="partner-card" data-animate><div class="partner-emoji">👗</div><div class="partner-name">FashionLuanda</div><div class="partner-cat">Moda</div><div class="partner-rating">★★★★★</div></div>
+      <div class="partner-card" data-animate><div class="partner-emoji">🏠</div><div class="partner-name">CasaModerna</div><div class="partner-cat">Casa & Lar</div><div class="partner-rating">★★★★☆</div></div>
+      <div class="partner-card" data-animate><div class="partner-emoji">⚽</div><div class="partner-name">SportAngola</div><div class="partner-cat">Desporto</div><div class="partner-rating">★★★★★</div></div>
+      <div class="partner-card" data-animate><div class="partner-emoji">📷</div><div class="partner-name">FotoStudio</div><div class="partner-cat">Fotografia</div><div class="partner-rating">★★★★☆</div></div>
+    </div>
+    <div style="text-align:center;margin-top:3rem;">
+      <a href="register.html" class="btn-primary" style="font-size:1rem;padding:0.9rem 2.5rem;">Tornar-se Parceiro Agora 🚀</a>
+    </div>
+  </div>
+</section>
+
+
+<section class="section-pad" id="candidatura">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Candidatura</span>
+      <h2>Registar a Minha Loja</h2>
+      <p style="color:var(--text-muted);max-width:500px;margin:0.75rem auto 0;">Preencha o formulário e a nossa equipa validará a sua candidatura em até 48 horas.</p>
+    </div>
+    <div class="form-card" data-animate>
+      <form id="partnerForm">
+        <div class="form-row">
+          <div class="form-group"><label>Nome do Responsável *</label><input type="text" id="pr_nome" placeholder="Nome completo" required></div>
+          <div class="form-group"><label>Nome da Loja / Empresa *</label><input type="text" id="pr_loja" placeholder="Ex: TechLuanda" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>E-mail *</label><input type="email" id="pr_email" placeholder="email@empresa.com" required></div>
+          <div class="form-group"><label>Telemóvel *</label><input type="tel" id="pr_tel" placeholder="+244 9XX XXX XXX" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Categoria Principal *</label>
+            <select id="pr_cat">
+              <option>Tecnologia & Electrónica</option>
+              <option>Moda & Vestuário</option>
+              <option>Casa & Decoração</option>
+              <option>Beleza & Saúde</option>
+              <option>Desporto & Lazer</option>
+              <option>Alimentação & Bebidas</option>
+              <option>Bebé & Criança</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Plano de Interesse *</label>
+            <select id="pr_plano">
+              <option>Básico (Grátis)</option>
+              <option>Profissional (15.000 Kz/mês)</option>
+              <option>Premium (35.000 Kz/mês)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>NIF (opcional)</label><input type="text" id="pr_nif" placeholder="Número de Identificação Fiscal"></div>
+          <div class="form-group"><label>Província *</label>
+            <select id="pr_prov">
+              <option>Luanda</option><option>Benguela</option><option>Huambo</option>
+              <option>Cabinda</option><option>Huíla</option><option>Malanje</option><option>Outra</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Descrição do Negócio</label>
+          <textarea id="pr_desc" placeholder="Descreva brevemente a sua empresa e os produtos que pretende vender..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;padding:0.9rem;font-size:1rem;border-radius:12px;">Submeter Candidatura a Parceiro 🚀</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ai-badge">IA</span></button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header"><div class="ai-avatar">🤖</div><div><strong>Hepo Assistant</strong><span class="ai-status">● Online</span></div><button class="ai-close" id="aiClose">×</button></div>
+    <div class="ai-messages" id="aiMessages"><div class="ai-msg bot">Olá! Posso ajudá-lo com informações sobre o programa de parceiros. 🤝</div></div>
+    <div class="ai-input-area"><input type="text" id="aiInput" placeholder="Pergunte sobre parcerias..."><button id="aiSend" class="ai-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+  </div>
+</div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+document.getElementById('partnerForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const nome = document.getElementById('pr_nome').value.trim();
+  const loja = document.getElementById('pr_loja').value.trim();
+  const email = document.getElementById('pr_email').value.trim();
+  const tel = document.getElementById('pr_tel').value.trim();
+  if (!nome || !loja || !email || !tel) {
+    showToast('⚠️ Por favor preencha todos os campos obrigatórios.');
+    return;
+  }
+  showToast('✅ Candidatura de "' + loja + '" enviada! A nossa equipa contactará ' + nome + ' em breve. 🤝');
+  this.reset();
+});
+</script>
+
+<script>
+// Update nav based on session
+(function() {
+  const s = window.HepoAuth && HepoAuth.getSession();
+  if (s) {
+    const loginBtns = document.querySelectorAll('a[href="login.html"].btn-outline');
+    loginBtns.forEach(btn => { btn.textContent = '👤 Conta'; btn.href = 'dashboard.html'; });
+    const regBtns = document.querySelectorAll('a[href="register.html"].btn-primary');
+    regBtns.forEach(btn => btn.style.display = 'none');
+  }
+})();
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

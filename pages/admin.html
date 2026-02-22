@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel CEO – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+
+    /* ══ THEME SYSTEM ══ */
+    .theme-azul     { --primary:#0078d4;--secondary:#00b4d8;--accent:#6366f1;--gradient:linear-gradient(135deg,#0078d4,#00b4d8); }
+    .theme-verde    { --primary:#10b981;--secondary:#34d399;--accent:#06b6d4;--gradient:linear-gradient(135deg,#10b981,#34d399); }
+    .theme-roxo     { --primary:#8b5cf6;--secondary:#a78bfa;--accent:#ec4899;--gradient:linear-gradient(135deg,#8b5cf6,#ec4899); }
+    .theme-laranja  { --primary:#f59e0b;--secondary:#fbbf24;--accent:#ef4444;--gradient:linear-gradient(135deg,#f59e0b,#ef4444); }
+    .theme-rosa     { --primary:#ec4899;--secondary:#f472b6;--accent:#8b5cf6;--gradient:linear-gradient(135deg,#ec4899,#8b5cf6); }
+    .theme-ouro     { --primary:#d4af37;--secondary:#f5d875;--accent:#c0a93a;--gradient:linear-gradient(135deg,#d4af37,#f5d875); }
+    .theme-vermelho { --primary:#ef4444;--secondary:#f87171;--accent:#f59e0b;--gradient:linear-gradient(135deg,#ef4444,#f59e0b); }
+    .theme-teal     { --primary:#0d9488;--secondary:#2dd4bf;--accent:#6366f1;--gradient:linear-gradient(135deg,#0d9488,#2dd4bf); }
+
+    /* Light base option */
+    .base-escuro  { --dark:#0a0a0f;--dark-2:#0d1117;--surface:#16161f;--border:rgba(255,255,255,0.08);--text:#e8e8f0;--text-muted:#8888a8; }
+    .base-meia-luz{ --dark:#111827;--dark-2:#1f2937;--surface:#1f2937;--border:rgba(255,255,255,0.1);--text:#f1f5f9;--text-muted:#94a3b8; }
+    .base-slate   { --dark:#0f172a;--dark-2:#1e293b;--surface:#1e293b;--border:rgba(255,255,255,0.1);--text:#e2e8f0;--text-muted:#64748b; }
+
+    /* Theme switcher UI */
+    .theme-panel { padding:1.25rem; }
+    .theme-section-title { font-size:.78rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:.75rem; margin-top:1rem; }
+    .theme-section-title:first-child { margin-top:0; }
+    .theme-swatches { display:flex; gap:.55rem; flex-wrap:wrap; margin-bottom:.5rem; }
+    .theme-swatch {
+      width:36px; height:36px; border-radius:50%; cursor:pointer;
+      border:3px solid transparent; transition:all .2s;
+      display:flex; align-items:center; justify-content:center; font-size:.7rem;
+      box-shadow:0 2px 8px rgba(0,0,0,.3);
+    }
+    .theme-swatch:hover { transform:scale(1.15); box-shadow:0 4px 16px rgba(0,0,0,.4); }
+    .theme-swatch.active { border-color:#fff; transform:scale(1.1); }
+    .base-swatches { display:flex; gap:.55rem; }
+    .base-swatch { flex:1; padding:.65rem .5rem; border-radius:10px; cursor:pointer; font-size:.75rem; font-weight:700; text-align:center; border:2px solid transparent; transition:all .2s; }
+    .base-swatch:hover { border-color:var(--primary); }
+    .base-swatch.active { border-color:var(--primary); background:rgba(0,120,212,.15); }
+    .theme-preview-bar {
+      height:6px; border-radius:3px; margin-top:.75rem; margin-bottom:1rem;
+      background:var(--gradient); transition:background .3s;
+    }
+    .font-options { display:grid; grid-template-columns:1fr 1fr; gap:.55rem; }
+    .font-option { padding:.65rem .75rem; border-radius:10px; cursor:pointer; font-size:.82rem; font-weight:700; border:2px solid var(--border); background:rgba(255,255,255,.04); transition:all .2s; text-align:center; }
+    .font-option:hover { border-color:var(--primary); }
+    .font-option.active { border-color:var(--primary); background:rgba(0,120,212,.12); }
+    .custom-color-row { display:flex; align-items:center; gap:.65rem; }
+    .custom-color-input { width:42px; height:34px; border-radius:8px; border:1px solid var(--border); cursor:pointer; background:none; padding:2px; }
+
+
+    /* ── Design Themes ── */
+    body.design-apple {--primary:#0a84ff;--secondary:#30d158;--accent:#5e5ce6;--dark:#1c1c1e;--dark-2:#2c2c2e;--surface:#3a3a3c;--surface-2:#48484a;--border:rgba(255,255,255,0.18);--text:#f5f5f7;--text-muted:#aeaeb2;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);font-family:-apple-system,'SF Pro Display',sans-serif !important;}
+    body.design-apple .sb{background:rgba(28,28,30,0.92)!important;backdrop-filter:blur(24px);}
+    body.design-apple .ac,.design-apple .sc{border-radius:20px!important;backdrop-filter:blur(12px);}
+    body.design-win11 {--primary:#0067c0;--secondary:#1a7fd4;--accent:#8764b8;--dark:#202020;--dark-2:#2b2b2b;--surface:#323232;--surface-2:#3d3d3d;--border:rgba(255,255,255,0.14);--text:#fff;--text-muted:#aaa;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);font-family:'Segoe UI Variable','Segoe UI',sans-serif !important;}
+    body.design-win11 .sb{background:rgba(32,32,32,0.92)!important;backdrop-filter:blur(40px) saturate(180%);}
+    body.design-win11 .ac,.design-win11 .sc{border-radius:8px!important;}
+    body.design-samsung {--primary:#1428a0;--secondary:#b537f2;--accent:#ff006e;--dark:#0a0a14;--dark-2:#10101e;--surface:#16162a;--surface-2:#1e1e38;--border:rgba(100,100,255,0.22);--text:#fff;--text-muted:#9999cc;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+    body.design-samsung .sb{background:rgba(10,10,20,.95)!important;border-right-color:rgba(100,100,255,.2)!important;}
+    body.design-samsung .ac,.design-samsung .sc{border-radius:24px!important;border-color:rgba(100,100,255,.25)!important;}
+    body.design-samsung .ab.p{border-radius:24px!important;}
+    /* Global bg for admin */
+    body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+    @keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+    body::after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(5,8,24,0.93) 0%,rgba(5,8,24,0.82) 50%,rgba(5,8,24,0.95) 100%);}
+
+    body{overflow-x:hidden;font-family:var(--font);background:var(--dark);}
+    .sb{background:var(--dark-2,#0d1117);border-right:1px solid var(--border);width:230px;min-height:100vh;position:fixed;left:0;top:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
+    .sb-logo{padding:1.1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem;flex-shrink:0;}
+    .sb-logo img{width:30px;height:30px;border-radius:6px;object-fit:cover;}
+    .sb-logo span{font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .sb-nav{padding:.5rem 0;flex:1;}
+    .ns{padding:.35rem 1.25rem;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-top:.5rem;}
+    .sb-nav a{display:flex;align-items:center;gap:.65rem;padding:.65rem 1.25rem;color:var(--text-muted);font-size:.82rem;transition:var(--transition);border-left:3px solid transparent;cursor:pointer;background:none;border-top:none;border-right:none;border-bottom:none;width:100%;font-family:var(--font);position:relative;}
+    .sb-nav a:hover{color:var(--text);background:rgba(0,120,212,.07);}
+    .sb-nav a.active{color:var(--text);background:rgba(0,120,212,.12);border-left-color:var(--primary);font-weight:700;}
+    .nav-badge{position:absolute;right:.75rem;background:var(--danger);color:#fff;border-radius:100px;font-size:.62rem;font-weight:700;padding:.08rem .4rem;min-width:18px;text-align:center;}
+    .sb-foot{padding:.85rem 1.25rem;border-top:1px solid var(--border);}
+    .lb{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--danger);border-radius:8px;padding:.55rem 1rem;cursor:pointer;font-size:.82rem;font-weight:600;width:100%;font-family:var(--font);}
+    .lb:hover{background:var(--danger);color:#fff;}
+    .am{margin-left:230px;padding:1.5rem;min-height:100vh;}
+    .ah{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+    .ah h1{font-size:1.3rem;font-weight:800;}
+    .panel{display:none;}.panel.active{display:block;}
+    /* Stats grid */
+    .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+    .sc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;position:relative;overflow:hidden;}
+    .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+    .sc.blue::before{background:var(--gradient);}.sc.green::before{background:linear-gradient(90deg,var(--success),#059669);}
+    .sc.purple::before{background:var(--gradient-purple);}.sc.orange::before{background:linear-gradient(90deg,var(--warning),#d97706);}
+    .sl{font-size:.72rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;}
+    .sv{font-size:1.7rem;font-weight:800;margin-bottom:.2rem;}
+    /* Cards */
+    .ac{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;}
+    .ac h3{font-size:.92rem;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+    .g2{display:grid;grid-template-columns:1.5fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+    .dt{width:100%;border-collapse:collapse;font-size:.82rem;}
+    .dt th{text-align:left;padding:.6rem .75rem;color:var(--text-muted);font-size:.72rem;font-weight:600;border-bottom:1px solid var(--border);}
+    .dt td{padding:.75rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;}
+    .dt tr:hover td{background:rgba(255,255,255,.02);}
+    /* Badges */
+    .sb2{padding:.18rem .6rem;border-radius:100px;font-size:.7rem;font-weight:700;white-space:nowrap;}
+    .sb2.ativo,.sb2.entregue{background:rgba(16,185,129,.15);color:var(--success);}
+    .sb2.pendente{background:rgba(245,158,11,.15);color:var(--warning);}
+    .sb2.processando,.sb2.processo{background:rgba(0,120,212,.15);color:var(--primary);}
+    .sb2.inativo,.sb2.cancelado,.sb2.suspenso{background:rgba(239,68,68,.15);color:var(--danger);}
+    /* Search row */
+    .sr2{display:flex;gap:.65rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;}
+    .si{flex:1;min-width:160px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:.5rem .85rem;color:var(--text);font-size:.85rem;font-family:var(--font);}
+    .si:focus{outline:none;border-color:var(--primary);}
+    .si::placeholder{color:var(--text-muted);}
+    .fs{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;color:var(--text);font-size:.82rem;font-family:var(--font);}
+    .fs option{background:var(--surface);}
+    /* Buttons */
+    .ab{padding:.45rem .9rem;border-radius:8px;border:none;cursor:pointer;font-size:.78rem;font-weight:700;font-family:var(--font);}
+    .ab.p{background:var(--gradient);color:#fff;}.ab.p:hover{box-shadow:0 4px 12px rgba(0,120,212,.4);}
+    .ab.d{background:rgba(239,68,68,.12);color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .ab.d:hover{background:var(--danger);color:#fff;}
+    .ab.s{background:rgba(16,185,129,.12);color:var(--success);border:1px solid rgba(16,185,129,.25);}
+    .ab.w{background:rgba(245,158,11,.12);color:var(--warning);border:1px solid rgba(245,158,11,.25);}
+    .ab.o{background:rgba(255,255,255,.06);color:var(--text-muted);border:1px solid var(--border);}
+    /* Modals */
+    .mo{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .22s;}
+    .mo.open{opacity:1;pointer-events:all;}
+    .mb{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.75rem;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;position:relative;}
+    .mb h3{font-size:1.1rem;font-weight:800;margin-bottom:1.25rem;}
+    .mc{position:absolute;top:.9rem;right:.9rem;background:rgba(255,255,255,.07);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+    .fg{margin-bottom:.85rem;}
+    .fg label{display:block;font-size:.8rem;font-weight:600;color:var(--text-muted);margin-bottom:.3rem;}
+    .fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:.55rem .85rem;color:var(--text);font-size:.88rem;font-family:var(--font);}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--primary);}
+    .fg select option{background:var(--surface);}
+    .fg input::placeholder,.fg textarea::placeholder{color:var(--text-muted);}
+    .fr2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .ma{display:flex;gap:.65rem;margin-top:1.25rem;}
+    .ma button{flex:1;padding:.7rem;border-radius:10px;border:none;cursor:pointer;font-weight:700;font-family:var(--font);}
+    .bc{background:var(--gradient);color:#fff;}.bx{background:rgba(255,255,255,.06);color:var(--text-muted);}
+    /* Image upload */
+    .img-up{border:2px dashed var(--border);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--transition);font-size:.82rem;color:var(--text-muted);}
+    .img-up:hover{border-color:var(--primary);background:rgba(0,120,212,.04);}
+    /* AI chat */
+    .acp{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;height:340px;overflow-y:auto;padding:.85rem;margin-bottom:.85rem;display:flex;flex-direction:column;gap:.65rem;}
+    .apm{max-width:82%;padding:.65rem .9rem;border-radius:12px;font-size:.85rem;line-height:1.5;}
+    .apm.bot{background:rgba(0,120,212,.12);border:1px solid rgba(0,120,212,.18);align-self:flex-start;}
+    .apm.user{background:rgba(255,255,255,.07);align-self:flex-end;}
+    .apr{display:flex;gap:.65rem;}
+    .apr input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:.6rem .9rem;color:var(--text);font-family:var(--font);font-size:.88rem;}
+    .apr input:focus{outline:none;border-color:var(--primary);}
+    .apr button{background:var(--gradient);color:#fff;border:none;border-radius:10px;padding:0 1.1rem;cursor:pointer;font-weight:700;}
+    /* Toggles */
+    .trow{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+    .toggle{position:relative;width:42px;height:22px;}
+    .toggle input{opacity:0;width:0;height:0;}
+    .tsl{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:11px;cursor:pointer;transition:.3s;}
+    .tsl::before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+    .toggle input:checked+.tsl{background:var(--primary);}
+    .toggle input:checked+.tsl::before{transform:translateX(20px);}
+    /* Bank card */
+    .bk-card{background:linear-gradient(135deg,rgba(0,120,212,.15),rgba(99,102,241,.08));border:1px solid rgba(0,120,212,.25);border-radius:14px;padding:1.25rem;margin-bottom:.65rem;position:relative;}
+    .bk-card h4{font-size:.9rem;font-weight:700;margin-bottom:.4rem;}
+    .bk-num{font-family:monospace;font-size:1rem;font-weight:700;letter-spacing:.08rem;color:var(--primary);margin-bottom:.35rem;}
+    .bk-rem{position:absolute;top:.75rem;right:.75rem;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--danger);border-radius:6px;padding:.25rem .6rem;cursor:pointer;font-size:.72rem;font-weight:600;}
+    /* Profile detail (parceiro/afiliado) */
+    .pd{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.65rem;}
+    .pd-head{display:flex;align-items:center;gap:.85rem;margin-bottom:.85rem;}
+    .pd-av{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0;}
+    .pd-av-icon{width:44px;height:44px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+    .pd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;font-size:.78rem;}
+    .pd-item{padding:.45rem .65rem;background:rgba(255,255,255,.04);border-radius:7px;}
+    .pd-lbl{color:var(--text-muted);margin-bottom:.1rem;font-size:.68rem;}
+    /* Messages */
+    .msg-row{padding:.85rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;margin-bottom:.5rem;cursor:pointer;}
+    .msg-row.unread{border-color:rgba(0,120,212,.3);background:rgba(0,120,212,.06);}
+    .msg-row:hover{border-color:rgba(0,120,212,.3);}
+    /* Notif items */
+    .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);flex-shrink:0;}
+    /* Link display */
+    .ref-link{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .75rem;font-size:.75rem;color:var(--primary);font-family:monospace;display:flex;align-items:center;gap:.5rem;cursor:pointer;}
+    .ref-link:hover{border-color:var(--primary);}
+    /* Email config */
+    .email-cfg-box{background:rgba(0,120,212,.06);border:1px solid rgba(0,120,212,.2);border-radius:12px;padding:1.1rem;margin-bottom:1.1rem;}
+    .email-cfg-box h4{font-size:.88rem;font-weight:700;margin-bottom:.5rem;}
+    /* Toast */
+    .at{position:fixed;bottom:2rem;right:2rem;background:var(--success);color:#fff;padding:.8rem 1.4rem;border-radius:12px;font-weight:600;font-size:.88rem;z-index:1000;transform:translateY(100px);opacity:0;transition:all .3s;max-width:340px;}
+    .at.show{transform:translateY(0);opacity:1;}
+    .es{text-align:center;padding:2.5rem 1rem;color:var(--text-muted);}
+    .es .ei{font-size:3rem;margin-bottom:.65rem;}
+
+    /* ══ VISIBILITY IMPROVEMENTS ══ */
+    .ac h3, .ac h4 { color:#fff !important; font-weight:800; }
+    .ac p, .ac li { color:rgba(215,220,240,.88) !important; line-height:1.65; }
+    .ac label, .fg label { color:rgba(215,220,240,.9) !important; font-weight:600; font-size:.8rem; }
+    .ac input, .fg input, .fg select, .fg textarea { color:#fff !important; }
+    .ac input::placeholder, .fg input::placeholder, .fg textarea::placeholder { color:rgba(180,185,210,.55) !important; }
+    .sc .sl { color:rgba(210,215,235,.88) !important; font-weight:700; text-transform:uppercase; letter-spacing:.5px; font-size:.7rem; }
+    .sc .sv { font-size:1.7rem !important; font-weight:900 !important; }
+    .dt th { color:rgba(220,225,245,.88) !important; font-weight:700; font-size:.72rem; background:rgba(255,255,255,.03); }
+    .dt td { color:rgba(215,220,240,.88) !important; }
+    .pd-lbl { color:rgba(190,195,225,.75) !important; font-size:.7rem; }
+    .pd-item { color:rgba(215,220,240,.9) !important; font-size:.82rem; font-weight:600; }
+    .bk-card h4 { color:#fff !important; font-weight:800; }
+    .apm.bot { color:rgba(215,220,240,.9) !important; }
+    .apm.user { color:#fff !important; }
+    .ns { color:rgba(180,185,215,.65) !important; font-size:.62rem; }
+    .trow > div > div:first-child { color:rgba(215,220,240,.9) !important; font-weight:600; }
+    .email-cfg-box p, .email-cfg-box h4 { color:rgba(215,220,240,.9) !important; }
+    /* Panel header visibility */
+    .ah h1 { color:#fff !important; font-weight:900; font-size:1.35rem; }
+    .ah p { color:rgba(190,200,235,.75) !important; }
+    /* Stats cards */
+    .sg .sc { backdrop-filter:blur(12px); background:rgba(16,16,30,.82) !important; }
+    /* Admin cards */
+    .ac { background:rgba(14,14,28,.82) !important; backdrop-filter:blur(12px); }
+    /* Promo products highlight */
+    .promo-card { border-color:rgba(239,68,68,.4) !important; box-shadow:0 4px 20px rgba(239,68,68,.15) !important; }
+    /* Product card icons area */
+    .product-card .product-img { border-bottom:1px solid rgba(255,255,255,.05); }
+    .product-name { color:#fff !important; font-weight:700 !important; font-size:.9rem !important; }
+    .product-partner { color:rgba(200,210,235,.75) !important; font-size:.78rem !important; }
+    .product-price { color:#4ade80 !important; font-weight:800 !important; }
+
+    @media(max-width:1024px){.am{margin-left:0;}.sb{display:none;}.sg{grid-template-columns:1fr 1fr;}.g2{grid-template-columns:1fr;}}
+    @media(max-width:600px){.sg{grid-template-columns:1fr;}.fr2{grid-template-columns:1fr;}.pd-grid{grid-template-columns:1fr 1fr;}}
+  </style>
+<script>
+// V10: Clear previously stored products
+(function(){
+  const vKey='hepo_v';
+  if(localStorage.getItem(vKey)!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem(vKey,'10');
+  }
+})();
+</script>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<div class="sb">
+  <div class="sb-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket CEO</span></div>
+  <div class="sb-nav">
+    <div class="ns">Principal</div>
+    <a onclick="sp('dashboard')" id="n-dashboard" class="active">📊 Dashboard</a>
+    <a onclick="sp('pedidos')" id="n-pedidos">📦 Pedidos <span class="nav-badge" id="nb-pedidos" style="display:none;"></span></a>
+    <a onclick="sp('produtos')" id="n-produtos">🛍️ Produtos</a>
+    <a onclick="sp('clientes')" id="n-clientes">👥 Clientes</a>
+    <div class="ns">Negócios</div>
+    <a onclick="sp('parceiros')" id="n-parceiros">🤝 Parceiros <span class="nav-badge" id="nb-parceiros" style="display:none;"></span></a>
+    <a onclick="sp('afiliados')" id="n-afiliados">💰 Afiliados <span class="nav-badge" id="nb-afiliados" style="display:none;"></span></a>
+    <a onclick="sp('pagamentos')" id="n-pagamentos">💳 Pagamentos</a>
+    <a onclick="sp('relatorios')" id="n-relatorios">📈 Relatórios</a>
+    <div class="ns">Comunicação</div>
+    <a onclick="sp('mensagens')" id="n-mensagens">📧 Mensagens <span class="nav-badge" id="nb-msgs" style="display:none;"></span></a>
+    <a onclick="sp('notificacoes')" id="n-notificacoes">🔔 Notificações <span class="nav-badge" id="nb-notifs" style="display:none;"></span></a>
+    <a onclick="sp('emailcfg')" id="n-emailcfg">✉️ Configurar E-mail</a>
+    <div class="ns">Sistema</div>
+    <a onclick="sp('configuracoes')" id="n-configuracoes">⚙️ Configurações</a>
+    <a onclick="sp('bancos')" id="n-bancos">🏦 Dados Bancários</a>
+    <a onclick="sp('ia')" id="n-ia">🤖 Assistente IA</a>
+    <a onclick="sp('marketing')" id="n-marketing">📢 Marketing</a>
+    <a onclick="sp('temas')" id="n-temas">🎨 Temas & Cores</a>
+    <a onclick="sp('homepage')" id="n-homepage">🌐 Página Inicial</a>
+    <a onclick="sp('servicos')" id="n-servicos">🛠️ Serviços</a>
+    <a onclick="sp('graficos')" id="n-graficos">📊 Gráficos</a>
+  </div>
+  <div class="sb-foot"><button class="lb" onclick="doLogout()">🚪 Terminar Sessão</button></div>
+</div>
+
+<div class="am">
+  <!-- ══ QUICK LINKS BAR (sempre visível no topo do conteúdo) ══ -->
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;padding:.65rem .85rem;background:rgba(0,0,0,.35);border-radius:14px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(12px);" id="adminQL">
+    <span onclick="sp('produtos')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">🛍️ Produtos</span>
+    <span onclick="sp('pedidos')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">📦 Pedidos</span>
+    <span onclick="sp('parceiros')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">🤝 Parceiros</span>
+    <span onclick="sp('afiliados')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">💰 Afiliados</span>
+    <span onclick="sp('clientes')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">👥 Clientes</span>
+    <span onclick="sp('graficos')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">📊 Gráficos</span>
+    <span onclick="sp('marketing')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.85);font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid transparent;transition:.18s;" onmouseover="this.style.background='rgba(0,120,212,.2)';this.style.borderColor='rgba(0,120,212,.3)';this.style.color='var(--primary)'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='transparent';this.style.color='rgba(220,225,245,.85)'">📢 Marketing</span>
+    <span onclick="sp('mensagens')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(239,68,68,.1);color:#ef4444;font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid rgba(239,68,68,.25);transition:.18s;" onmouseover="this.style.background='rgba(239,68,68,.22)'" onmouseout="this.style.background='rgba(239,68,68,.1)'">📧 Mensagens</span>
+    <span onclick="sp('homepage')" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(16,185,129,.1);color:#10b981;font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid rgba(16,185,129,.2);transition:.18s;" onmouseover="this.style.background='rgba(16,185,129,.2)'" onmouseout="this.style.background='rgba(16,185,129,.1)'">🌐 Página Inicial</span>
+    <a href="../index.html" target="_blank" style="display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(99,102,241,.1);color:#818cf8;font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,.2);text-decoration:none;transition:.18s;" onmouseover="this.style.background='rgba(99,102,241,.22)'" onmouseout="this.style.background='rgba(99,102,241,.1)'">🏠 Ver Site</a>
+  </div>
+
+  <div class="ah">
+    <div><h1 id="pt">📊 Dashboard</h1><p style="color:var(--text-muted);font-size:.8rem;">Painel de Controlo CEO – HepoMarket</p></div>
+    <div style="display:flex;align-items:center;gap:.75rem;">
+      <span id="clock" style="color:var(--text-muted);font-size:.78rem;"></span>
+    </div>
+  </div>
+
+  <!-- ────────── DASHBOARD ────────── -->
+  <div class="panel active" id="p-dashboard">
+    <div class="sg">
+      <div class="sc blue"><div class="sl">Receita Confirmada</div><div class="sv" style="color:var(--primary);" id="stRev">—</div></div>
+      <div class="sc green"><div class="sl">Total de Pedidos</div><div class="sv" style="color:var(--success);" id="stOrd">0</div></div>
+      <div class="sc purple"><div class="sl">Parceiros</div><div class="sv" style="color:var(--accent);" id="stPar">0</div></div>
+      <div class="sc orange"><div class="sl">Afiliados</div><div class="sv" style="color:var(--warning);" id="stAff">0</div></div>
+    </div>
+    <div class="g2">
+      <div class="ac"><h3>📦 Últimos Pedidos</h3><div id="dashOrd"></div></div>
+      <div class="ac">
+        <h3>⚡ Acções Rápidas</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;">
+          <button style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.85rem;cursor:pointer;font-size:.78rem;text-align:center;color:var(--text);font-family:var(--font);" onclick="openM('mProd')">➕<br>Adicionar Produto</button>
+          <button style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.85rem;cursor:pointer;font-size:.78rem;text-align:center;color:var(--text);font-family:var(--font);" onclick="openM('mEmail')">📧<br>Enviar E-mail</button>
+          <button style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.85rem;cursor:pointer;font-size:.78rem;text-align:center;color:var(--text);font-family:var(--font);" onclick="sp('bancos')">🏦<br>Dados Bancários</button>
+          <button style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:.85rem;cursor:pointer;font-size:.78rem;text-align:center;color:var(--text);font-family:var(--font);" onclick="sp('relatorios')">📈<br>Relatórios</button>
+        </div>
+      </div>
+    </div>
+    <div class="ac" id="pendCard"><h3>⏳ Contas a Aprovar</h3><div id="pendList"></div></div>
+    <div class="ac"><h3>📧 Mensagens Recentes dos Utilizadores</h3><div id="dashMsgs"></div></div>
+  </div>
+
+  <!-- ────────── PEDIDOS ────────── -->
+  <div class="panel" id="p-pedidos">
+    <div class="sr2">
+      <input class="si" placeholder="🔍 Pesquisar ID, cliente, e-mail..." id="ordSrch" oninput="renderOrders()">
+      <select class="fs" id="ordFlt" onchange="renderOrders()"><option value="">Todos</option><option value="pendente">Pendente</option><option value="processando">A Processar</option><option value="entregue">Entregue</option><option value="cancelado">Cancelado</option></select>
+    </div>
+    <div class="ac"><h3>📦 Pedidos <span id="ordCnt" style="font-size:.78rem;color:var(--text-muted);font-weight:400;"></span></h3><div id="ordPanel" style="overflow-x:auto;"></div></div>
+  </div>
+
+  <!-- ────────── PRODUTOS ────────── -->
+  <div class="panel" id="p-produtos">
+    <div class="sr2">
+      <input class="si" placeholder="🔍 Pesquisar produto..." id="prodSrch" oninput="renderProds()">
+      <select class="fs" id="prodFlt" onchange="renderProds()"><option value="">Todas categorias</option><option value="beleza">Beleza</option><option value="casa">Casa & Lar</option><option value="moda">Moda</option><option value="bebe">Bebé</option><option value="outro">Outro</option></select>
+      <button class="ab p" onclick="openM('mProd')">➕ Adicionar</button>
+    </div>
+    <div class="ac"><h3>🛍️ Produtos <span id="prodCnt" style="font-size:.78rem;color:var(--text-muted);font-weight:400;"></span></h3><div id="prodPanel" style="overflow-x:auto;"></div></div>
+  </div>
+
+  <!-- ────────── CLIENTES ────────── -->
+  <div class="panel" id="p-clientes">
+    <div class="sr2">
+      <input class="si" placeholder="🔍 Pesquisar cliente..." id="cliSrch" oninput="renderClients()">
+      <select class="fs" id="cliFlt" onchange="renderClients()"><option value="">Todos</option><option value="ativo">Activos</option><option value="pendente">Pendentes</option><option value="suspenso">Suspensos</option></select>
+    </div>
+    <div class="ac"><h3>👥 Clientes <span id="cliCnt" style="font-size:.78rem;color:var(--text-muted);font-weight:400;"></span></h3><div id="cliPanel" style="overflow-x:auto;"></div></div>
+  </div>
+
+  <!-- ────────── PARCEIROS ────────── -->
+  <div class="panel" id="p-parceiros">
+    <div class="sr2">
+      <input class="si" placeholder="🔍 Pesquisar..." id="parSrch" oninput="renderPartners()">
+      <select class="fs" id="parFlt" onchange="renderPartners()"><option value="">Todos</option><option value="ativo">Activos</option><option value="pendente">Pendentes</option><option value="suspenso">Suspensos</option></select>
+    </div>
+    <div class="ac"><h3>🤝 Parceiros <span id="parCnt" style="font-size:.78rem;color:var(--text-muted);font-weight:400;"></span></h3><div id="parPanel"></div></div>
+  </div>
+
+  <!-- ────────── AFILIADOS ────────── -->
+  <div class="panel" id="p-afiliados">
+    <div class="sr2">
+      <input class="si" placeholder="🔍 Pesquisar..." id="affSrch" oninput="renderAffiliates()">
+      <select class="fs" id="affFlt" onchange="renderAffiliates()"><option value="">Todos</option><option value="ativo">Activos</option><option value="pendente">Pendentes</option><option value="suspenso">Suspensos</option></select>
+    </div>
+    <div class="ac"><h3>💰 Afiliados <span id="affCnt" style="font-size:.78rem;color:var(--text-muted);font-weight:400;"></span></h3><div id="affPanel"></div></div>
+  </div>
+
+  <!-- ────────── PAGAMENTOS ────────── -->
+  <div class="panel" id="p-pagamentos">
+    <div class="ac"><h3>💳 Histórico de Pagamentos</h3><div id="payPanel"></div></div>
+  </div>
+
+  <!-- ────────── RELATÓRIOS ────────── -->
+  <div class="panel" id="p-relatorios">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin-bottom:1.25rem;" id="kpiGrid"></div>
+    <div class="g2">
+      <div class="ac"><h3>📦 Pedidos por Estado</h3><div id="statusChart"></div></div>
+      <div class="ac"><h3>👥 Utilizadores por Tipo</h3><div id="userChart"></div></div>
+    </div>
+    <div class="ac"><h3>🔗 Estatísticas de Links</h3><div id="linkStatsAdmin"></div></div>
+  </div>
+
+  <!-- ────────── MENSAGENS ────────── -->
+  <div class="panel" id="p-mensagens">
+    <div class="g2">
+      <div class="ac">
+        <h3>📥 Mensagens dos Utilizadores</h3>
+        <div id="adminMsgDetail" style="display:none;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.75rem;"></div>
+        <div id="adminMsgList"></div>
+      </div>
+      <div class="ac">
+        <h3>✍️ Enviar Mensagem</h3>
+        <div class="fg"><label>Destinatário *</label>
+          <select id="em_to">
+            <option value="all">📢 Todos os Utilizadores</option>
+          </select>
+        </div>
+        <div class="fg"><label>Assunto *</label><input type="text" id="em_sub" placeholder="Assunto da mensagem"></div>
+        <div class="fg"><label>Mensagem *</label><textarea id="em_body" style="min-height:140px;" placeholder="Escreva a mensagem..."></textarea></div>
+        <div id="em_result" style="display:none;margin-bottom:.75rem;font-size:.82rem;border-radius:8px;padding:.65rem;"></div>
+        <button class="ab p" onclick="sendAdminMsg()">Enviar Mensagem 📧</button>
+        <p style="font-size:.72rem;color:var(--text-muted);margin-top:.5rem;">A mensagem aparece no painel do destinatário (in-app). Se o e-mail real estiver configurado, é enviado também por e-mail.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────── NOTIFICAÇÕES ────────── -->
+  <div class="panel" id="p-notificacoes">
+    <div class="ac">
+      <h3>🔔 Notificações do Sistema <button class="ab o" style="margin-left:auto;font-size:.72rem;padding:.28rem .7rem;" onclick="clearCEONotifs()">Limpar</button></h3>
+      <div id="ceoNotifList"></div>
+    </div>
+  </div>
+
+  <!-- ────────── CONFIG E-MAIL ────────── -->
+  <div class="panel" id="p-emailcfg">
+    <div class="ac">
+      <div class="email-cfg-box">
+        <h4>📧 O que é o EmailJS?</h4>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.6;">
+          O <strong>EmailJS</strong> é um serviço <strong>gratuito</strong> que permite enviar e-mails reais directamente do browser, sem servidor próprio.<br>
+          🆓 Plano gratuito: <strong>200 e-mails por mês</strong> — suficiente para começar!
+        </p>
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.6;margin-top:.5rem;">
+          <strong>Como configurar (5 minutos):</strong><br>
+          1️⃣ Aceda a <a href="https://www.emailjs.com" target="_blank" style="color:var(--primary);">emailjs.com</a> e crie conta gratuita<br>
+          2️⃣ Adicione um serviço de e-mail (Gmail, Outlook, etc.)<br>
+          3️⃣ Crie um template com as variáveis: <code style="background:rgba(255,255,255,.08);padding:.1rem .3rem;border-radius:4px;">{{to_email}}</code> <code style="background:rgba(255,255,255,.08);padding:.1rem .3rem;border-radius:4px;">{{subject}}</code> <code style="background:rgba(255,255,255,.08);padding:.1rem .3rem;border-radius:4px;">{{message}}</code><br>
+          4️⃣ Copie os IDs abaixo e cole aqui
+        </p>
+      </div>
+      <div class="fg"><label>Service ID (ex: service_xxxxxxx) *</label><input type="text" id="ej_sid" placeholder="service_xxxxxxx"></div>
+      <div class="fg"><label>Template ID (ex: template_xxxxxxx) *</label><input type="text" id="ej_tid" placeholder="template_xxxxxxx"></div>
+      <div class="fg"><label>Public Key (ex: xXxXxXxXxXxXxXxX) *</label><input type="text" id="ej_pk" placeholder="xXxXxXxXxXxXxXxX"></div>
+      <div id="ej_status" style="display:none;margin-bottom:.75rem;font-size:.85rem;border-radius:8px;padding:.65rem;"></div>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;">
+        <button class="ab p" onclick="saveEmailCfg()">💾 Guardar Configuração</button>
+        <button class="ab o" onclick="testEmail()">🧪 Enviar E-mail de Teste</button>
+        <button class="ab d" onclick="clearEmailCfg()">🗑️ Remover Config</button>
+      </div>
+    </div>
+    <div class="ac">
+      <h3>📊 Estado Actual do E-mail</h3>
+      <div id="emailStatus"></div>
+    </div>
+  </div>
+
+  <!-- ────────── CONFIGURAÇÕES ────────── -->
+  <div class="panel" id="p-configuracoes">
+    <div class="ac">
+      <h3>🏢 Informações da Plataforma</h3>
+      <div class="fr2"><div class="fg"><label>Nome</label><input type="text" value="HepoMarket"></div><div class="fg"><label>URL</label><input type="text" value="hepomarket.netlify.app"></div></div>
+      <div class="fr2"><div class="fg"><label>E-mail Suporte</label><input type="email" value="suporte@hepomarket.ao"></div><div class="fg"><label>Telefone</label><input type="tel" value="+244 952 100 356"></div></div>
+      <div class="fg"><label>Morada</label><input type="text" value="Cacuaco, Luanda, Angola"></div>
+      <button class="ab p" onclick="toast('✅ Configurações guardadas!')">Guardar</button>
+    </div>
+    <div class="ac">
+      <h3>⚙️ Preferências do Sistema</h3>
+      <div class="trow"><div><div style="font-size:.88rem;font-weight:600;">Notificações de novos pedidos</div></div><label class="toggle"><input type="checkbox" checked><span class="tsl"></span></label></div>
+      <div class="trow"><div><div style="font-size:.88rem;font-weight:600;">Aprovação automática de clientes</div></div><label class="toggle"><input type="checkbox" checked><span class="tsl"></span></label></div>
+      <div class="trow"><div><div style="font-size:.88rem;font-weight:600;">Modo de manutenção</div></div><label class="toggle"><input type="checkbox"><span class="tsl"></span></label></div>
+      <div class="trow" style="border:none;"><div><div style="font-size:.88rem;font-weight:600;">Relatório semanal</div></div><label class="toggle"><input type="checkbox" checked><span class="tsl"></span></label></div>
+      <div style="margin-top:.85rem;"><button class="ab p" onclick="toast('✅ Configurações guardadas!')">Guardar</button></div>
+    </div>
+    <div class="ac">
+      <h3>🔐 Alterar Senha CEO</h3>
+      <div class="fg" style="max-width:360px;"><label>Senha Actual</label><input type="password" id="c_cur" placeholder="••••••••"></div>
+      <div class="fr2" style="max-width:480px;"><div class="fg"><label>Nova Senha</label><input type="password" id="c_new" placeholder="Mínimo 8 caracteres"></div><div class="fg"><label>Confirmar</label><input type="password" id="c_con" placeholder="Repita"></div></div>
+      <div id="cpwdMsg" style="display:none;margin-bottom:.65rem;font-size:.85rem;border-radius:8px;padding:.65rem;"></div>
+      <button class="ab p" onclick="changeCEOPwd()">Alterar Senha</button>
+    </div>
+  </div>
+
+  <!-- ────────── DADOS BANCÁRIOS ────────── -->
+  <div class="panel" id="p-bancos">
+    <div class="ac">
+      <h3>🏦 Contas Bancárias da HepoMarket</h3>
+      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1rem;">Estas contas são mostradas automaticamente no painel de Comissões dos parceiros e afiliados para receberem pagamentos.</p>
+      <button class="ab p" style="margin-bottom:1.1rem;" onclick="openM('mBank')">➕ Adicionar Conta</button>
+      <div id="bankList"></div>
+    </div>
+  </div>
+
+  <!-- ────────── ASSISTENTE IA ────────── -->
+  <div class="panel" id="p-ia">
+    <div class="g2">
+      <div class="ac">
+        <h3>🤖 Hepo Assistant CEO</h3>
+        <div class="acp" id="aiChat"></div>
+        <div class="apr"><input type="text" id="aiIn" placeholder="Pergunte sobre pedidos, utilizadores, receita..." onkeypress="if(event.key==='Enter')sendAI()"><button onclick="sendAI()">→</button></div>
+      </div>
+      <div class="ac">
+        <h3>📊 Resumo em Tempo Real</h3>
+        <div id="aiStats"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────── MARKETING ────────── -->
+  <div class="panel" id="p-marketing">
+    <div class="ac">
+      <h3>📢 Campanhas Activas</h3>
+      <button class="ab p" style="margin-bottom:1rem;" onclick="openM('mPromo')">➕ Nova Campanha</button>
+      <div id="promoList"></div>
+    </div>
+    <div class="ac">
+      <h3>📧 Newsletter</h3>
+      <div class="fg"><label>Assunto</label><input type="text" id="nl_s" placeholder="Assunto da newsletter"></div>
+      <div class="fg"><label>Destinatários</label><select id="nl_d"><option value="all">Todos os utilizadores</option><option value="parceiro">Parceiros activos</option><option value="afiliado">Afiliados activos</option></select></div>
+      <div class="fg"><label>Mensagem</label><textarea id="nl_b" style="min-height:100px;" placeholder="Mensagem..."></textarea></div>
+      <button class="ab p" onclick="sendNL()">Enviar Newsletter</button>
+    </div>
+  </div>
+
+  <!-- ────────── TEMAS & CORES ────────── -->
+  <div class="panel" id="p-temas">
+    <div class="ac" style="max-width:600px;">
+      <h3>🎨 Temas & Cores do Painel CEO</h3>
+      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1.25rem;">Personalize completamente a aparência do painel. As suas escolhas ficam guardadas automaticamente.</p>
+
+      <div class="theme-panel">
+        <!-- COR PRINCIPAL -->
+        <div class="theme-section-title">🎨 Cor Principal</div>
+        <div class="theme-swatches" id="colorSwatches">
+          <div class="theme-swatch active" data-theme="azul"     title="Azul (Padrão)" style="background:linear-gradient(135deg,#0078d4,#00b4d8)"></div>
+          <div class="theme-swatch" data-theme="verde"    title="Verde Esmeralda" style="background:linear-gradient(135deg,#10b981,#34d399)"></div>
+          <div class="theme-swatch" data-theme="roxo"     title="Roxo/Violeta"   style="background:linear-gradient(135deg,#8b5cf6,#ec4899)"></div>
+          <div class="theme-swatch" data-theme="laranja"  title="Laranja/Fogo"   style="background:linear-gradient(135deg,#f59e0b,#ef4444)"></div>
+          <div class="theme-swatch" data-theme="rosa"     title="Rosa/Pink"      style="background:linear-gradient(135deg,#ec4899,#8b5cf6)"></div>
+          <div class="theme-swatch" data-theme="ouro"     title="Dourado/Ouro"   style="background:linear-gradient(135deg,#d4af37,#f5d875)"></div>
+          <div class="theme-swatch" data-theme="vermelho" title="Vermelho"       style="background:linear-gradient(135deg,#ef4444,#f59e0b)"></div>
+          <div class="theme-swatch" data-theme="teal"     title="Teal/Ciano"     style="background:linear-gradient(135deg,#0d9488,#2dd4bf)"></div>
+        </div>
+
+        <!-- DESIGN SYSTEMS -->
+        <div class="theme-section-title">🍎🪟📱 Temas de Design</div>
+        <div class="theme-swatches" id="designSwatches">
+          <div class="theme-swatch" data-design="apple"   title="🍎 Apple macOS" style="background:linear-gradient(135deg,#1c1c1e,#2c2c2e);border:2px solid rgba(255,255,255,.2);">🍎</div>
+          <div class="theme-swatch" data-design="win11"   title="🪟 Windows 11"  style="background:linear-gradient(135deg,#0067c0,#1a7fd4);">🪟</div>
+          <div class="theme-swatch" data-design="samsung" title="📱 Samsung Ultra" style="background:linear-gradient(135deg,#1428a0,#b537f2);">📱</div>
+          <div class="theme-swatch" data-design="default" title="⭐ Padrão HepoMarket" style="background:linear-gradient(135deg,#0078d4,#00b4d8);">⭐</div>
+        </div>
+        <div id="activeDesignLabel" style="font-size:.74rem;color:var(--text-muted);margin-top:.35rem;">Tema activo: Padrão HepoMarket</div>
+
+        <!-- COR PERSONALIZADA -->
+        <div class="theme-section-title">✏️ Cor Personalizada</div>
+        <div class="custom-color-row">
+          <input type="color" id="customColor1" class="custom-color-input" value="#0078d4" title="Cor início">
+          <input type="color" id="customColor2" class="custom-color-input" value="#00b4d8" title="Cor fim">
+          <button class="ab p" onclick="applyCustomColors()" style="flex:1;">Aplicar Gradiente Personalizado</button>
+        </div>
+
+        <!-- FUNDO/BASE -->
+        <div class="theme-section-title">🌑 Fundo do Painel</div>
+        <div class="base-swatches" id="baseSwatches">
+          <div class="base-swatch active" data-base="base-escuro"   style="background:#0a0a0f;color:#e8e8f0;border-color:rgba(255,255,255,.15);">🌑 Escuro</div>
+          <div class="base-swatch"       data-base="base-meia-luz"  style="background:#111827;color:#f1f5f9;border-color:rgba(255,255,255,.15);">🌒 Meia Luz</div>
+          <div class="base-swatch"       data-base="base-slate"     style="background:#0f172a;color:#e2e8f0;border-color:rgba(255,255,255,.15);">🪨 Ardósia</div>
+        </div>
+
+        <!-- TAMANHO DE TEXTO -->
+        <div class="theme-section-title">📝 Tamanho do Texto</div>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:.75rem;color:var(--text-muted);">A</span>
+          <input type="range" id="fontSizeRange" min="12" max="18" value="14" step="1"
+            style="flex:1;accent-color:var(--primary);"
+            oninput="applyFontSize(this.value)">
+          <span style="font-size:1rem;color:var(--text-muted);">A</span>
+          <span id="fontSizeLabel" style="font-size:.78rem;color:var(--primary);font-weight:700;min-width:30px;">14px</span>
+        </div>
+
+        <!-- BARRA DE PREVIEW -->
+        <div class="theme-preview-bar" id="previewBar"></div>
+
+        <!-- DENSIDADE -->
+        <div class="theme-section-title">⚡ Densidade da Interface</div>
+        <div class="font-options">
+          <div class="font-option active" data-density="normal" onclick="applyDensity('normal',this)">Normal</div>
+          <div class="font-option"        data-density="compact" onclick="applyDensity('compact',this)">Compacto</div>
+        </div>
+
+        <div style="margin-top:1.25rem;display:flex;gap:.65rem;">
+          <button class="ab p" onclick="saveTheme()">💾 Guardar Preferências</button>
+          <button class="ab o" onclick="resetTheme()">↩️ Repor Padrão</button>
+        </div>
+        <div id="themeSaveMsg" style="display:none;margin-top:.65rem;font-size:.82rem;color:var(--success);"></div>
+      </div>
+    </div>
+
+    <!-- Preview cards -->
+    <div class="ac" style="max-width:600px;">
+      <h3>👁️ Pré-visualização</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:1rem;" id="previewStats">
+        <div class="sc blue"><div class="sl">Receita</div><div class="sv" style="color:var(--primary);">1.250.000 Kz</div></div>
+        <div class="sc green"><div class="sl">Pedidos</div><div class="sv" style="color:var(--success);">47</div></div>
+        <div class="sc purple"><div class="sl">Parceiros</div><div class="sv" style="color:var(--accent);">12</div></div>
+      </div>
+      <div style="display:flex;gap:.55rem;">
+        <button class="ab p" style="flex:1;">✅ Botão Principal</button>
+        <button class="ab s" style="flex:1;">🟢 Sucesso</button>
+        <button class="ab d" style="flex:1;">🔴 Perigo</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ────────── GRÁFICOS ────────── -->
+  <div class="panel" id="p-graficos">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <!-- KPI Row -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.25rem;" id="chartKPIs"></div>
+    <!-- Row 1 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+      <div class="ac"><h3>📦 Pedidos por Estado</h3><div style="position:relative;height:260px;"><canvas id="chartOrders"></canvas></div></div>
+      <div class="ac"><h3>👥 Utilizadores por Tipo</h3><div style="position:relative;height:260px;"><canvas id="chartUsers"></canvas></div></div>
+    </div>
+    <!-- Row 2 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+      <div class="ac"><h3>💰 Receita Mensal (Kz)</h3><div style="position:relative;height:240px;"><canvas id="chartRevenue"></canvas></div></div>
+      <div class="ac"><h3>🔗 Cliques nos Links</h3><div style="position:relative;height:240px;"><canvas id="chartClicks"></canvas></div></div>
+    </div>
+    <!-- Row 3 -->
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+      <div class="ac"><h3>📈 Evolução de Cadastros</h3><div style="position:relative;height:220px;"><canvas id="chartRegs"></canvas></div></div>
+      <div class="ac"><h3>🛍️ Produtos por Categoria</h3><div style="position:relative;height:220px;"><canvas id="chartProds"></canvas></div></div>
+    </div>
+    <!-- Row 4 -->
+    <div class="ac"><h3>🏆 Top Parceiros / Afiliados por Vendas</h3><div id="topUsersChart" style="overflow-x:auto;"></div></div>
+  </div>
+
+  <!-- ────────── HOMEPAGE CEO ────────── -->
+  <div class="panel" id="p-homepage">
+    <div class="ac">
+      <h3>🛍️ Todos os Produtos da Plataforma</h3>
+      <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">Aqui pode ver, editar e remover todos os produtos da HepoMarket. Os produtos em promoção aparecem sempre primeiro no site.</p>
+      <div style="display:flex;gap:.65rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center;">
+        <button class="ab p" onclick="openM('mProd')">➕ Adicionar Novo Produto</button>
+        <button class="ab o" onclick="renderHomepage()">🔄 Actualizar Lista</button>
+        <span style="font-size:.78rem;color:var(--text-muted);">Os produtos adicionados aqui aparecem automaticamente na página inicial.</span>
+      </div>
+      <div id="homeprodList"></div>
+    </div>
+    <div class="ac">
+      <h3>🖼️ Imagem de Fundo da Página Inicial</h3>
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+        <div id="bgPreview" style="width:200px;height:110px;border-radius:12px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;">
+          <img src="../images/bg-hero.jpg" alt="Fundo actual" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div>
+          <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.85rem;">A imagem de fundo aparece na área principal da página inicial. Formatos: JPG, PNG, WEBP</p>
+          <div style="border:2px dashed var(--border);border-radius:12px;padding:1.25rem;text-align:center;cursor:pointer;transition:.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'" onclick="document.getElementById('bgImgInput').click()">
+            📤 Clique para escolher nova imagem<br><small style="color:var(--text-muted);">Resolução recomendada: 1920×1080px ou maior</small>
+          </div>
+          <input type="file" id="bgImgInput" accept="image/*" style="display:none;" onchange="changeBgImage(this)">
+          <div id="bgMsg" style="display:none;margin-top:.65rem;font-size:.82rem;border-radius:8px;padding:.6rem;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ac">
+      <h3>📢 Banner de Destaque</h3>
+      <div class="fg"><label>Texto do banner</label><input type="text" id="bn_text" placeholder="Ex: 🔥 Liquidação Total – Até 50% de desconto!" value="🇦🇴 Plataforma Nº1 em Angola – Promoções Activas!"></div>
+      <div style="display:flex;gap:.65rem;">
+        <button class="ab p" onclick="saveBanner()">💾 Guardar Banner</button>
+        <button class="ab o" onclick="previewBanner()">👁 Pré-visualizar</button>
+      </div>
+      <div id="bnPreview" style="display:none;margin-top:.75rem;background:linear-gradient(90deg,rgba(0,120,212,.2),rgba(0,180,216,.1));border:1px solid rgba(0,120,212,.3);border-radius:10px;padding:.85rem;font-size:.88rem;font-weight:700;"></div>
+    </div>
+    
+    <div class="ac">
+      <h3>🎨 Tema & Aparência Rápida</h3>
+      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1rem;">Altere a cor do site directamente aqui. Para mais opções vá a <strong>Temas & Cores</strong>.</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.85rem;">
+        <div onclick="applyThemeClass('azul');toast('🎨 Tema Azul!')" title="Azul" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0078d4,#00b4d8);cursor:pointer;border:3px solid transparent;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></div>
+        <div onclick="applyThemeClass('verde');toast('🎨 Tema Verde!')" title="Verde" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#10b981,#34d399);cursor:pointer;border:3px solid transparent;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></div>
+        <div onclick="applyThemeClass('roxo');toast('🎨 Tema Roxo!')" title="Roxo" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);cursor:pointer;border:3px solid transparent;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></div>
+        <div onclick="applyThemeClass('laranja');toast('🎨 Tema Laranja!')" title="Laranja" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);cursor:pointer;border:3px solid transparent;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></div>
+        <div onclick="applyDesign('apple');toast('🍎 Apple Design!')" title="Apple" style="width:38px;height:38px;border-radius:50%;background:#1c1c1e;cursor:pointer;border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🍎</div>
+        <div onclick="applyDesign('win11');toast('🪟 Windows 11 Design!')" title="Win11" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0067c0,#1a7fd4);cursor:pointer;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🪟</div>
+        <div onclick="applyDesign('samsung');toast('📱 Samsung Design!')" title="Samsung" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1428a0,#b537f2);cursor:pointer;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">📱</div>
+        <div onclick="applyDesign('default');applyThemeClass('azul');toast('⭐ Padrão!')" title="Padrão" style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0078d4,#00b4d8);cursor:pointer;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">⭐</div>
+      </div>
+      <p style="font-size:.75rem;color:var(--text-muted);">Para mais opções avançadas → <button class="ab o" style="font-size:.72rem;padding:.2rem .55rem;" onclick="sp('temas')">🎨 Ir para Temas & Cores</button></p>
+    </div>
+
+  </div>
+
+
+  <!-- ────────── SERVIÇOS ────────── -->
+  <div class="panel" id="p-servicos">
+    <div class="ac">
+      <h3>🛠️ Gestão de Serviços</h3>
+      <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem;">Gerencie todos os serviços de prestação oferecidos pela plataforma.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;" id="servicesList">
+
+        <div class="ac" style="padding:1.25rem;border-left:4px solid #f59e0b;">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">⚡</div>
+          <h4 style="color:#fff;font-weight:800;margin-bottom:.4rem;">Electricidade</h4>
+          <p style="font-size:.8rem;color:var(--text-muted);">Instalações, manutenção, quadros eléctricos, iluminação LED, automação.</p>
+          <div style="margin-top:.85rem;display:flex;gap:.5rem;">
+            <span class="sb2 ativo">✅ Activo</span>
+            <button class="ab p" style="font-size:.7rem;padding:.2rem .55rem;" onclick="toast('✅ Serviço configurado!')">⚙️ Gerir</button>
+          </div>
+        </div>
+
+        <div class="ac" style="padding:1.25rem;border-left:4px solid #0ea5e9;">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">❄️</div>
+          <h4 style="color:#fff;font-weight:800;margin-bottom:.4rem;">Frio & Climatização</h4>
+          <p style="font-size:.8rem;color:var(--text-muted);">Ar condicionado, câmaras frigoríficas, ventilação, assistência 24h.</p>
+          <div style="margin-top:.85rem;display:flex;gap:.5rem;">
+            <span class="sb2 ativo">✅ Activo</span>
+            <button class="ab p" style="font-size:.7rem;padding:.2rem .55rem;" onclick="toast('✅ Serviço configurado!')">⚙️ Gerir</button>
+          </div>
+        </div>
+
+        <div class="ac" style="padding:1.25rem;border-left:4px solid #10b981;">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">🧱</div>
+          <h4 style="color:#fff;font-weight:800;margin-bottom:.4rem;">Ladrilho & Pinturas</h4>
+          <p style="font-size:.8rem;color:var(--text-muted);">Pavimentos, azulejos, cerâmicos, pintura interior e exterior, acabamentos.</p>
+          <div style="margin-top:.85rem;display:flex;gap:.5rem;">
+            <span class="sb2 ativo">✅ Activo</span>
+            <button class="ab p" style="font-size:.7rem;padding:.2rem .55rem;" onclick="toast('✅ Serviço configurado!')">⚙️ Gerir</button>
+          </div>
+        </div>
+
+        <div class="ac" style="padding:1.25rem;border-left:4px solid #8b5cf6;">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">🏗️</div>
+          <h4 style="color:#fff;font-weight:800;margin-bottom:.4rem;">Tectos Falsos</h4>
+          <p style="font-size:.8rem;color:var(--text-muted);">Gesso cartonado, PVC, alumínio, madeira, iluminação integrada, isolamento.</p>
+          <div style="margin-top:.85rem;display:flex;gap:.5rem;">
+            <span class="sb2 ativo">✅ Activo</span>
+            <button class="ab p" style="font-size:.7rem;padding:.2rem .55rem;" onclick="toast('✅ Serviço configurado!')">⚙️ Gerir</button>
+          </div>
+        </div>
+
+        <div class="ac" style="padding:1.25rem;border-left:4px solid #06b6d4;">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">🚿</div>
+          <h4 style="color:#fff;font-weight:800;margin-bottom:.4rem;">Canalização</h4>
+          <p style="font-size:.8rem;color:var(--text-muted);">Reparação, fugas, casas de banho, cozinhas, emergências 24/7.</p>
+          <div style="margin-top:.85rem;display:flex;gap:.5rem;">
+            <span class="sb2 ativo">✅ Activo</span>
+            <button class="ab p" style="font-size:.7rem;padding:.2rem .55rem;" onclick="toast('✅ Serviço configurado!')">⚙️ Gerir</button>
+          </div>
+        </div>
+
+        <div class="ac" style="padding:1.25rem;border-left:4px solid #6366f1;">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">📱</div>
+          <h4 style="color:#fff;font-weight:800;margin-bottom:.4rem;">Acessórios Electrónicos</h4>
+          <p style="font-size:.8rem;color:var(--text-muted);">Cabos, carregadores, fones, colunas, smartwatches, tablets e acessórios tech.</p>
+          <div style="margin-top:.85rem;display:flex;gap:.5rem;">
+            <span class="sb2 ativo">✅ Activo</span>
+            <button class="ab p" style="font-size:.7rem;padding:.2rem .55rem;" onclick="toast('✅ Produtos geridos em Produtos')">⚙️ Gerir</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="ac">
+      <h3>📋 Pedidos de Serviços Recentes</h3>
+      <div id="serviceRequests">
+        <p style="color:var(--text-muted);font-size:.85rem;text-align:center;padding:1.5rem;">Ainda não há pedidos de serviços. Os pedidos feitos via página de contacto aparecerão aqui.</p>
+      </div>
+      <div style="margin-top:1rem;">
+        <button class="ab p" onclick="sp('mensagens')">📧 Ver Mensagens de Clientes</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /am -->
+
+<!-- ══════════ MODAIS ══════════ -->
+
+<!-- PRODUTO (Adicionar + Editar) -->
+<div class="mo" id="mProd">
+  <div class="mb"><button class="mc" onclick="closeM('mProd')">✕</button>
+    <h3 id="mProdTitle">➕ Adicionar Produto</h3>
+    <input type="hidden" id="mp_editId">
+    <div class="fg"><label>Nome do Produto *</label><input type="text" id="mp_n" placeholder="Ex: Kit XYZ Premium" required></div>
+    <div class="fr2"><div class="fg"><label>Preço (Kz) *</label><input type="number" id="mp_p" placeholder="15000" min="0"></div><div class="fg"><label>Categoria *</label><select id="mp_c"><option value="beleza">💄 Beleza & Cuidado</option><option value="casa">🏠 Casa & Lar</option><option value="moda">👜 Moda</option><option value="bebe">🍼 Bebé</option><option value="outro">📦 Outro</option></select></div></div>
+    <div class="fg"><label>Parceiro / Vendedor</label><input type="text" id="mp_par" placeholder="Nome do parceiro ou HepoMarket"></div>
+    <div class="fg"><label>Descrição</label><textarea id="mp_d" placeholder="Descrição do produto..."></textarea></div>
+    <div class="fr2"><div class="fg"><label>Badge</label><select id="mp_b"><option value="">Sem badge</option><option value="Destaque">🔥 Destaque</option><option value="Popular">⭐ Popular</option><option value="Novo">✨ Novo</option><option value="Sale">🏷️ Sale</option></select></div><div class="fg"><label>Stock</label><input type="number" id="mp_stk" placeholder="Ex: 50" min="0"></div></div>
+    <div class="fg">
+      <label>📷 Imagem do Produto (opcional)</label>
+      <div class="img-up" onclick="document.getElementById('mp_img').click()" id="imgUpArea">📷 Clique para seleccionar imagem<br><small>JPG, PNG, WEBP — máx. 2MB</small></div>
+      <input type="file" id="mp_img" accept="image/*" style="display:none;" onchange="previewImg(this)">
+      <img id="mp_preview" style="display:none;width:100%;max-height:160px;object-fit:contain;border-radius:8px;margin-top:.5rem;" alt="">
+    </div>
+    <div class="ma"><button class="bx" onclick="closeM('mProd')">Cancelar</button><button class="bc" onclick="submitProd()">Guardar Produto ✅</button></div>
+  </div>
+</div>
+
+<!-- EMAIL -->
+<div class="mo" id="mEmail">
+  <div class="mb"><button class="mc" onclick="closeM('mEmail')">✕</button>
+    <h3>📧 Enviar Mensagem</h3>
+    <div class="fg"><label>Destinatário *</label><select id="em2_to"><option value="all">📢 Todos</option></select></div>
+    <div class="fg"><label>Assunto *</label><input type="text" id="em2_sub" placeholder="Assunto"></div>
+    <div class="fg"><label>Mensagem *</label><textarea id="em2_body" style="min-height:120px;" placeholder="Mensagem..."></textarea></div>
+    <div id="em2_r" style="display:none;margin-bottom:.65rem;font-size:.82rem;border-radius:8px;padding:.65rem;"></div>
+    <div class="ma"><button class="bx" onclick="closeM('mEmail')">Cancelar</button><button class="bc" onclick="sendEmail2()">Enviar ✅</button></div>
+  </div>
+</div>
+
+<!-- BANCO -->
+<div class="mo" id="mBank">
+  <div class="mb"><button class="mc" onclick="closeM('mBank')">✕</button>
+    <h3>🏦 Adicionar Conta Bancária</h3>
+    <div class="fg"><label>Banco *</label><select id="bk_b"><option>BAI – Banco Angolano de Investimentos</option><option>BFA – Banco de Fomento Angola</option><option>BPC – Banco de Poupança e Crédito</option><option>BIC – Banco BIC</option><option>Standard Bank Angola</option><option>Caixa Angola</option><option>Outro</option></select></div>
+    <div class="fg"><label>Titular da Conta *</label><input type="text" id="bk_t" placeholder="Nome completo do titular" required></div>
+    <div class="fg"><label>Número de Conta / IBAN *</label><input type="text" id="bk_n" placeholder="AO06 0006 0000..." required></div>
+    <div class="fr2"><div class="fg"><label>Multicaixa Express</label><input type="text" id="bk_m" placeholder="9XX XXX XXX"></div><div class="fg"><label>Tipo de Conta</label><select id="bk_tp"><option>Conta à Ordem</option><option>Conta Empresa</option><option>Conta Poupança</option></select></div></div>
+    <div class="fg"><label>Notas (opcional)</label><input type="text" id="bk_nota" placeholder="Ex: Conta principal"></div>
+    <div class="ma"><button class="bx" onclick="closeM('mBank')">Cancelar</button><button class="bc" onclick="addBank()">Adicionar ✅</button></div>
+  </div>
+</div>
+
+<!-- PROMOÇÃO -->
+<div class="mo" id="mPromo">
+  <div class="mb"><button class="mc" onclick="closeM('mPromo')">✕</button>
+    <h3>📢 Nova Campanha de Marketing</h3>
+    <div class="fg"><label>Título *</label><input type="text" id="pr_t" required></div>
+    <div class="fr2"><div class="fg"><label>Tipo</label><select id="pr_tp"><option>Desconto %</option><option>Valor Fixo (Kz)</option><option>Compre X Leve Y</option><option>Frete Grátis</option></select></div><div class="fg"><label>Valor</label><input type="text" id="pr_v" placeholder="Ex: 20%"></div></div>
+    <div class="fr2"><div class="fg"><label>Categoria</label><select id="pr_c"><option>Todas</option><option>Beleza</option><option>Casa & Lar</option><option>Moda</option></select></div><div class="fg"><label>Válido até *</label><input type="date" id="pr_d" required></div></div>
+    <div class="fg"><label>Descrição</label><textarea id="pr_desc"></textarea></div>
+    <div class="ma"><button class="bx" onclick="closeM('mPromo')">Cancelar</button><button class="bc" onclick="addPromo()">Publicar 🚀</button></div>
+  </div>
+</div>
+
+<div class="at" id="adminToast"></div>
+
+<script src="../js/hepo-auth.js"></script>
+<script>
+// ══ AUTH GUARD ══
+if (sessionStorage.getItem('hepoAdminAuth')!=='true'||!HepoAuth.getSession()||HepoAuth.getSession().role!=='ceo') {
+  window.location.replace('login.html');
+}
+
+// ══ CLOCK ══
+setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleString('pt-PT',{dateStyle:'long',timeStyle:'short'}),1000);
+document.getElementById('clock').textContent=new Date().toLocaleString('pt-PT',{dateStyle:'long',timeStyle:'short'});
+
+function toast(msg,err=false,dur=3500){const t=document.getElementById('adminToast');t.textContent=msg;t.style.background=err?'var(--danger)':'var(--success)';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function doLogout(){HepoAuth.logout();window.location.replace('login.html');}
+
+// ══ PANEL NAV ══
+const PT={servicos:'🛠️ Serviços',temas:'🎨 Temas & Cores',homepage:'🌐 Gerir Página Inicial',graficos:'📊 Gráficos & Estatísticas',dashboard:'📊 Dashboard',pedidos:'📦 Pedidos',produtos:'🛍️ Produtos',clientes:'👥 Clientes',parceiros:'🤝 Parceiros',afiliados:'💰 Afiliados',pagamentos:'💳 Pagamentos',relatorios:'📈 Relatórios',mensagens:'📧 Mensagens',notificacoes:'🔔 Notificações',emailcfg:'✉️ Configurar E-mail',configuracoes:'⚙️ Configurações',bancos:'🏦 Dados Bancários',ia:'🤖 Assistente IA',marketing:'📢 Marketing'};
+function sp(n){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-nav a').forEach(a=>a.classList.remove('active'));
+  const p=document.getElementById('p-'+n);if(p)p.classList.add('active');
+  const nav=document.getElementById('n-'+n);if(nav)nav.classList.add('active');
+  document.getElementById('pt').textContent=PT[n]||n;
+  if(n==='clientes')renderClients();
+  if(n==='parceiros')renderPartners();
+  if(n==='afiliados')renderAffiliates();
+  if(n==='pedidos')renderOrders();
+  if(n==='produtos')renderProds();
+  if(n==='pagamentos')renderPayments();
+  if(n==='relatorios')renderReports();
+  if(n==='bancos')renderBank();
+  if(n==='mensagens'){renderAdminMsgs();populateMsgDropdowns();}
+  if(n==='notificacoes')renderCEONotifs();
+  if(n==='emailcfg')loadEmailCfgUI();
+  if(n==='graficos')renderGraphs();
+  if(n==='homepage'){renderHomepage();}
+}
+
+// ══ MODAIS ══
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// ══ DATA HELPERS ══
+const U=()=>HepoAuth.getUsers();
+const O=()=>HepoAuth.getOrders();
+
+// ══ UPDATE BADGES ══
+function updateBadges(){
+  const pending=U().filter(u=>u.status==='pendente');
+  const pPar=pending.filter(u=>u.role==='parceiro').length;
+  const pAff=pending.filter(u=>u.role==='afiliado').length;
+  const pAll=pending.length;
+  const unreadMsgs=HepoAuth.getUnreadCount(0);
+  const unreadNotifs=HepoAuth.getUnreadNotifCount(0);
+  const pOrders=O().filter(o=>o.status==='pendente').length;
+
+  [['nb-parceiros',pPar],['nb-afiliados',pAff],['nb-pedidos',pOrders],['nb-msgs',unreadMsgs],['nb-notifs',unreadNotifs]].forEach(([id,v])=>{
+    const el=document.getElementById(id);
+    if(el){el.style.display=v>0?'inline':'none';el.textContent=v;}
+  });
+}
+
+// ══ DASHBOARD ══
+function renderDashboard(){
+  const users=U();const orders=O();
+  const rev=orders.filter(o=>o.status==='entregue').reduce((a,o)=>a+(o.total||0),0);
+  document.getElementById('stRev').textContent=HepoAuth.formatMoney(rev);
+  document.getElementById('stOrd').textContent=orders.length;
+  document.getElementById('stPar').textContent=users.filter(u=>u.role==='parceiro').length;
+  document.getElementById('stAff').textContent=users.filter(u=>u.role==='afiliado').length;
+
+  // Recent orders
+  const last=orders.slice(-5).reverse();
+  document.getElementById('dashOrd').innerHTML=!last.length?'<div class="es"><div class="ei">📦</div><p>Nenhum pedido ainda.</p></div>':
+    `<table class="dt"><thead><tr><th>#</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody>${last.map(o=>`<tr><td style="color:var(--primary);font-weight:700;">${o.id}</td><td>${o.nomeCliente||'—'}</td><td style="font-weight:700;">${HepoAuth.formatMoney(o.total)}</td><td><span class="sb2 ${o.status}">${{pendente:'Pendente',processando:'A Processar',entregue:'Entregue',cancelado:'Cancelado'}[o.status]||o.status}</span></td></tr>`).join('')}</tbody></table>`;
+
+  // Pending approvals
+  const pend=users.filter(u=>u.status==='pendente');
+  const pc=document.getElementById('pendCard');
+  if(!pend.length){pc.style.display='none';}else{pc.style.display='block';
+    document.getElementById('pendList').innerHTML=pend.map(u=>`
+      <div style="display:flex;align-items:center;gap:.85rem;padding:.75rem;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:10px;margin-bottom:.45rem;">
+        ${u.foto?`<img src="${u.foto}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">`:`<div style="width:40px;height:40px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">${{parceiro:'🤝',afiliado:'💰',cliente:'👤'}[u.role]}</div>`}
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:700;font-size:.88rem;">${u.nome||u.nomeCompleto}</div>
+          <div style="font-size:.75rem;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${u.email} · ${u.telefone||''}</div>
+          <div style="font-size:.72rem;color:var(--text-muted);">${u.provincia||''} ${u.bairro?'· '+u.bairro:''}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.35rem;">${{parceiro:'🤝 Parceiro',afiliado:'💰 Afiliado',cliente:'👤 Cliente'}[u.role]}</div>
+          <div style="display:flex;gap:.35rem;">
+            <button class="ab s" style="font-size:.72rem;padding:.25rem .55rem;" onclick="approveUser(${u.id})">✅ Aprovar</button>
+            <button class="ab d" style="font-size:.72rem;padding:.25rem .55rem;" onclick="rejectUser(${u.id})">❌ Recusar</button>
+          </div>
+        </div>
+      </div>`).join('');}
+
+  // Recent messages
+  const msgs=HepoAuth.getInboxFor(0).slice(0,4);
+  document.getElementById('dashMsgs').innerHTML=!msgs.length?'<div class="es"><div class="ei">📭</div><p>Sem mensagens.</p></div>':
+    msgs.map(m=>`<div class="msg-row ${!m.readBy.includes(0)?'unread':''}" onclick="sp('mensagens')">
+      <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;font-size:.85rem;">${m.fromNome}</span><span style="font-size:.7rem;color:var(--text-muted);">${HepoAuth.timeAgo(m.sentAt)}</span></div>
+      <div style="font-size:.82rem;color:var(--primary);">${m.assunto}</div>
+      <div style="font-size:.78rem;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${m.corpo}</div>
+    </div>`).join('');
+
+  updateBadges();
+}
+
+function approveUser(id){
+  HepoAuth.updateUser(id,{status:'ativo'});
+  const u=HepoAuth.getUserById(id);
+  // Notifica utilizador
+  HepoAuth.addNotification(id,{tipo:'aprovacao',titulo:'✅ Conta Aprovada!',corpo:'A sua conta foi aprovada pelo CEO. Pode agora aceder a todas as funcionalidades.',link:'perfil'});
+  // Envia mensagem in-app
+  HepoAuth.sendMessage({fromId:0,toId:id,fromNome:'HepoMarket – CEO',assunto:'Conta Aprovada ✅',corpo:`Olá ${u?.nome||''}! A sua conta de ${u?.role||''} foi aprovada com sucesso. Bem-vindo(a) à família HepoMarket! Pode agora aceder ao seu painel completo.`});
+  toast('✅ Conta aprovada! Notificação enviada.');
+  renderDashboard(); renderPartners(); renderAffiliates(); renderClients();
+}
+
+function rejectUser(id){
+  if(!confirm('Rejeitar e remover esta conta?')) return;
+  const u=HepoAuth.getUserById(id);
+  HepoAuth.deleteUser(id);
+  toast('🗑️ Conta removida.');
+  renderDashboard(); renderPartners(); renderAffiliates(); renderClients();
+}
+
+// ══ ORDERS ══
+function renderOrders(){
+  const q=(document.getElementById('ordSrch')?.value||'').toLowerCase();
+  const f=document.getElementById('ordFlt')?.value||'';
+  let orders=O().filter(o=>(!q||(o.nomeCliente||'').toLowerCase().includes(q)||o.id.toLowerCase().includes(q)||(o.email||'').toLowerCase().includes(q))&&(!f||o.status===f)).reverse();
+  document.getElementById('ordCnt').textContent=`(${orders.length})`;
+  document.getElementById('ordPanel').innerHTML=!orders.length?'<div class="es"><div class="ei">📦</div><p>Nenhum pedido encontrado.</p></div>':
+    `<table class="dt"><thead><tr><th>#Pedido</th><th>Cliente</th><th>Contacto</th><th>Entrega</th><th>Pagamento</th><th>Total</th><th>Data</th><th>Estado</th></tr></thead><tbody>${orders.map(o=>`
+      <tr>
+        <td style="color:var(--primary);font-weight:700;">${o.id}</td>
+        <td style="font-weight:600;">${o.nomeCliente||'—'}</td>
+        <td style="font-size:.78rem;"><div>${o.email||'—'}</div><div>${o.telefone||'—'}</div></td>
+        <td style="font-size:.78rem;">${o.municipio||''}, ${o.provincia||''}<br><span style="color:var(--text-muted);">${(o.morada||'').substring(0,30)}...</span></td>
+        <td style="font-size:.78rem;">${o.metodoPagamento||'—'}</td>
+        <td style="font-weight:700;color:var(--primary);">${HepoAuth.formatMoney(o.total)}</td>
+        <td style="font-size:.74rem;">${HepoAuth.formatDateShort(o.createdAt)}</td>
+        <td>
+          <select style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;padding:.22rem;color:var(--text);font-size:.72rem;" onchange="HepoAuth.updateOrderStatus('${o.id}',this.value);toast('✅ Estado actualizado!');renderOrders();renderDashboard();">
+            ${['pendente','processando','entregue','cancelado'].map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${{pendente:'Pendente',processando:'A Processar',entregue:'Entregue',cancelado:'Cancelado'}[s]}</option>`).join('')}
+          </select>
+        </td>
+      </tr>`).join('')}</tbody></table>`;
+}
+
+// ══ PRODUCTS ══
+let editingProductId = null;
+
+function renderProds(){
+  const q=(document.getElementById('prodSrch')?.value||'').toLowerCase();
+  const f=document.getElementById('prodFlt')?.value||'';
+  const prods=HepoAuth.getAdminProducts().filter(p=>(!q||p.nome.toLowerCase().includes(q)||(p.parceiro||'').toLowerCase().includes(q))&&(!f||p.cat===f));
+  document.getElementById('prodCnt').textContent=`(${prods.length})`;
+  document.getElementById('prodPanel').innerHTML=!prods.length?'<div class="es"><div class="ei">🛍️</div><p>Nenhum produto ainda. Clique em "Adicionar".</p></div>':
+    `<table class="dt"><thead><tr><th>Imagem</th><th>Nome</th><th>Cat.</th><th>Preço</th><th>Parceiro</th><th>Badge</th><th>Stock</th><th>Adicionado</th><th>Ações</th></tr></thead><tbody>${prods.map(p=>`
+      <tr>
+        <td><div style="width:44px;height:44px;border-radius:8px;overflow:hidden;background:rgba(0,120,212,.08);display:flex;align-items:center;justify-content:center;">${p.imgData?`<img src="${p.imgData}" style="width:100%;height:100%;object-fit:cover;" alt="">`:''}</div></td>
+        <td style="font-weight:700;max-width:180px;"><div style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${p.nome}</div><div style="font-size:.72rem;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${(p.descricao||'').substring(0,40)}</div></td>
+        <td style="font-size:.78rem;">${{beleza:'💄 Beleza',casa:'🏠 Casa',moda:'👜 Moda',bebe:'🍼 Bebé',outro:'📦 Outro'}[p.cat]||p.cat}</td>
+        <td style="color:var(--primary);font-weight:700;">${parseInt(p.preco||0).toLocaleString('pt-PT')} Kz</td>
+        <td style="font-size:.8rem;">${p.parceiro||'HepoMarket'}</td>
+        <td><span class="sb2 ${p.badge?'ativo':''}">${p.badge||'—'}</span></td>
+        <td style="text-align:center;">${p.stock||'—'}</td>
+        <td style="font-size:.72rem;">${HepoAuth.formatDateShort(p.addedAt)}${p.editedAt?'<br><span style="color:var(--primary);">editado</span>':''}</td>
+        <td style="white-space:nowrap;">
+          <button class="ab p" style="font-size:.7rem;padding:.22rem .55rem;" onclick="editProd('${p.id}')">✏️ Editar</button>
+          <button class="ab d" style="font-size:.7rem;padding:.22rem .55rem;margin-top:.2rem;" onclick="if(confirm('Remover?')){HepoAuth.removeAdminProduct('${p.id}');renderProds();toast('🗑️ Produto removido.');}">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>`;
+}
+
+function editProd(id){
+  const p=HepoAuth.getAdminProducts().find(x=>x.id===id);
+  if(!p)return;
+  editingProductId=id;
+  document.getElementById('mProdTitle').textContent='✏️ Editar Produto';
+  document.getElementById('mp_editId').value=id;
+  document.getElementById('mp_n').value=p.nome||'';
+  document.getElementById('mp_p').value=p.preco||'';
+  document.getElementById('mp_c').value=p.cat||'beleza';
+  document.getElementById('mp_par').value=p.parceiro||'';
+  document.getElementById('mp_d').value=p.descricao||'';
+  document.getElementById('mp_b').value=p.badge||'';
+  document.getElementById('mp_stk').value=p.stock||'';
+  const prev=document.getElementById('mp_preview');
+  if(p.imgData){prev.src=p.imgData;prev.style.display='block';document.getElementById('imgUpArea').textContent='✅ Imagem carregada. Clique para alterar.';}
+  else{prev.style.display='none';document.getElementById('imgUpArea').innerHTML='📷 Clique para seleccionar imagem<br><small>JPG, PNG, WEBP — máx. 2MB</small>';}
+  openM('mProd');
+}
+
+function previewImg(input){
+  const file=input.files[0]; if(!file)return;
+  if(file.size>2*1024*1024){toast('⚠️ Imagem demasiado grande. Máx. 2MB.',true);input.value='';return;}
+  const reader=new FileReader();
+  reader.onload=e=>{const prev=document.getElementById('mp_preview');prev.src=e.target.result;prev.style.display='block';document.getElementById('imgUpArea').textContent='✅ Imagem seleccionada';};
+  reader.readAsDataURL(file);
+}
+
+function submitProd(){
+  const nome=document.getElementById('mp_n').value.trim();
+  const preco=document.getElementById('mp_p').value;
+  if(!nome||!preco){toast('⚠️ Nome e preço são obrigatórios.',true);return;}
+  const prevEl=document.getElementById('mp_preview');
+  const imgData=prevEl.style.display!=='none'&&prevEl.src?prevEl.src:'';
+  const data={nome,preco:parseInt(preco),cat:document.getElementById('mp_c').value,parceiro:document.getElementById('mp_par').value.trim()||'HepoMarket',descricao:document.getElementById('mp_d').value.trim(),badge:document.getElementById('mp_b').value,stock:document.getElementById('mp_stk').value?parseInt(document.getElementById('mp_stk').value):null,imgData};
+  const editId=document.getElementById('mp_editId').value;
+  if(editId){
+    HepoAuth.updateAdminProduct(editId,data);
+    toast(`✅ Produto "${nome}" actualizado!`);
+  } else {
+    HepoAuth.addAdminProduct(data);
+    toast(`✅ Produto "${nome}" adicionado!`);
+  }
+  closeM('mProd');
+  editingProductId=null;
+  document.getElementById('mp_editId').value='';
+  document.getElementById('mProdTitle').textContent='➕ Adicionar Produto';
+  ['mp_n','mp_p','mp_par','mp_d'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mp_preview').style.display='none';
+  document.getElementById('mp_img').value='';
+  document.getElementById('imgUpArea').innerHTML='📷 Clique para seleccionar imagem<br><small>JPG, PNG, WEBP — máx. 2MB</small>';
+  renderProds();
+}
+
+// ══ CLIENTS ══
+function renderClients(){
+  const q=(document.getElementById('cliSrch')?.value||'').toLowerCase();
+  const f=document.getElementById('cliFlt')?.value||'';
+  const users=U().filter(u=>u.role==='cliente'&&(!q||(u.nome||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&(!f||u.status===f));
+  document.getElementById('cliCnt').textContent=`(${users.length})`;
+  document.getElementById('cliPanel').innerHTML=!users.length?'<div class="es"><div class="ei">👥</div><p>Nenhum cliente registado.</p></div>':
+    `<table class="dt"><thead><tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Localização</th><th>Pedidos</th><th>Total Gasto</th><th>Ref</th><th>Estado</th><th>Ação</th></tr></thead><tbody>${users.map(u=>`
+      <tr>
+        <td style="font-weight:700;">${u.foto?`<img src="${u.foto}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;margin-right:.4rem;vertical-align:middle;">`:''}${u.nome||u.nomeCompleto}</td>
+        <td style="font-size:.78rem;">${u.email}</td>
+        <td style="font-size:.8rem;">${u.telefone||'—'}</td>
+        <td style="font-size:.78rem;">${u.bairro||''}, ${u.provincia||''}</td>
+        <td style="text-align:center;">${u.totalOrders||0}</td>
+        <td style="color:var(--primary);font-weight:700;">${HepoAuth.formatMoney(u.totalGasto||0)}</td>
+        <td style="font-family:monospace;font-size:.72rem;color:var(--primary);">${u.refCode||'—'}</td>
+        <td><span class="sb2 ${u.status==='ativo'?'ativo':u.status==='pendente'?'pendente':'suspenso'}">${u.status==='ativo'?'Activo':u.status==='pendente'?'Pendente':'Suspenso'}</span></td>
+        <td style="white-space:nowrap;">
+          ${u.status!=='ativo'?`<button class="ab s" style="font-size:.7rem;padding:.22rem .55rem;" onclick="approveUser(${u.id})">✅</button>`:''}
+          <button class="ab w" style="font-size:.7rem;padding:.22rem .55rem;" onclick="msgUser(${u.id},'${u.nome||u.nomeCompleto}')">📧</button>
+          <button class="ab d" style="font-size:.7rem;padding:.22rem .55rem;" onclick="if(confirm('Remover?')){HepoAuth.deleteUser(${u.id});renderClients();renderDashboard();toast('🗑️ Removido.');}">🗑️</button>
+        </td>
+      </tr>`).join('')}</tbody></table>`;
+}
+
+// ══ PARTNERS ══
+function renderPartners(){
+  const q=(document.getElementById('parSrch')?.value||'').toLowerCase();
+  const f=document.getElementById('parFlt')?.value||'';
+  const users=U().filter(u=>u.role==='parceiro'&&(!q||(u.nome||'').toLowerCase().includes(q)||(u.loja||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&(!f||u.status===f));
+  document.getElementById('parCnt').textContent=`(${users.length})`;
+  document.getElementById('parPanel').innerHTML=!users.length?'<div class="es"><div class="ei">🤝</div><p>Nenhum parceiro registado.</p></div>':
+    users.map(u=>{
+      const links=HepoAuth.generateLinks(u.refCode||'');
+      const cs=u.clickStats||{total:0,produtos:0,loja:0};
+      return `<div class="pd">
+        <div class="pd-head">
+          ${u.foto?`<img src="${u.foto}" class="pd-av">`:`<div class="pd-av-icon">🤝</div>`}
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:800;font-size:.92rem;">${u.loja||u.nome}</div>
+            <div style="font-size:.78rem;color:var(--text-muted);">${u.nome||u.nomeCompleto} · ${u.email}</div>
+            <div style="font-size:.74rem;color:var(--text-muted);">${u.telefone||''} · ${u.bairro||''}, ${u.provincia||''}</div>
+          </div>
+          <span class="sb2 ${u.status==='ativo'?'ativo':u.status==='pendente'?'pendente':'suspenso'}">${{ativo:'Activo',pendente:'Pendente',suspenso:'Suspenso'}[u.status]||u.status}</span>
+        </div>
+        <div class="pd-grid" style="margin-bottom:.65rem;">
+          <div class="pd-item"><div class="pd-lbl">Categoria</div><div>${u.categoria||'—'}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Plano</div><div>${u.plano||'—'}</div></div>
+          <div class="pd-item"><div class="pd-lbl">NIF</div><div>${u.nif||'—'}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Vendas</div><div style="color:var(--primary);font-weight:700;">${u.totalVendas||0}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Comissões Devidas</div><div style="color:var(--warning);font-weight:700;">${HepoAuth.formatMoney(u.comissoesPendentes||0)}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Comissões Pagas</div><div style="color:var(--success);font-weight:700;">${HepoAuth.formatMoney(u.comissoesPagas||0)}</div></div>
+        </div>
+        <div style="margin-bottom:.65rem;">
+          <div style="font-size:.75rem;font-weight:700;color:var(--text-muted);margin-bottom:.35rem;">🔗 Links Exclusivos · Cliques: Produtos=${cs.produtos||0} · Loja=${cs.loja||0} · Total=${cs.total||0}</div>
+          ${u.refCode?`<div class="ref-link" onclick="copyRefLink('${links.produtos}',this)" title="Link de Produtos">[Produtos] ${links.produtos.substring(0,60)}...<span class="copy-btn" style="flex-shrink:0;background:rgba(0,120,212,.15);border:1px solid rgba(0,120,212,.3);color:var(--primary);border-radius:6px;padding:.15rem .5rem;font-size:.68rem;font-weight:700;">📋</span></div>`:'<div style="font-size:.75rem;color:var(--text-muted);">Sem código de referência</div>'}
+        </div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+          ${u.status==='pendente'?`<button class="ab s" onclick="approveUser(${u.id})">✅ Aprovar</button>`:''}
+          ${u.status==='ativo'?`<button class="ab w" onclick="HepoAuth.updateUser(${u.id},{status:'suspenso'});renderPartners();toast('⚠️ Suspenso.');">⏸️ Suspender</button>`:''}
+          ${u.status==='suspenso'?`<button class="ab s" onclick="HepoAuth.updateUser(${u.id},{status:'ativo'});renderPartners();toast('✅ Reactivado.');">▶️ Reactivar</button>`:''}
+          <button class="ab p" onclick="msgUser(${u.id},'${u.nome||u.nomeCompleto}')">📧 Mensagem</button>
+          <button class="ab w" onclick="payComission(${u.id})">💵 Marcar Paga</button>
+          <button class="ab d" onclick="if(confirm('Remover?')){HepoAuth.deleteUser(${u.id});renderPartners();renderDashboard();toast('🗑️ Removido.');}">🗑️ Remover</button>
+        </div>
+      </div>`;}).join('');
+}
+
+// ══ AFFILIATES ══
+function renderAffiliates(){
+  const q=(document.getElementById('affSrch')?.value||'').toLowerCase();
+  const f=document.getElementById('affFlt')?.value||'';
+  const users=U().filter(u=>u.role==='afiliado'&&(!q||(u.nome||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&(!f||u.status===f));
+  document.getElementById('affCnt').textContent=`(${users.length})`;
+  document.getElementById('affPanel').innerHTML=!users.length?'<div class="es"><div class="ei">💰</div><p>Nenhum afiliado registado.</p></div>':
+    users.map(u=>{
+      const links=HepoAuth.generateLinks(u.refCode||'');
+      const cs=u.clickStats||{total:0,produtos:0,convites:0};
+      const isVip=(u.totalVendas||0)>=10;
+      return `<div class="pd">
+        <div class="pd-head">
+          ${u.foto?`<img src="${u.foto}" class="pd-av">`:`<div class="pd-av-icon">💰</div>`}
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:800;font-size:.92rem;">${u.nome||u.nomeCompleto} ${isVip?'<span style="background:linear-gradient(90deg,#f59e0b,#d97706);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:.72rem;">⭐ VIP</span>':''}</div>
+            <div style="font-size:.78rem;color:var(--text-muted);">${u.email} · ${u.telefone||''}</div>
+            <div style="font-size:.74rem;color:var(--text-muted);">📍 ${u.bairro||''}, ${u.provincia||''}</div>
+          </div>
+          <span class="sb2 ${u.status==='ativo'?'ativo':u.status==='pendente'?'pendente':'suspenso'}">${{ativo:'Activo',pendente:'Pendente',suspenso:'Suspenso'}[u.status]||u.status}</span>
+        </div>
+        <div class="pd-grid" style="margin-bottom:.65rem;">
+          <div class="pd-item"><div class="pd-lbl">Canal</div><div>${u.canal||'—'}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Audiência</div><div>${u.audiencia||'—'}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Registado</div><div>${HepoAuth.formatDateShort(u.registeredAt)}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Vendas Geradas</div><div style="color:var(--primary);font-weight:700;">${u.totalVendas||0}</div></div>
+          <div class="pd-item"><div class="pd-lbl">A Pagar</div><div style="color:var(--warning);font-weight:700;">${HepoAuth.formatMoney(u.comissoesPendentes||0)}</div></div>
+          <div class="pd-item"><div class="pd-lbl">Já Pago</div><div style="color:var(--success);font-weight:700;">${HepoAuth.formatMoney(u.comissoesPagas||0)}</div></div>
+        </div>
+        <div style="margin-bottom:.65rem;">
+          <div style="font-size:.75rem;font-weight:700;color:var(--text-muted);margin-bottom:.35rem;">🔗 Estatísticas de Links · Total de Cliques: ${cs.total||0} · Produtos: ${cs.produtos||0} · Convites: ${cs.convites||0}</div>
+          ${u.refCode?`<div class="ref-link" onclick="copyRefLink('${links.produtos}',this)">[Link Produtos] ${links.produtos.substring(0,55)}...<span class="copy-btn" style="flex-shrink:0;background:rgba(0,120,212,.15);border:1px solid rgba(0,120,212,.3);color:var(--primary);border-radius:6px;padding:.15rem .5rem;font-size:.68rem;font-weight:700;">📋</span></div>`:''}
+        </div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+          ${u.status==='pendente'?`<button class="ab s" onclick="approveUser(${u.id})">✅ Aprovar</button>`:''}
+          ${u.status==='ativo'?`<button class="ab w" onclick="HepoAuth.updateUser(${u.id},{status:'suspenso'});renderAffiliates();toast('⚠️ Suspenso.');">⏸️ Suspender</button>`:''}
+          ${u.status==='suspenso'?`<button class="ab s" onclick="HepoAuth.updateUser(${u.id},{status:'ativo'});renderAffiliates();toast('✅ Reactivado.');">▶️ Reactivar</button>`:''}
+          <button class="ab p" onclick="msgUser(${u.id},'${u.nome||u.nomeCompleto}')">📧 Mensagem</button>
+          <button class="ab w" onclick="payComission(${u.id})">💵 Marcar Comissão Paga</button>
+          <button class="ab d" onclick="if(confirm('Remover?')){HepoAuth.deleteUser(${u.id});renderAffiliates();renderDashboard();toast('🗑️ Removido.');}">🗑️ Remover</button>
+        </div>
+      </div>`;}).join('');
+}
+
+function payComission(id){
+  const u=HepoAuth.getUserById(id);
+  if(!u||!(u.comissoesPendentes>0)){toast('Sem comissões pendentes.',true);return;}
+  const val=u.comissoesPendentes;
+  HepoAuth.updateUser(id,{comissoesPagas:(u.comissoesPagas||0)+val,comissoesPendentes:0});
+  HepoAuth.sendMessage({fromId:0,toId:id,fromNome:'HepoMarket – CEO',assunto:'💵 Comissão Paga!',corpo:`Olá ${u.nome}! A sua comissão de ${HepoAuth.formatMoney(val)} foi processada e enviada. Obrigado!`});
+  toast('✅ Comissão de '+HepoAuth.formatMoney(val)+' marcada como paga!');
+  renderPartners();renderAffiliates();
+}
+
+function copyRefLink(url,el){
+  navigator.clipboard.writeText(url).catch(()=>{const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();});
+  toast('✅ Link copiado!');
+}
+
+// ══ PAYMENTS ══
+function renderPayments(){
+  const delivered=O().filter(o=>o.status==='entregue').reverse();
+  document.getElementById('payPanel').innerHTML=!delivered.length?'<div class="es"><div class="ei">💳</div><p>Nenhum pagamento confirmado ainda.</p></div>':
+    `<table class="dt"><thead><tr><th>#</th><th>Cliente</th><th>Método</th><th>Total</th><th>Data</th></tr></thead><tbody>${delivered.map(o=>`<tr><td style="color:var(--primary);font-weight:700;">${o.id}</td><td>${o.nomeCliente}</td><td>${o.metodoPagamento||'—'}</td><td style="font-weight:700;color:var(--success);">${HepoAuth.formatMoney(o.total)}</td><td>${HepoAuth.formatDateShort(o.createdAt)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// ══ REPORTS ══
+function renderReports(){
+  const users=U();const orders=O();
+  const rev=orders.filter(o=>o.status==='entregue').reduce((a,o)=>a+(o.total||0),0);
+  document.getElementById('kpiGrid').innerHTML=`
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;"><div style="font-size:1.5rem;font-weight:800;color:var(--primary);">${HepoAuth.formatMoney(rev)}</div><div style="font-size:.72rem;color:var(--text-muted);">Receita Confirmada</div></div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;"><div style="font-size:1.5rem;font-weight:800;color:var(--success);">${orders.length}</div><div style="font-size:.72rem;color:var(--text-muted);">Total de Pedidos</div></div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;"><div style="font-size:1.5rem;font-weight:800;color:var(--accent);">${users.length}</div><div style="font-size:.72rem;color:var(--text-muted);">Utilizadores Registados</div></div>`;
+
+  const statusMap={pendente:0,processando:0,entregue:0,cancelado:0};
+  orders.forEach(o=>{if(statusMap[o.status]!==undefined)statusMap[o.status]++;});
+  document.getElementById('statusChart').innerHTML=Object.entries(statusMap).map(([s,v])=>`
+    <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.55rem;">
+      <span style="width:90px;font-size:.78rem;color:var(--text-muted);">${{pendente:'Pendente',processando:'A Processar',entregue:'Entregue',cancelado:'Cancelado'}[s]}</span>
+      <div style="flex:1;background:rgba(255,255,255,.05);border-radius:100px;height:7px;overflow:hidden;"><div style="width:${orders.length?Math.round(v/orders.length*100):0}%;height:100%;border-radius:100px;background:${{pendente:'#f59e0b',processando:'#0078d4',entregue:'#10b981',cancelado:'#ef4444'}[s]};"></div></div>
+      <span style="width:24px;text-align:right;font-size:.78rem;font-weight:700;">${v}</span>
+    </div>`).join('');
+
+  document.getElementById('userChart').innerHTML=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;">
+    ${[['Clientes',users.filter(u=>u.role==='cliente').length,'primary'],['Parceiros',users.filter(u=>u.role==='parceiro'&&u.status==='ativo').length,'success'],['Afiliados',users.filter(u=>u.role==='afiliado'&&u.status==='ativo').length,'warning']].map(([l,v,c])=>`<div style="text-align:center;padding:.85rem;background:rgba(255,255,255,.03);border-radius:10px;"><div style="font-size:1.5rem;font-weight:800;color:var(--${c});">${v}</div><div style="font-size:.72rem;color:var(--text-muted);">${l}</div></div>`).join('')}
+  </div>`;
+
+  // Link stats
+  const allUsers=users.filter(u=>u.refCode);
+  const topClickers=allUsers.sort((a,b)=>((b.clickStats||{}).total||0)-((a.clickStats||{}).total||0)).slice(0,5);
+  document.getElementById('linkStatsAdmin').innerHTML=!topClickers.length?'<div class="es"><p>Sem dados de cliques ainda.</p></div>':
+    `<table class="dt"><thead><tr><th>Utilizador</th><th>Tipo</th><th>Código</th><th>Cliques Total</th><th>Produtos</th><th>Convites</th></tr></thead><tbody>${topClickers.map(u=>{const cs=u.clickStats||{};return`<tr><td style="font-weight:700;">${u.nome||u.nomeCompleto}</td><td><span class="sb2 ativo">${u.role}</span></td><td style="font-family:monospace;font-size:.75rem;color:var(--primary);">${u.refCode}</td><td style="font-weight:700;text-align:center;">${cs.total||0}</td><td style="text-align:center;">${cs.produtos||0}</td><td style="text-align:center;">${cs.convites||0}</td></tr>`;}).join('')}</tbody></table>`;
+}
+
+// ══ MESSAGES ══
+function populateMsgDropdowns(){
+  const users=U();
+  const opts='<option value="all">📢 Todos os Utilizadores</option>'+users.map(u=>`<option value="${u.id}">${{cliente:'👤',parceiro:'🤝',afiliado:'💰'}[u.role]} ${u.nome||u.nomeCompleto} (${u.email})</option>`).join('');
+  document.getElementById('em_to').innerHTML=opts;
+  if(document.getElementById('em2_to')) document.getElementById('em2_to').innerHTML=opts;
+}
+
+function msgUser(id,nome){
+  sp('mensagens');
+  setTimeout(()=>{
+    const sel=document.getElementById('em_to');
+    if(sel)sel.value=id;
+    document.getElementById('em_sub').value='Olá '+nome;
+    document.getElementById('em_body').focus();
+  },100);
+}
+
+function renderAdminMsgs(){
+  const inbox=HepoAuth.getInboxFor(0);
+  if(!inbox.length){document.getElementById('adminMsgList').innerHTML='<div class="es"><div class="ei">📭</div><p>Sem mensagens.</p></div>';return;}
+  document.getElementById('adminMsgList').innerHTML=inbox.map(m=>`
+    <div class="msg-row ${!m.readBy.includes(0)?'unread':''}" onclick="openAdminMsg('${m.id}','${m.fromNome.replace(/'/g,"'")}','${escH(m.assunto)}','${escH(m.corpo)}','${m.sentAt}')">
+      <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;font-size:.85rem;">${m.fromNome}</span><span style="font-size:.7rem;color:var(--text-muted);">${HepoAuth.timeAgo(m.sentAt)}</span></div>
+      <div style="font-size:.82rem;color:var(--primary);">${m.assunto}</div>
+      <div style="font-size:.78rem;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${m.corpo}</div>
+    </div>`).join('');
+  updateBadges();
+}
+
+function escH(s){return(s||'').replace(/'/g,'&apos;').replace(/"/g,'&quot;').replace(/\n/g,' ');}
+
+function openAdminMsg(id,from,assunto,corpo,sentAt){
+  HepoAuth.markRead(id,0);
+  const d=document.getElementById('adminMsgDetail');
+  d.style.display='block';
+  d.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;"><div><strong>${from}</strong><div style="font-size:.72rem;color:var(--text-muted);">${HepoAuth.formatDate(sentAt)}</div></div><button class="ab o" style="font-size:.72rem;padding:.25rem .65rem;" onclick="document.getElementById('adminMsgDetail').style.display='none'">✕ Fechar</button></div><div style="font-weight:700;margin-bottom:.5rem;">${assunto}</div><div style="font-size:.88rem;line-height:1.7;white-space:pre-wrap;">${corpo}</div>`;
+  renderAdminMsgs();
+}
+
+async function sendAdminMsg(){
+  const toId=document.getElementById('em_to').value;
+  const sub=document.getElementById('em_sub').value.trim();
+  const body=document.getElementById('em_body').value.trim();
+  const res=document.getElementById('em_result');
+  if(!sub||!body){res.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;color:var(--danger);';res.textContent='⚠️ Preencha assunto e mensagem.';return;}
+
+  let toEmail='',toName='';
+  if(toId!=='all'){const u=HepoAuth.getUserById(parseInt(toId));if(u){toEmail=u.email;toName=u.nome||u.nomeCompleto;}}
+
+  // Envia in-app + tenta email real
+  const r=await HepoEmail.sendFull({fromId:0,toId,toEmail,toName,assunto:sub,corpo:body});
+
+  document.getElementById('em_sub').value='';document.getElementById('em_body').value='';
+  let msg='✅ Mensagem enviada! Aparece no painel do destinatário.';
+  if(r.success) msg+=' E-mail real também enviado.';
+  else if(r.reason==='not_configured') msg+=' (Configure o EmailJS para envio real por e-mail.)';
+
+  res.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;color:var(--success);';
+  res.textContent=msg;
+  toast('✅ Mensagem enviada!');
+  setTimeout(()=>res.style.display='none',5000);
+}
+
+async function sendEmail2(){
+  const toId=document.getElementById('em2_to').value;
+  const sub=document.getElementById('em2_sub').value.trim();
+  const body=document.getElementById('em2_body').value.trim();
+  const r=document.getElementById('em2_r');
+  if(!sub||!body){r.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;color:var(--danger);';r.textContent='⚠️ Preencha todos os campos.';return;}
+  let toEmail='',toName='';
+  if(toId!=='all'){const u=HepoAuth.getUserById(parseInt(toId));if(u){toEmail=u.email;toName=u.nome||u.nomeCompleto;}}
+  await HepoEmail.sendFull({fromId:0,toId,toEmail,toName,assunto:sub,corpo:body});
+  closeM('mEmail');
+  toast('✅ Mensagem enviada!');
+}
+
+// ══ NOTIFICATIONS CEO ══
+function renderCEONotifs(){
+  const notifs=HepoAuth.getNotificationsFor(0);
+  document.getElementById('ceoNotifList').innerHTML=!notifs.length?'<div class="es"><div class="ei">🔔</div><p>Sem notificações.</p></div>':
+    notifs.map(n=>`<div style="display:flex;align-items:flex-start;gap:.75rem;padding:.75rem;background:rgba(255,255,255,.03);border:1px solid ${n.lida?'var(--border)':'rgba(0,120,212,.3)'};border-radius:10px;margin-bottom:.45rem;cursor:pointer;" onclick="HepoAuth.markNotifRead('${n.id}');this.style.borderColor='var(--border)';">
+      <div style="font-size:1.2rem;">${{novo_registo:'🆕',novo_pedido:'📦',status_pedido:'🚚',mensagem:'📧',comissao:'💵',aprovacao:'✅'}[n.tipo]||'🔔'}</div>
+      <div style="flex:1;"><div style="font-weight:700;font-size:.85rem;">${n.titulo}</div><div style="font-size:.78rem;color:var(--text-muted);">${n.corpo}</div><div style="font-size:.68rem;color:var(--text-muted);margin-top:.2rem;">${HepoAuth.timeAgo(n.createdAt)}</div></div>
+    </div>`).join('');
+  updateBadges();
+}
+function clearCEONotifs(){HepoAuth.clearNotifications(0);renderCEONotifs();}
+
+// ══ EMAILJS CONFIG ══
+function loadEmailCfgUI(){
+  const cfg=HepoAuth.getEmailConfig();
+  if(cfg){
+    document.getElementById('ej_sid').value=cfg.serviceId||'';
+    document.getElementById('ej_tid').value=cfg.templateId||'';
+    document.getElementById('ej_pk').value=cfg.publicKey||'';
+  }
+  renderEmailStatus();
+}
+function renderEmailStatus(){
+  const cfg=HepoAuth.getEmailConfig();
+  const el=document.getElementById('emailStatus');
+  if(!cfg||!cfg.serviceId){el.innerHTML='<div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:1rem;font-size:.85rem;"><strong style="color:var(--danger);">❌ E-mail real não configurado</strong><p style="color:var(--text-muted);margin-top:.35rem;">As mensagens são apenas in-app. Configure o EmailJS para envio real de e-mails.</p></div>';}
+  else{el.innerHTML=`<div style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:10px;padding:1rem;font-size:.85rem;"><strong style="color:var(--success);">✅ EmailJS Configurado</strong><p style="color:var(--text-muted);margin-top:.35rem;">Service: ${cfg.serviceId} · Template: ${cfg.templateId}</p><p style="color:var(--text-muted);">200 e-mails gratuitos por mês.</p></div>`;}
+}
+function saveEmailCfg(){
+  const sid=document.getElementById('ej_sid').value.trim();
+  const tid=document.getElementById('ej_tid').value.trim();
+  const pk=document.getElementById('ej_pk').value.trim();
+  const st=document.getElementById('ej_status');
+  if(!sid||!tid||!pk){st.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;color:var(--danger);';st.textContent='⚠️ Preencha todos os campos.';return;}
+  HepoAuth.saveEmailConfig({serviceId:sid,templateId:tid,publicKey:pk});
+  st.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;color:var(--success);';
+  st.textContent='✅ Configuração guardada! Pode agora enviar e-mails reais.';
+  renderEmailStatus();
+}
+async function testEmail(){
+  const st=document.getElementById('ej_status');
+  st.style.cssText='display:block;background:rgba(0,120,212,.12);border:1px solid rgba(0,120,212,.3);border-radius:8px;padding:.65rem;color:var(--primary);';
+  st.textContent='⏳ A enviar e-mail de teste...';
+  const r=await HepoEmail.send({to_email:HepoAuth.CEO.email,to_name:'CEO HepoMarket',subject:'Teste EmailJS – HepoMarket',message:'Teste de configuração. O EmailJS está a funcionar correctamente!',from_name:'HepoMarket'});
+  if(r.success){st.style.color='var(--success)';st.textContent='✅ E-mail de teste enviado com sucesso!';}
+  else if(r.reason==='not_configured'){st.style.color='var(--danger)';st.textContent='❌ EmailJS não configurado. Guarde as configurações primeiro.';}
+  else{st.style.color='var(--danger)';st.textContent='❌ Erro: '+r.reason;}
+}
+function clearEmailCfg(){
+  if(!confirm('Remover configuração de e-mail?'))return;
+  localStorage.removeItem(HepoAuth.K.emailcfg);
+  document.getElementById('ej_sid').value='';document.getElementById('ej_tid').value='';document.getElementById('ej_pk').value='';
+  renderEmailStatus();toast('🗑️ Configuração removida.');
+}
+
+// ══ BANK ══
+function renderBank(){
+  const banks=HepoAuth.getBank();
+  document.getElementById('bankList').innerHTML=!banks.length?'<div class="es"><div class="ei">🏦</div><p>Sem contas adicionadas.</p></div>':
+    banks.map((b,i)=>`<div class="bk-card"><button class="bk-rem" onclick="removeBank(${i})">🗑️</button><h4>🏦 ${b.banco}</h4><div class="bk-num">${b.numero}</div><div style="font-size:.82rem;color:var(--text-muted);">Titular: <strong>${b.titular}</strong> · ${b.tipo}</div>${b.mcx?`<div style="font-size:.8rem;color:var(--text-muted);">Multicaixa Express: <strong>${b.mcx}</strong></div>`:''} ${b.nota?`<div style="font-size:.75rem;color:var(--text-muted);margin-top:.3rem;font-style:italic;">${b.nota}</div>`:''}</div>`).join('');
+}
+function addBank(){
+  const t=document.getElementById('bk_t').value.trim();const n=document.getElementById('bk_n').value.trim();
+  if(!t||!n){toast('⚠️ Preencha titular e número.',true);return;}
+  const banks=HepoAuth.getBank();
+  banks.push({banco:document.getElementById('bk_b').value,titular:t,numero:n,tipo:document.getElementById('bk_tp').value,mcx:document.getElementById('bk_m').value.trim(),nota:document.getElementById('bk_nota').value.trim(),addedAt:new Date().toISOString()});
+  HepoAuth.saveBank(banks);
+  closeM('mBank');
+  ['bk_t','bk_n','bk_m','bk_nota'].forEach(id=>document.getElementById(id).value='');
+  renderBank();toast('✅ Conta bancária adicionada!');
+}
+function removeBank(i){if(!confirm('Remover conta?'))return;const b=HepoAuth.getBank();b.splice(i,1);HepoAuth.saveBank(b);renderBank();toast('🗑️ Conta removida.');}
+
+// ══ CEO PASSWORD ══
+function changeCEOPwd(){
+  const cur=document.getElementById('c_cur').value;
+  const np=document.getElementById('c_new').value;
+  const cp=document.getElementById('c_con').value;
+  const el=document.getElementById('cpwdMsg');
+  el.style.display='block';
+  if(cur!==HepoAuth.CEO.password){el.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;color:var(--danger);';el.textContent='Senha actual incorrecta.';return;}
+  if(np!==cp){el.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;color:var(--danger);';el.textContent='Senhas não coincidem.';return;}
+  if(np.length<8){el.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;color:var(--danger);';el.textContent='Mínimo 8 caracteres.';return;}
+  HepoAuth.CEO.password=np;
+  el.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;color:var(--success);';
+  el.textContent='✅ Senha alterada!';
+  ['c_cur','c_new','c_con'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ══ AI ══
+const aiData=()=>({U:U(),O:O()});
+const aiReplies=[
+  [['pedido','encomenda'],()=>{const d=aiData();return`Tem ${d.O.length} pedido(s) no total. ${d.O.filter(o=>o.status==='pendente').length} pendente(s), ${d.O.filter(o=>o.status==='entregue').length} entregue(s). 📦`}],
+  [['parceiro'],()=>{const d=aiData();return`${d.U.filter(u=>u.role==='parceiro').length} parceiro(s) registado(s). ${d.U.filter(u=>u.role==='parceiro'&&u.status==='pendente').length} a aguardar aprovação. 🤝`}],
+  [['afiliado'],()=>{const d=aiData();return`${d.U.filter(u=>u.role==='afiliado').length} afiliado(s). ${d.U.filter(u=>u.role==='afiliado'&&u.status==='ativo').length} activo(s). 💰`}],
+  [['receita','dinheiro','vendas'],()=>{const d=aiData();const rev=d.O.filter(o=>o.status==='entregue').reduce((a,o)=>a+(o.total||0),0);return`Receita confirmada: ${HepoAuth.formatMoney(rev)}. 💵`}],
+  [['banco','conta'],()=>`Tem ${HepoAuth.getBank().length} conta(s) bancária(s) configurada(s). Aceda a "Dados Bancários". 🏦`],
+  [['email','emailjs'],()=>`${HepoAuth.getEmailConfig()?'✅ EmailJS configurado!':'❌ EmailJS não configurado.'} Aceda a "Configurar E-mail". ✉️`],
+  [['utilizador','cliente'],()=>{const d=aiData();return`${d.U.length} utilizador(s) registado(s): ${d.U.filter(u=>u.role==='cliente').length} clientes, ${d.U.filter(u=>u.role==='parceiro').length} parceiros, ${d.U.filter(u=>u.role==='afiliado').length} afiliados. 👥`}],
+];
+const aiDef=['Posso ajudar com pedidos, utilizadores, receitas, parceiros, afiliados, banco e e-mail. 🤖','Use os painéis laterais para gerir tudo. Os dados são actualizados em tempo real. 📊','Para aprovar contas, veja o Dashboard ou os painéis de Parceiros/Afiliados. ✅'];
+function sendAI(){
+  const inp=document.getElementById('aiIn');const msg=inp.value.trim();if(!msg)return;
+  const chat=document.getElementById('aiChat');
+  const ud=document.createElement('div');ud.className='apm user';ud.textContent=msg;chat.appendChild(ud);inp.value='';
+  setTimeout(()=>{
+    const bd=document.createElement('div');bd.className='apm bot';
+    const l=msg.toLowerCase();let r=aiDef[Math.floor(Math.random()*aiDef.length)];
+    for(const[kws,fn]of aiReplies){if(kws.some(k=>l.includes(k))){r=fn();break;}}
+    bd.textContent=r;chat.appendChild(bd);chat.scrollTop=chat.scrollHeight;
+  },700);
+  chat.scrollTop=chat.scrollHeight;
+}
+function initAIStats(){
+  const u=U();const o=O();
+  document.getElementById('aiStats').innerHTML=[
+    ['Total utilizadores',u.length],['Clientes',u.filter(x=>x.role==='cliente').length],
+    ['Parceiros activos',u.filter(x=>x.role==='parceiro'&&x.status==='ativo').length],
+    ['Afiliados activos',u.filter(x=>x.role==='afiliado'&&x.status==='ativo').length],
+    ['Total pedidos',o.length],['Pedidos entregues',o.filter(x=>x.status==='entregue').length],
+    ['Contas pendentes',u.filter(x=>x.status==='pendente').length],
+    ['E-mail configurado',HepoAuth.getEmailConfig()?'Sim ✅':'Não ❌'],
+  ].map(([l,v])=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);"><span style="color:var(--text-muted);font-size:.82rem;">${l}</span><strong style="font-size:.85rem;">${v}</strong></div>`).join('');
+  const bd=document.createElement('div');bd.className='apm bot';bd.textContent='Olá CEO! Dados actualizados: '+u.length+' utilizador(es) e '+o.length+' pedido(s). Como posso ajudar? 👋';
+  document.getElementById('aiChat').appendChild(bd);
+}
+
+// ══ MARKETING ══
+function addPromo(){
+  const t=document.getElementById('pr_t').value.trim();const d=document.getElementById('pr_d').value;
+  if(!t||!d){toast('⚠️ Preencha título e data.',true);return;}
+  const fd=new Date(d).toLocaleDateString('pt-PT');
+  const c=document.getElementById('promoList');
+  const el=document.createElement('div');
+  el.style.cssText='background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:.65rem;display:flex;align-items:center;gap:.85rem;';
+  el.innerHTML=`<div style="font-size:1.5rem;">🔥</div><div style="flex:1;"><div style="font-weight:700;font-size:.88rem;">${t}</div><div style="font-size:.78rem;color:var(--text-muted);">${document.getElementById('pr_tp').value}: ${document.getElementById('pr_v').value||'—'} · Válido até ${fd}</div></div><span class="sb2 ativo">Activa</span> <button class="ab d" style="font-size:.72rem;" onclick="this.parentElement.remove();toast('🗑️ Removida.')">🗑️</button>`;
+  if(!c.children.length||c.querySelector('.es'))c.innerHTML='';
+  c.prepend(el);closeM('mPromo');
+  ['pr_t','pr_v','pr_desc'].forEach(id=>document.getElementById(id).value='');
+  toast(`🚀 Campanha "${t}" publicada!`);
+}
+function sendNL(){
+  const s=document.getElementById('nl_s').value;const b=document.getElementById('nl_b').value;
+  if(!s||!b){toast('⚠️ Preencha assunto e mensagem.',true);return;}
+  const destText=document.getElementById('nl_d').options[document.getElementById('nl_d').selectedIndex].text;
+  // Envia in-app para todos
+  const role=document.getElementById('nl_d').value;
+  const targets=role==='all'?U():U().filter(u=>u.role===role&&u.status==='ativo');
+  targets.forEach(u=>HepoAuth.sendMessage({fromId:0,toId:u.id,fromNome:'HepoMarket Newsletter',assunto:s,corpo:b}));
+  document.getElementById('nl_s').value='';document.getElementById('nl_b').value='';
+  toast(`✅ Newsletter enviada para ${targets.length} utilizador(es)!`);
+}
+
+
+// ══ THEME SYSTEM ══
+const THEME_KEY = 'hepo_admin_theme';
+const DEFAULT_THEME = { color:'azul', base:'base-escuro', fontSize:14, density:'normal' };
+
+function loadTheme(){
+  let t = DEFAULT_THEME;
+  try { const s = localStorage.getItem(THEME_KEY); if(s) t={...DEFAULT_THEME,...JSON.parse(s)}; } catch(e){}
+  applyThemeClass(t.color);
+  applyBaseClass(t.base);
+  if(t.fontSize) applyFontSize(t.fontSize, false);
+  if(t.customGradient) document.documentElement.style.setProperty('--gradient', t.customGradient);
+  // Update UI
+  document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.theme===t.color));
+  document.querySelectorAll('.base-swatch').forEach(s=>s.classList.toggle('active',s.dataset.base===t.base));
+  const fsr=document.getElementById('fontSizeRange');if(fsr)fsr.value=t.fontSize;
+}
+
+function applyThemeClass(theme){
+  const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+  themes.forEach(th=>document.body.classList.remove('theme-'+th));
+  document.body.classList.add('theme-'+theme);
+  document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.theme===theme));
+}
+
+function applyBaseClass(base){
+  ['base-escuro','base-meia-luz','base-slate'].forEach(b=>document.body.classList.remove(b));
+  document.body.classList.add(base);
+  document.querySelectorAll('.base-swatch').forEach(s=>s.classList.toggle('active',s.dataset.base===base));
+}
+
+function applyFontSize(val, updateUI=true){
+  document.documentElement.style.fontSize=val+'px';
+  if(updateUI){const lbl=document.getElementById('fontSizeLabel');if(lbl)lbl.textContent=val+'px';}
+}
+
+function applyDensity(d, el){
+  document.querySelectorAll('.font-option').forEach(x=>x.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.body.style.setProperty('--density-factor', d==='compact'?'0.8':'1');
+}
+
+function applyCustomColors(){
+  const c1=document.getElementById('customColor1')?.value||'#0078d4';
+  const c2=document.getElementById('customColor2')?.value||'#00b4d8';
+  const grad=`linear-gradient(135deg,${c1},${c2})`;
+  document.documentElement.style.setProperty('--gradient',grad);
+  document.documentElement.style.setProperty('--primary',c1);
+  document.documentElement.style.setProperty('--secondary',c2);
+  toast('✅ Cores personalizadas aplicadas!');
+}
+
+function saveTheme(){
+  const activeColor=document.querySelector('.theme-swatch.active')?.dataset.theme||'azul';
+  const activeBase=document.querySelector('.base-swatch.active')?.dataset.base||'base-escuro';
+  const fontSize=parseInt(document.getElementById('fontSizeRange')?.value||14);
+  const activeDesign=document.querySelector('#designSwatches .theme-swatch.active')?.dataset.design||'default';
+  const t={color:activeColor,base:activeBase,fontSize,design:activeDesign};
+  localStorage.setItem(THEME_KEY, JSON.stringify(t));
+  
+  // Apply to all pages
+  localStorage.setItem('hepo_site_theme', JSON.stringify(t));
+  
+  const msg=document.getElementById('themeSaveMsg');
+  if(msg){msg.style.display='block';msg.textContent='✅ Tema guardado! Aplicado em todo o site.';setTimeout(()=>msg.style.display='none',3000);}
+  toast('🎨 Tema guardado com sucesso!');
+}
+
+function resetTheme(){
+  localStorage.removeItem(THEME_KEY);
+  localStorage.removeItem('hepo_site_theme');
+  ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal','base-escuro','base-meia-luz','base-slate'].forEach(c=>document.body.classList.remove('theme-'+c,'base-escuro','base-meia-luz','base-slate'));
+  document.documentElement.style.removeProperty('--gradient');
+  document.documentElement.style.removeProperty('--primary');
+  document.documentElement.style.removeProperty('--secondary');
+  document.documentElement.style.fontSize='';
+  loadTheme();
+// Load design theme
+(function(){
+  try{const t=JSON.parse(localStorage.getItem(THEME_KEY)||'{}');if(t.design&&t.design!=='default'){document.body.classList.add('design-'+t.design);const lbl=document.getElementById('activeDesignLabel');if(lbl){const labels={apple:'🍎 Apple macOS',win11:'🪟 Windows 11',samsung:'📱 Samsung Galaxy Ultra'};lbl.textContent='Tema activo: '+(labels[t.design]||t.design);}document.querySelectorAll('#designSwatches .theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.design===t.design));}}catch(e){}
+})();
+  toast('↩️ Tema reposto para o padrão!');
+}
+
+// Swatch click handlers
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.theme-swatch').forEach(s=>{
+    s.addEventListener('click',()=>{applyThemeClass(s.dataset.theme);toast('🎨 Cor: '+s.title);});
+  });
+  document.querySelectorAll('.base-swatch').forEach(s=>{
+    s.addEventListener('click',()=>{applyBaseClass(s.dataset.base);});
+  });
+});
+
+// Load theme on startup
+loadTheme();
+// Load design theme
+(function(){
+  try{const t=JSON.parse(localStorage.getItem(THEME_KEY)||'{}');if(t.design&&t.design!=='default'){document.body.classList.add('design-'+t.design);const lbl=document.getElementById('activeDesignLabel');if(lbl){const labels={apple:'🍎 Apple macOS',win11:'🪟 Windows 11',samsung:'📱 Samsung Galaxy Ultra'};lbl.textContent='Tema activo: '+(labels[t.design]||t.design);}document.querySelectorAll('#designSwatches .theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.design===t.design));}}catch(e){}
+})();
+
+
+// ══ DESIGN THEMES (Apple / Win11 / Samsung) ══
+const DESIGNS = ['apple','win11','samsung','default'];
+function applyDesign(d){
+  DESIGNS.forEach(x=>document.body.classList.remove('design-'+x));
+  if(d!=='default') document.body.classList.add('design-'+d);
+  const labels={apple:'🍎 Apple macOS',win11:'🪟 Windows 11',samsung:'📱 Samsung Galaxy Ultra',default:'⭐ Padrão HepoMarket'};
+  const lbl=document.getElementById('activeDesignLabel');
+  if(lbl) lbl.textContent='Tema activo: '+(labels[d]||d);
+  document.querySelectorAll('#designSwatches .theme-swatch').forEach(s=>s.classList.toggle('active',s.dataset.design===d));
+  try{ const t=JSON.parse(localStorage.getItem(THEME_KEY)||'{}'); t.design=d; localStorage.setItem(THEME_KEY,JSON.stringify(t)); localStorage.setItem('hepo_site_theme',JSON.stringify(t)); }catch(e){}
+  toast('🎨 Design: '+(labels[d]||d)+' aplicado!');
+}
+
+// Design swatch clicks
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('#designSwatches .theme-swatch').forEach(s=>{
+    s.addEventListener('click',()=>applyDesign(s.dataset.design));
+  });
+});
+
+// ══ CHARTS ══
+let chartInstances = {};
+function destroyChart(id){ if(chartInstances[id]){ chartInstances[id].destroy(); delete chartInstances[id]; } }
+
+function renderGraphs(){
+  const users=U(), orders=O();
+  const isDark = true;
+  const textColor = 'rgba(255,255,255,0.7)';
+  const gridColor = 'rgba(255,255,255,0.08)';
+  const baseOpts = {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:textColor,font:{size:12}}}},
+    scales:{}
+  };
+
+  // Chart 1: Orders by status (Doughnut)
+  destroyChart('chartOrders');
+  const statusMap={pendente:0,processando:0,entregue:0,cancelado:0};
+  orders.forEach(o=>{if(statusMap[o.status]!==undefined)statusMap[o.status]++;});
+  const ctx1=document.getElementById('chartOrders');
+  if(ctx1) chartInstances.chartOrders=new Chart(ctx1,{
+    type:'doughnut',
+    data:{labels:['Pendente','A Processar','Entregue','Cancelado'],
+      datasets:[{data:Object.values(statusMap),backgroundColor:['#f59e0b','#0078d4','#10b981','#ef4444'],borderWidth:2,borderColor:'rgba(0,0,0,.3)'}]},
+    options:{...baseOpts,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:textColor}}}}
+  });
+
+  // Chart 2: Users by type (Pie)
+  destroyChart('chartUsers');
+  const ctx2=document.getElementById('chartUsers');
+  if(ctx2) chartInstances.chartUsers=new Chart(ctx2,{
+    type:'pie',
+    data:{labels:['Clientes','Parceiros Activos','Afiliados Activos','Pendentes'],
+      datasets:[{data:[
+        users.filter(u=>u.role==='cliente').length,
+        users.filter(u=>u.role==='parceiro'&&u.status==='ativo').length,
+        users.filter(u=>u.role==='afiliado'&&u.status==='ativo').length,
+        users.filter(u=>u.status==='pendente').length
+      ],backgroundColor:['#0078d4','#10b981','#f59e0b','#ef4444'],borderWidth:2,borderColor:'rgba(0,0,0,.3)'}]},
+    options:{...baseOpts,plugins:{legend:{position:'bottom',labels:{color:textColor}}}}
+  });
+
+  // Chart 3: Revenue simulation (Bar)
+  destroyChart('chartRevenue');
+  const months=['Set','Out','Nov','Dez','Jan','Fev'];
+  const revData=orders.filter(o=>o.status==='entregue');
+  const baseRev=revData.reduce((a,o)=>a+(o.total||0),0);
+  const revVals=months.map((_,i)=>Math.round(baseRev*(.6+i*.08)+Math.random()*50000));
+  revVals[5]=baseRev; // current month = real
+  const ctx3=document.getElementById('chartRevenue');
+  if(ctx3) chartInstances.chartRevenue=new Chart(ctx3,{
+    type:'bar',
+    data:{labels:months,datasets:[{label:'Receita (Kz)',data:revVals,
+      backgroundColor:months.map((_,i)=>i===5?'rgba(0,120,212,.9)':'rgba(0,120,212,.35)'),
+      borderColor:'rgba(0,120,212,.8)',borderWidth:1,borderRadius:6}]},
+    options:{...baseOpts,scales:{x:{ticks:{color:textColor},grid:{color:gridColor}},y:{ticks:{color:textColor,callback:v=>v.toLocaleString('pt-PT')+' Kz'},grid:{color:gridColor}}}}
+  });
+
+  // Chart 4: Link clicks (users with refCode)
+  destroyChart('chartClicks');
+  const usersWithRef=users.filter(u=>u.refCode&&(u.clickStats||{}).total>0).slice(0,6);
+  const ctx4=document.getElementById('chartClicks');
+  if(ctx4) chartInstances.chartClicks=new Chart(ctx4,{
+    type:'bar',
+    data:{labels:usersWithRef.map(u=>(u.nome||u.nomeCompleto||'').split(' ')[0]),
+      datasets:[
+        {label:'Produtos',data:usersWithRef.map(u=>(u.clickStats||{}).produtos||0),backgroundColor:'rgba(0,120,212,.8)',borderRadius:4},
+        {label:'Convites',data:usersWithRef.map(u=>(u.clickStats||{}).convites||0),backgroundColor:'rgba(245,158,11,.8)',borderRadius:4},
+        {label:'Loja',data:usersWithRef.map(u=>(u.clickStats||{}).loja||0),backgroundColor:'rgba(16,185,129,.8)',borderRadius:4},
+      ]},
+    options:{...baseOpts,scales:{x:{ticks:{color:textColor},grid:{color:gridColor}},y:{ticks:{color:textColor},grid:{color:gridColor}}},plugins:{legend:{position:'bottom',labels:{color:textColor}}}}
+  });
+
+  // Chart 5: Registrations over time (Line)
+  destroyChart('chartRegs');
+  const regByDate={};
+  users.forEach(u=>{if(u.registeredAt){const d=u.registeredAt.substring(0,10);regByDate[d]=(regByDate[d]||0)+1;}});
+  const sortedDates=Object.keys(regByDate).sort().slice(-12);
+  const ctx5=document.getElementById('chartRegs');
+  if(ctx5) chartInstances.chartRegs=new Chart(ctx5,{
+    type:'line',
+    data:{labels:sortedDates.map(d=>d.substring(5)),
+      datasets:[{label:'Cadastros',data:sortedDates.map(d=>regByDate[d]),
+        borderColor:'#0078d4',backgroundColor:'rgba(0,120,212,.12)',
+        borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#0078d4',tension:.35,fill:true}]},
+    options:{...baseOpts,scales:{x:{ticks:{color:textColor},grid:{color:gridColor}},y:{ticks:{color:textColor},grid:{color:gridColor}}}}
+  });
+
+  // Chart 6: Products by category (Doughnut)
+  destroyChart('chartProds');
+  const adminProds=HepoAuth.getAdminProducts();
+  const catMap={beleza:0,casa:0,moda:0,bebe:0,eletronicos:0,outro:0};
+  adminProds.forEach(p=>{const c=p.cat||'outro';if(catMap[c]!==undefined)catMap[c]++;else catMap.outro++;});
+  const ctx6=document.getElementById('chartProds');
+  if(ctx6) chartInstances.chartProds=new Chart(ctx6,{
+    type:'doughnut',
+    data:{labels:['💄 Beleza','🏠 Casa','👜 Moda','🍼 Bebé','📱 Electrónicos','📦 Outro'],
+      datasets:[{data:Object.values(catMap),backgroundColor:['#ec4899','#10b981','#8b5cf6','#f59e0b','#6366f1','#64748b'],borderWidth:2,borderColor:'rgba(0,0,0,.3)'}]},
+    options:{...baseOpts,cutout:'60%',plugins:{legend:{position:'right',labels:{color:textColor,font:{size:11}}}}}
+  });
+
+  // KPI Row
+  const rev=orders.filter(o=>o.status==='entregue').reduce((a,o)=>a+(o.total||0),0);
+  const kpiEl=document.getElementById('chartKPIs');
+  if(kpiEl) kpiEl.innerHTML=[
+    ['💰 Receita Total',HepoAuth.formatMoney(rev),'var(--primary)'],
+    ['📦 Pedidos',orders.length,'var(--success)'],
+    ['🛍️ Produtos',adminProds.length,'var(--accent)'],
+    ['🤝 Parceiros',users.filter(u=>u.role==='parceiro'&&u.status==='ativo').length,'#10b981'],
+    ['💰 Afiliados',users.filter(u=>u.role==='afiliado'&&u.status==='ativo').length,'#f59e0b'],
+  ].map(([l,v,c])=>`<div style="background:rgba(14,14,28,.85);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;text-align:center;backdrop-filter:blur(10px);">
+    <div style="font-size:1.35rem;font-weight:900;color:${c};">${v}</div>
+    <div style="font-size:.7rem;color:rgba(190,200,235,.75);font-weight:700;margin-top:.2rem;">${l}</div>
+  </div>`).join('');
+
+  // Top users table
+  const topEl=document.getElementById('topUsersChart');
+  if(topEl){
+    const topUsers=users.filter(u=>u.role==='parceiro'||u.role==='afiliado').sort((a,b)=>(b.totalVendas||0)-(a.totalVendas||0)).slice(0,8);
+    if(!topUsers.length){topEl.innerHTML='<p style="color:var(--text-muted);text-align:center;padding:1.5rem;">Sem dados de vendas ainda.</p>';}
+    else{topEl.innerHTML=`<table class="dt"><thead><tr><th>Posição</th><th>Nome</th><th>Tipo</th><th>Vendas</th><th>Comissões</th><th>Cliques</th></tr></thead><tbody>
+      ${topUsers.map((u,i)=>`<tr>
+        <td style="font-weight:900;font-size:1rem;">${['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣'][i]}</td>
+        <td style="font-weight:700;">${u.nome||u.nomeCompleto||'—'}</td>
+        <td><span class="sb2 ${u.role==='parceiro'?'ativo':'pendente'}">${u.role==='parceiro'?'🤝 Parceiro':'💰 Afiliado'}</span></td>
+        <td style="font-weight:700;color:var(--success);">${u.totalVendas||0}</td>
+        <td style="color:var(--warning);">${HepoAuth.formatMoney((u.comissoesPendentes||0)+(u.comissoesPagas||0))}</td>
+        <td style="color:var(--primary);">${(u.clickStats||{}).total||0}</td>
+      </tr>`).join('')}
+    </tbody></table>`;}
+  }
+}
+
+// ══ HOMEPAGE PRODUCTS ══
+function renderHomepage(){
+  const prods = HepoAuth.getAdminProducts();
+  const el = document.getElementById('homeprodList');
+  if(!el) return;
+
+  const catIcons = {beleza:'💄',casa:'🏠',moda:'👜',bebe:'🍼',eletronicos:'📱',outro:'📦'};
+  const catColors = {beleza:'#ec4899',casa:'#10b981',moda:'#8b5cf6',bebe:'#f59e0b',eletronicos:'#6366f1',outro:'#0078d4'};
+  const catLabels = {beleza:'💄 Beleza',casa:'🏠 Casa',moda:'👜 Moda',bebe:'🍼 Bebé',eletronicos:'📱 Electrónicos',outro:'📦 Outro'};
+
+  // Empty state
+  if(!prods.length){
+    el.innerHTML=`<div style="text-align:center;padding:3rem 1rem;color:var(--text-muted);">
+      <div style="font-size:3rem;margin-bottom:.75rem;">🛍️</div>
+      <div style="font-size:1rem;font-weight:700;color:rgba(200,210,235,.85);margin-bottom:.5rem;">Nenhum produto adicionado ainda</div>
+      <p style="font-size:.85rem;margin-bottom:1rem;">Adicione o primeiro produto usando o botão acima.</p>
+      <button class="ab p" onclick="openM('mProd')">➕ Adicionar Primeiro Produto</button>
+    </div>`;
+    return;
+  }
+
+  // Sort: promo first
+  const sorted = [
+    ...prods.filter(p=>p.promo||((p.badge||'').toLowerCase().includes('promo'))),
+    ...prods.filter(p=>!p.promo&&!((p.badge||'').toLowerCase().includes('promo'))),
+  ];
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;">
+      <span style="font-size:.82rem;color:var(--text-muted);">${prods.length} produto(s) na plataforma · <span style="color:#ef4444;">${prods.filter(p=>p.promo).length} em promoção</span></span>
+      <button class="ab d" style="font-size:.72rem;padding:.25rem .7rem;" onclick="if(confirm('Remover TODOS os produtos? Esta acção não pode ser desfeita.')){HepoAuth.clearAllProducts();renderHomepage();renderProds();toast('🗑️ Todos os produtos removidos.');}">🗑️ Remover Todos</button>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="dt">
+      <thead><tr>
+        <th style="width:52px;">Ícone</th>
+        <th>Nome do Produto</th>
+        <th>Preço</th>
+        <th>Categoria</th>
+        <th>Parceiro</th>
+        <th>Badge</th>
+        <th>Stock</th>
+        <th style="white-space:nowrap;">Ações</th>
+      </tr></thead>
+      <tbody>
+        ${sorted.map(p=>`<tr style="${p.promo?'background:rgba(239,68,68,.04);border-left:3px solid rgba(239,68,68,.4);':''}">
+          <td>
+            <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,${catColors[p.cat]||'#0078d4'}22,${catColors[p.cat]||'#0078d4'}10);display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:1px solid ${catColors[p.cat]||'#0078d4'}33;">
+              ${catIcons[p.cat]||'📦'}
+            </div>
+          </td>
+          <td>
+            <div style="font-weight:800;font-size:.88rem;">${p.nome}${p.promo?'<span style="margin-left:.35rem;font-size:.65rem;background:linear-gradient(90deg,#ef4444,#f59e0b);color:#fff;padding:.08rem .35rem;border-radius:4px;font-weight:700;">PROMO</span>':''}</div>
+            <div style="font-size:.72rem;color:var(--text-muted);margin-top:.15rem;max-width:200px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${p.descricao||'Sem descrição'}</div>
+          </td>
+          <td>
+            <div style="color:var(--primary);font-weight:800;">${parseInt(p.preco||0).toLocaleString('pt-PT')} Kz</div>
+            ${p.precoAntigo?`<div style="text-decoration:line-through;color:var(--text-muted);font-size:.72rem;">${parseInt(p.precoAntigo).toLocaleString('pt-PT')} Kz</div>`:''}
+          </td>
+          <td><span class="sb2 ativo" style="font-size:.7rem;">${catLabels[p.cat]||'📦 Outro'}</span></td>
+          <td style="font-size:.82rem;font-weight:600;">${p.parceiro||'HepoMarket'}</td>
+          <td>${p.badge?`<span class="sb2 ${(p.badge).includes('Promo')?(p.badge).includes('Hot')?'pendente':'pendente':'ativo'}">${p.badge}</span>`:'<span style="color:var(--text-muted);font-size:.75rem;">—</span>'}</td>
+          <td style="text-align:center;font-weight:700;">${p.stock!=null?p.stock:'∞'}</td>
+          <td style="white-space:nowrap;">
+            <button class="ab p" style="font-size:.72rem;padding:.28rem .65rem;" onclick="editProd('${p.id}')">✏️ Editar</button>
+            <button class="ab d" style="font-size:.72rem;padding:.28rem .55rem;margin-left:.25rem;" onclick="if(confirm('Remover produto \'${p.nome.replace(/'/g,"\'")}\' ?')){HepoAuth.removeAdminProduct('${p.id}');renderHomepage();renderProds();toast('🗑️ Produto removido.');}">🗑️</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>`;
+}
+
+function changeBgImage(input){
+  const file=input.files[0]; if(!file) return;
+  if(file.size>5*1024*1024){toast('⚠️ Imagem demasiado grande. Máx. 5MB.',true); return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const bg=document.getElementById('bgPreview');
+    if(bg) bg.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+    localStorage.setItem('hepo_hero_bg', e.target.result);
+    const msg=document.getElementById('bgMsg');
+    if(msg){msg.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.6rem;color:var(--success);';msg.textContent='✅ Imagem guardada! Aparece na página inicial.';}
+    toast('✅ Imagem de fundo actualizada!');
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveBanner(){
+  const txt=document.getElementById('bn_text').value;
+  localStorage.setItem('hepo_banner_text', txt);
+  toast('✅ Banner guardado!');
+}
+function previewBanner(){
+  const txt=document.getElementById('bn_text').value;
+  const el=document.getElementById('bnPreview');
+  if(el){el.style.display='block';el.textContent=txt;}
+}
+
+// ══ INIT ══
+renderDashboard();
+renderOrders();renderProds();renderClients();renderPartners();renderAffiliates();renderPayments();initAIStats();renderBank();renderHomepage();
+populateMsgDropdowns();
+</script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body{padding:calc(var(--nav-h)+2rem) 1rem 3rem;min-height:100vh;background:var(--dark);}
+    .reg-types{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+    .rtc{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--transition);}
+    .rtc:hover,.rtc.sel{border-color:var(--primary);background:rgba(0,120,212,.1);}
+    .rtc .ri{font-size:2rem;margin-bottom:.75rem;}
+    .rtc h3{font-size:1rem;font-weight:700;margin-bottom:.4rem;}
+    .rtc p{font-size:.8rem;color:var(--text-muted);}
+    .rtc.sel h3{color:var(--primary);}
+    .fr2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .ebox{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:.75rem 1rem;font-size:.85rem;color:var(--danger);margin-bottom:1rem;display:none;}
+    .obox{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:10px;padding:.75rem 1rem;font-size:.85rem;color:var(--success);margin-bottom:1rem;display:none;}
+    .pending-note{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:var(--warning);display:none;margin-bottom:1.25rem;}
+    @media(max-width:600px){.reg-types{grid-template-columns:1fr;}.fr2{grid-template-columns:1fr;}}
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-outline">Já tenho conta</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="max-width:680px;">
+  <div style="text-align:center;margin-bottom:2.5rem;">
+    <h1 style="font-size:2rem;font-weight:800;margin-bottom:.75rem;">Criar Conta <span class="gradient-text">Gratuita</span></h1>
+    <p style="color:var(--text-muted);">Escolha o tipo de conta e junte-se à HepoMarket hoje mesmo.</p>
+  </div>
+
+  <div class="reg-types">
+    <div class="rtc sel" id="rc-cliente" onclick="selType(this,'cliente')">
+      <div class="ri">👤</div>
+      <h3>Cliente</h3>
+      <p>Compre produtos de parceiros verificados com total segurança e rastreamento.</p>
+    </div>
+    <div class="rtc" id="rc-parceiro" onclick="selType(this,'parceiro')">
+      <div class="ri">🤝</div>
+      <h3>Parceiro</h3>
+      <p>Registe a sua loja e venda os seus produtos para milhares de clientes em Angola.</p>
+    </div>
+    <div class="rtc" id="rc-afiliado" onclick="selType(this,'afiliado')">
+      <div class="ri">💰</div>
+      <h3>Afiliado</h3>
+      <p>Promova os melhores produtos e receba comissões por cada venda realizada.</p>
+    </div>
+  </div>
+
+  <div class="pending-note" id="pendingNote">
+    ⏳ <strong>Atenção:</strong> As contas de <span id="pendingRole"></span> são revisadas e aprovadas manualmente pelo CEO antes de serem activadas. Receberá uma notificação por e-mail quando a sua conta for aprovada.
+  </div>
+
+  <div class="form-card">
+    <div class="ebox" id="errBox"></div>
+    <div class="obox" id="okBox"></div>
+
+    <form id="regForm" onsubmit="doRegister(event)">
+      <!-- Dados pessoais – todos os tipos -->
+      <div class="fr2">
+        <div class="form-group"><label>Nome Próprio *</label><input type="text" id="f_nome" placeholder="Primeiro nome" required></div>
+        <div class="form-group"><label>Apelido *</label><input type="text" id="f_apelido" placeholder="Último nome" required></div>
+      </div>
+      <div class="form-group"><label>E-mail *</label><input type="email" id="f_email" placeholder="email@exemplo.com" required autocomplete="email"></div>
+      <div class="fr2">
+        <div class="form-group"><label>Telemóvel *</label><input type="tel" id="f_tel" placeholder="+244 9XX XXX XXX" required></div>
+        <div class="form-group"><label>Província *</label>
+          <select id="f_prov" required>
+            <option value="">Selecione...</option>
+            <option>Luanda</option><option>Benguela</option><option>Huambo</option>
+            <option>Cabinda</option><option>Huíla</option><option>Malanje</option>
+            <option>Uíge</option><option>Bié</option><option>Moxico</option>
+            <option>Cuando Cubango</option><option>Outra</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Bairro / Localidade *</label><input type="text" id="f_bairro" placeholder="Ex: Cacuaco, Viana, Talatona..." required></div>
+
+      <!-- Campos exclusivos para Parceiros -->
+      <div id="pFields" style="display:none;">
+        <hr style="border-color:var(--border);margin:1.25rem 0;">
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">📦 <strong>Informações da Loja</strong></p>
+        <div class="form-group"><label>Nome da Loja / Empresa *</label><input type="text" id="f_loja" placeholder="Nome da sua loja virtual"></div>
+        <div class="fr2">
+          <div class="form-group"><label>Categoria de Produtos *</label>
+            <select id="f_cat">
+              <option>Tecnologia & Electrónica</option><option>Moda & Vestuário</option>
+              <option>Casa & Decoração</option><option>Beleza & Saúde</option>
+              <option>Desporto & Lazer</option><option>Alimentação & Bebidas</option>
+              <option>Bebé & Criança</option><option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group"><label>NIF (opcional)</label><input type="text" id="f_nif" placeholder="Número de Identificação Fiscal"></div>
+        </div>
+        <div class="form-group"><label>Plano de Interesse *</label>
+          <select id="f_plano">
+            <option value="Básico">Básico – Gratuito (até 10 produtos, 8% comissão)</option>
+            <option value="Profissional">Profissional – 15.000 Kz/mês (ilimitado, 5% comissão)</option>
+            <option value="Premium">Premium – 35.000 Kz/mês (loja personalizada, 3% comissão)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Campos exclusivos para Afiliados -->
+      <div id="aFields" style="display:none;">
+        <hr style="border-color:var(--border);margin:1.25rem 0;">
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">💰 <strong>Informações de Afiliado</strong></p>
+        <div class="form-group"><label>Principal canal de promoção *</label>
+          <select id="f_canal">
+            <option>Redes Sociais (Instagram, Facebook, TikTok)</option>
+            <option>WhatsApp / Grupos</option>
+            <option>Blog / Website</option>
+            <option>YouTube / Vídeos</option>
+            <option>E-mail Marketing</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Audiência estimada</label>
+          <select id="f_audiencia">
+            <option>Menos de 500 seguidores/contactos</option>
+            <option>500 – 2.000</option>
+            <option>2.000 – 10.000</option>
+            <option>10.000 – 50.000</option>
+            <option>Mais de 50.000</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <hr style="border-color:var(--border);margin:1.25rem 0;">
+      <div class="fr2">
+        <div class="form-group">
+          <label>Palavra-passe *</label>
+          <input type="password" id="f_pass" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label>Confirmar Senha *</label>
+          <input type="password" id="f_conf" placeholder="Repita a senha" required autocomplete="new-password">
+          <p id="passErr" style="display:none;color:var(--danger);font-size:.8rem;margin-top:.3rem;">⚠️ As senhas não coincidem.</p>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;font-size:.85rem;color:var(--text-muted);">
+          <input type="checkbox" id="terms" required style="width:auto;margin-top:3px;">
+          Concordo com os <a href="terms.html" style="color:var(--primary);">Termos e Condições</a> e <a href="terms.html" style="color:var(--primary);">Política de Privacidade</a> da HepoMarket.
+        </label>
+      </div>
+
+      <button type="submit" id="regBtn" class="btn-primary" style="width:100%;padding:.9rem;font-size:1rem;border-radius:12px;">
+        Criar Conta Gratuita →
+      </button>
+      <p style="text-align:center;margin-top:1.25rem;font-size:.85rem;color:var(--text-muted);">
+        Já tem conta? <a href="login.html" style="color:var(--primary);font-weight:600;">Entrar</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+let selRole = 'cliente';
+
+function selType(el, type) {
+  document.querySelectorAll('.rtc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  selRole = type;
+  document.getElementById('pFields').style.display = type==='parceiro' ? 'block' : 'none';
+  document.getElementById('aFields').style.display = type==='afiliado' ? 'block' : 'none';
+  const pn = document.getElementById('pendingNote');
+  const pr = document.getElementById('pendingRole');
+  if (type === 'parceiro' || type === 'afiliado') {
+    pr.textContent = type === 'parceiro' ? 'Parceiro' : 'Afiliado';
+    pn.style.display = 'block';
+  } else {
+    pn.style.display = 'none';
+  }
+  // Required fields
+  document.getElementById('f_loja').required = type==='parceiro';
+  document.getElementById('f_canal').required = type==='afiliado';
+}
+
+function doRegister(e) {
+  e.preventDefault();
+  const errBox = document.getElementById('errBox');
+  const okBox = document.getElementById('okBox');
+  errBox.style.display='none'; okBox.style.display='none';
+
+  const pass = document.getElementById('f_pass').value;
+  const conf = document.getElementById('f_conf').value;
+  if (pass !== conf) {
+    document.getElementById('passErr').style.display = 'block';
+    document.getElementById('f_conf').focus();
+    return;
+  }
+  document.getElementById('passErr').style.display = 'none';
+
+  const nome = document.getElementById('f_nome').value.trim();
+  const apelido = document.getElementById('f_apelido').value.trim();
+
+  // Check if came via invite
+  const inviteCode = sessionStorage.getItem('hepo_invite') || new URLSearchParams(window.location.search).get('invite');
+  const userData = {
+    role: selRole,
+    nome: nome + ' ' + apelido,
+    nomeCompleto: nome + ' ' + apelido,
+    email: document.getElementById('f_email').value.trim().toLowerCase(),
+    invitedBy: inviteCode || null,
+    telefone: document.getElementById('f_tel').value.trim(),
+    provincia: document.getElementById('f_prov').value,
+    bairro: document.getElementById('f_bairro').value.trim(),
+    password: pass,
+    totalOrders: 0,
+    totalGasto: 0,
+    totalVendas: 0,
+    comissoesPendentes: 0,
+    comissoesPagas: 0,
+  };
+
+  if (selRole === 'parceiro') {
+    userData.loja = document.getElementById('f_loja').value.trim();
+    userData.categoria = document.getElementById('f_cat').value;
+    userData.nif = document.getElementById('f_nif').value.trim();
+    userData.plano = document.getElementById('f_plano').value;
+  }
+  if (selRole === 'afiliado') {
+    userData.canal = document.getElementById('f_canal').value;
+    userData.audiencia = document.getElementById('f_audiencia').value;
+  }
+
+  const btn = document.getElementById('regBtn');
+  btn.disabled=true; btn.textContent='A registar...';
+
+  setTimeout(() => {
+    const result = HepoAuth.register(userData);
+    btn.disabled=false; btn.textContent='Criar Conta Gratuita →';
+
+    if (result.error) {
+      errBox.textContent = result.error; errBox.style.display='block';
+      return;
+    }
+
+    let msg = '';
+    if (selRole === 'cliente') {
+      msg = '✅ Conta criada com sucesso! Bem-vindo(a) à HepoMarket, ' + nome + '! A redirecionar...';
+    } else {
+      msg = '✅ Candidatura enviada! A sua conta de ' + (selRole==='parceiro'?'Parceiro':'Afiliado') + ' está a aguardar aprovação pelo CEO. Receberá uma notificação por e-mail. A redirecionar...';
+    }
+    okBox.textContent = msg; okBox.style.display='block';
+
+    setTimeout(() => {
+      if (selRole === 'cliente') {
+        // Auto-login para clientes
+        HepoAuth.login(userData.email, pass, 'cliente');
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'login.html?registered=1';
+      }
+    }, 2000);
+  }, 500);
+}
+
+// Mostrar mensagem de registo bem-sucedido ao voltar
+const params = new URLSearchParams(window.location.search);
+if (params.get('registered')) {
+  const note = document.createElement('div');
+  note.style.cssText = 'position:fixed;top:80px;right:1rem;background:var(--success);color:#fff;padding:.85rem 1.5rem;border-radius:12px;font-weight:600;z-index:999;max-width:320px;';
+  note.textContent = '✅ Candidatura registada! Aguarde aprovação por e-mail.';
+  document.body.appendChild(note);
+  setTimeout(() => note.remove(), 5000);
+}
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

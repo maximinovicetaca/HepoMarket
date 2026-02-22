@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Conta – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body{padding:calc(var(--nav-h)+1.5rem) 1rem 3rem;min-height:100vh;background:var(--dark);}
+    .db-layout{display:grid;grid-template-columns:260px 1fr;gap:1.5rem;align-items:start;max-width:1200px;margin:0 auto;}
+    /* Sidebar */
+    .db-sidebar{position:sticky;top:calc(var(--nav-h)+1rem);}
+    .db-profile-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1.5rem;text-align:center;margin-bottom:1rem;}
+    .db-avatar-wrap{position:relative;display:inline-block;margin-bottom:.75rem;}
+    .db-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--primary);}
+    .avatar-edit{position:absolute;bottom:2px;right:2px;background:var(--primary);border:2px solid var(--dark);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.7rem;}
+    .db-name{font-size:1.05rem;font-weight:800;margin-bottom:.25rem;}
+    .role-badge{font-size:.75rem;font-weight:700;padding:.25rem .75rem;border-radius:20px;display:inline-block;margin-bottom:.5rem;}
+    .role-cliente{background:rgba(0,120,212,.15);color:var(--primary);}
+    .role-parceiro{background:rgba(16,185,129,.15);color:var(--success);}
+    .role-afiliado{background:rgba(245,158,11,.15);color:var(--warning);}
+    .status-pill{font-size:.72rem;padding:.15rem .55rem;border-radius:100px;font-weight:700;}
+    .s-ativo{background:rgba(16,185,129,.15);color:var(--success);}
+    .s-pendente{background:rgba(245,158,11,.15);color:var(--warning);}
+    .s-suspenso{background:rgba(239,68,68,.15);color:var(--danger);}
+    .db-nav{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:.5rem;margin-bottom:1rem;}
+    .db-nav a{display:flex;align-items:center;gap:.65rem;padding:.65rem 1rem;border-radius:10px;color:var(--text-muted);font-size:.85rem;cursor:pointer;transition:var(--transition);border:none;background:none;width:100%;font-family:var(--font);position:relative;}
+    .db-nav a:hover{color:var(--text);background:rgba(0,120,212,.08);}
+    .db-nav a.active{color:var(--text);background:rgba(0,120,212,.12);font-weight:700;border-left:3px solid var(--primary);}
+    .nav-notif{position:absolute;right:.75rem;background:var(--danger);color:#fff;border-radius:100px;font-size:.65rem;font-weight:700;padding:.1rem .45rem;}
+    .db-logout{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-radius:10px;color:var(--danger);font-size:.85rem;cursor:pointer;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);width:100%;font-family:var(--font);}
+    .db-logout:hover{background:rgba(239,68,68,.18);}
+    /* Panels */
+    .panel{display:none;}.panel.active{display:block;}
+    .db-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;}
+    .db-card h3{font-size:.95rem;font-weight:800;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem;}
+    .stat-box{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.1rem;text-align:center;}
+    .stat-v{font-size:1.4rem;font-weight:800;margin-bottom:.2rem;}
+    .stat-l{font-size:.72rem;color:var(--text-muted);}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;}
+    .info-item{padding:.75rem;background:rgba(255,255,255,.03);border-radius:10px;}
+    .info-lbl{font-size:.7rem;color:var(--text-muted);margin-bottom:.2rem;}
+    .info-val{font-size:.88rem;font-weight:600;}
+    .order-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:.65rem;}
+    .order-card:hover{border-color:rgba(0,120,212,.3);}
+    .sbadge{padding:.18rem .6rem;border-radius:100px;font-size:.7rem;font-weight:700;}
+    .sbadge.pendente{background:rgba(245,158,11,.15);color:var(--warning);}
+    .sbadge.processando{background:rgba(0,120,212,.15);color:var(--primary);}
+    .sbadge.entregue{background:rgba(16,185,129,.15);color:var(--success);}
+    .sbadge.cancelado{background:rgba(239,68,68,.15);color:var(--danger);}
+    .empty{text-align:center;padding:2.5rem 1rem;color:var(--text-muted);}
+    .empty-icon{font-size:3rem;margin-bottom:.75rem;}
+    /* Link cards */
+    .link-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:.75rem;}
+    .link-card h4{font-size:.85rem;font-weight:700;margin-bottom:.5rem;}
+    .link-url{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.55rem .8rem;font-size:.8rem;color:var(--primary);font-family:monospace;word-break:break-all;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+    .link-url:hover{border-color:var(--primary);}
+    .copy-btn{background:rgba(0,120,212,.15);border:1px solid rgba(0,120,212,.3);color:var(--primary);border-radius:6px;padding:.2rem .6rem;font-size:.72rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+    .stats-mini{display:flex;gap:.75rem;margin-top:.65rem;}
+    .stat-mini-item{background:rgba(255,255,255,.04);border-radius:8px;padding:.4rem .75rem;font-size:.78rem;text-align:center;flex:1;}
+    .stat-mini-item .n{font-size:1.1rem;font-weight:800;color:var(--primary);}
+    /* Notifications */
+    .notif-item{padding:.75rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;margin-bottom:.5rem;cursor:pointer;}
+    .notif-item.unread{border-color:rgba(0,120,212,.3);background:rgba(0,120,212,.06);}
+    .notif-item:hover{background:rgba(0,120,212,.08);}
+    .notif-title{font-size:.85rem;font-weight:700;margin-bottom:.2rem;}
+    .notif-body{font-size:.78rem;color:var(--text-muted);}
+    .notif-time{font-size:.68rem;color:var(--text-muted);margin-top:.25rem;}
+    /* Messages */
+    .msg-item{padding:.85rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;cursor:pointer;}
+    .msg-item.unread{border-color:rgba(0,120,212,.3);background:rgba(0,120,212,.06);}
+    .msg-item:hover{border-color:rgba(0,120,212,.3);}
+    .msg-from{font-size:.82rem;font-weight:700;}
+    .msg-subj{font-size:.85rem;font-weight:600;margin-bottom:.2rem;}
+    .msg-prev{font-size:.78rem;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+    .msg-detail{display:none;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.75rem;}
+    .msg-detail.open{display:block;}
+    /* Photo upload */
+    .photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--transition);}
+    .photo-upload-area:hover{border-color:var(--primary);background:rgba(0,120,212,.05);}
+    /* Invite section */
+    .invite-qr{font-size:3rem;text-align:center;padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;margin-bottom:.75rem;}
+    /* Form styles */
+    .fg{margin-bottom:.85rem;}
+    .fg label{display:block;font-size:.82rem;font-weight:600;color:var(--text-muted);margin-bottom:.3rem;}
+    .fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:8px;padding:.55rem .85rem;color:var(--text);font-size:.88rem;font-family:var(--font);}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--primary);}
+    .fg select option{background:var(--surface);}
+    .fg input::placeholder,.fg textarea::placeholder{color:var(--text-muted);}
+    .fr2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .btn-sm{padding:.55rem 1.25rem;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-family:var(--font);font-size:.85rem;}
+    .btn-p{background:var(--gradient);color:#fff;}
+    .btn-o{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text-muted);}
+    .pending-warning{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:12px;padding:1rem;font-size:.85rem;color:var(--warning);margin-bottom:1rem;}
+
+    /* Design themes in dashboard */
+    body.design-apple { --primary:#0a84ff;--secondary:#30d158;--accent:#5e5ce6;--dark:#1c1c1e;--dark-2:#2c2c2e;--surface:#3a3a3c;--border:rgba(255,255,255,0.15);--text:#f5f5f7;--text-muted:#aeaeb2;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6); font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif !important; }
+    body.design-win11 { --primary:#0067c0;--secondary:#1a7fd4;--accent:#8764b8;--dark:#202020;--dark-2:#2b2b2b;--surface:#323232;--border:rgba(255,255,255,0.12);--text:#ffffff;--text-muted:#888888;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4); font-family:'Segoe UI Variable','Segoe UI',sans-serif !important; }
+    body.design-samsung { --primary:#1428a0;--secondary:#b537f2;--accent:#ff006e;--dark:#0a0a14;--dark-2:#10101e;--surface:#16162a;--border:rgba(100,100,255,0.2);--text:#ffffff;--text-muted:#8888cc;--gradient:linear-gradient(135deg,#1428a0,#b537f2); }
+    /* Quick links bar */
+    .quick-links-bar{display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+    .ql-btn{display:flex;align-items:center;gap:.4rem;padding:.55rem .95rem;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,.05);color:var(--text-muted);font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.18s;font-family:var(--font);}
+    .ql-btn:hover{background:rgba(0,120,212,.15);color:var(--primary);border-color:rgba(0,120,212,.3);}
+    .ql-btn.promo{background:rgba(239,68,68,.1);color:var(--danger);border-color:rgba(239,68,68,.25);}
+    .ql-btn.promo:hover{background:rgba(239,68,68,.2);}
+    /* Invite card */
+    .invite-mini{background:rgba(0,120,212,.08);border:1px solid rgba(0,120,212,.2);border-radius:12px;padding:.85rem;margin-top:.75rem;}
+    .copy-link-bar{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.45rem .7rem;font-size:.75rem;color:var(--primary);font-family:monospace;display:flex;align-items:center;justify-content:space-between;gap:.5rem;cursor:pointer;word-break:break-all;margin-top:.45rem;}
+    .copy-link-bar:hover{border-color:var(--primary);}
+    .cpbtn{flex-shrink:0;background:rgba(0,120,212,.2);border:1px solid rgba(0,120,212,.3);color:var(--primary);border-radius:6px;padding:.18rem .55rem;font-size:.68rem;font-weight:700;cursor:pointer;}
+    /* Bottom logout */
+    .bottom-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem;}
+    
+
+    body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+    @keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+    body::after{content:'';position:fixed;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(5,8,24,0.92) 0%,rgba(5,8,24,0.80) 50%,rgba(5,8,24,0.94) 100%);}
+    /* Design themes */
+    body.design-apple{--primary:#0a84ff;--secondary:#30d158;--accent:#5e5ce6;--dark:#1c1c1e;--dark-2:#2c2c2e;--surface:#3a3a3c;--border:rgba(255,255,255,0.18);--text:#f5f5f7;--text-muted:#aeaeb2;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+    body.design-win11{--primary:#0067c0;--secondary:#1a7fd4;--accent:#8764b8;--dark:#202020;--dark-2:#2b2b2b;--surface:#323232;--border:rgba(255,255,255,0.14);--text:#fff;--text-muted:#aaa;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+    body.design-samsung{--primary:#1428a0;--secondary:#b537f2;--accent:#ff006e;--dark:#0a0a14;--dark-2:#10101e;--surface:#16162a;--border:rgba(100,100,255,0.22);--text:#fff;--text-muted:#9999cc;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+    /* Better visibility */
+    .db-panel h3{color:#fff!important;font-weight:800;font-size:1.05rem;}
+    .db-panel p, .db-panel li{color:rgba(215,220,240,.88)!important;line-height:1.65;}
+    .db-panel label{color:rgba(215,220,240,.9)!important;font-weight:600;}
+    .db-panel input, .db-panel select, .db-panel textarea{color:#fff!important;background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.15)!important;}
+    .db-stat-val{font-size:1.65rem!important;font-weight:900!important;}
+    .db-stat-lbl{color:rgba(210,215,235,.85)!important;font-size:.8rem;font-weight:600;}
+    /* Quick links */
+    .ql-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem;padding:.65rem;background:rgba(0,0,0,.3);border-radius:12px;border:1px solid rgba(255,255,255,.06);}
+    .ql-a{display:flex;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:20px;background:rgba(255,255,255,.06);color:rgba(220,225,245,.8);font-size:.75rem;font-weight:700;cursor:pointer;text-decoration:none;border:1px solid transparent;transition:.18s;}
+    .ql-a:hover{background:rgba(0,120,212,.18);color:var(--primary);border-color:rgba(0,120,212,.25);}
+    .ql-a.hot{background:rgba(239,68,68,.1);color:#ef4444;border-color:rgba(239,68,68,.2);}
+    /* Bottom bar */
+    .dash-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.65rem;margin-top:1.5rem;padding:1rem 1.25rem;background:rgba(10,10,20,.8);border:1px solid rgba(255,255,255,.07);border-radius:14px;backdrop-filter:blur(12px);}
+    .logout-btn-main{padding:.6rem 1.35rem;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:10px;color:#ef4444;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.18s;}
+    .logout-btn-main:hover{background:rgba(239,68,68,.25);}
+
+    @media(max-width:900px){.db-layout{grid-template-columns:1fr;}.db-sidebar{position:static;}.stats-grid{grid-template-columns:1fr 1fr;}.info-grid{grid-template-columns:1fr;}}
+    @media(max-width:480px){.stats-grid{grid-template-columns:1fr;}.fr2{grid-template-columns:1fr;}}
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<script>
+// V10: Clear previously stored products
+(function(){
+  const vKey='hepo_v';
+  if(localStorage.getItem(vKey)!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem(vKey,'10');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="db-layout">
+  <!-- ══ SIDEBAR ══ -->
+  <div class="db-sidebar">
+    <!-- Profile card -->
+    <div class="db-profile-card">
+      <div class="db-avatar-wrap">
+        <img id="dbAvatar" src="../images/logo.jpeg" alt="" class="db-avatar" style="object-fit:cover;">
+        <div class="avatar-edit" onclick="document.getElementById('avatarInput').click()" title="Alterar foto">✏️</div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+      </div>
+      <div class="db-name" id="dbName">—</div>
+      <div id="dbRoleBadge" class="role-badge role-cliente">—</div><br>
+      <span id="dbStatusPill" class="status-pill s-ativo">Activo</span>
+      <div style="font-size:.75rem;color:var(--text-muted);margin-top:.5rem;" id="dbMeta">—</div>
+    </div>
+
+    <!-- Nav -->
+    <div class="db-nav" id="dbNavContainer">
+      <a onclick="showP('perfil')" id="nav-perfil" class="active">👤 Meu Perfil</a>
+      <a onclick="showP('pedidos')" id="nav-pedidos">📦 Meus Pedidos <span class="nav-notif" id="notif-pedidos" style="display:none;">!</span></a>
+      <a onclick="showP('mensagens')" id="nav-mensagens">📧 Mensagens <span class="nav-notif" id="notif-msgs" style="display:none;"></span></a>
+      <a onclick="showP('notificacoes')" id="nav-notificacoes">🔔 Notificações <span class="nav-notif" id="notif-count" style="display:none;"></span></a>
+      <!-- Parceiro -->
+      <div id="navParceiro" style="display:none;">
+        <a onclick="showP('loja')" id="nav-loja">🏪 Minha Loja</a>
+        <a onclick="showP('mlinks')" id="nav-mlinks">🔗 Meus Links</a>
+        <a onclick="showP('vendas')" id="nav-vendas">📊 Vendas</a>
+        <a onclick="showP('comissoes')" id="nav-comissoes">💵 Comissões</a>
+      </div>
+      <!-- Afiliado -->
+      <div id="navAfiliado" style="display:none;">
+        <a onclick="showP('mlinks')" id="nav-mlinks2">🔗 Meus Links</a>
+        <a onclick="showP('estatisticas')" id="nav-estatisticas">📊 Estatísticas</a>
+        <a onclick="showP('comissoes')" id="nav-comissoes2">💵 Comissões</a>
+      </div>
+      <a onclick="showP('convites')" id="nav-convites">🎟️ Convidar Amigos</a>
+      <a onclick="showP('foto')" id="nav-foto">📷 Foto de Perfil</a>
+      <a onclick="showP('editarperfil')" id="nav-editarperfil">✏️ Editar Dados</a>
+      <a onclick="showP('senha')" id="nav-senha">🔐 Alterar Senha</a>
+    </div>
+    <button class="db-logout" onclick="doLogout()">🚪 Terminar Sessão</button>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <div id="panelArea">
+
+    <!-- QUICK LINKS BAR -->
+    <div class="quick-links-bar" id="quickLinksBar">
+      <a href="products.html" class="ql-btn">🛍️ Produtos</a>
+      <a href="cart.html" class="ql-btn">🛒 Carrinho</a>
+      <a href="../index.html#services" class="ql-btn">🛠️ Serviços</a>
+      <span class="ql-btn" onclick="showP('pedidos')">📦 Meus Pedidos</span>
+      <span class="ql-btn promo" onclick="showP('mensagens')">📧 Mensagens</span>
+      <span class="ql-btn" onclick="showP('notificacoes')">🔔 Notificações</span>
+      <span class="ql-btn" id="ql-links" style="display:none;" onclick="showP('mlinks')">🔗 Meus Links</span>
+      <span class="ql-btn" id="ql-vendas" style="display:none;" onclick="showP('vendas')">📊 Vendas</span>
+      <span class="ql-btn" id="ql-comissoes" onclick="showP('comissoes')">💵 Comissões</span>
+      <span class="ql-btn" onclick="showP('convites')">🎟️ Convidar Amigos</span>
+      <span class="ql-btn" onclick="showP('editarperfil')">✏️ Editar Perfil</span>
+    </div>
+
+    <!-- PENDING WARNING -->
+    <div class="pending-warning" id="pendingWarn" style="display:none;">
+      ⏳ <strong>Conta a aguardar aprovação.</strong> O CEO irá analisar o seu pedido e activar a conta. Receberá uma notificação assim que estiver activa.
+    </div>
+
+    <!-- ── PERFIL ── -->
+    <div class="panel active" id="panel-perfil">
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="db-card">
+        <h3>👤 Informações Pessoais</h3>
+        <div class="info-grid" id="infoGridMain"></div>
+      </div>
+      <div class="db-card" id="extraCard" style="display:none;">
+        <h3 id="extraCardTitle"></h3>
+        <div class="info-grid" id="infoGridExtra"></div>
+      </div>
+    </div>
+    <!-- Invite quick card in profile -->
+    <div class="db-card" id="profileInviteCard" style="display:none;">
+      <h3>🎟️ Convide Amigos e Ganhe</h3>
+      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:.75rem;">Partilhe o seu link exclusivo e acumule benefícios a cada registo confirmado!</p>
+      <div id="profileInviteLinkMini"></div>
+      <div style="margin-top:.65rem;font-size:.78rem;color:var(--text-muted);">→ <span onclick="showP('convites')" style="color:var(--primary);cursor:pointer;font-weight:700;">Ver página completa de convites</span></div>
+    </div>
+
+    <!-- ── PEDIDOS ── -->
+    <div class="panel" id="panel-pedidos">
+      <div class="db-card">
+        <h3>📦 Meus Pedidos</h3>
+        <div id="ordersList"></div>
+      </div>
+    </div>
+
+    <!-- ── MENSAGENS ── -->
+    <div class="panel" id="panel-mensagens">
+      <div class="db-card">
+        <h3>📧 Mensagens Recebidas</h3>
+        <div id="msgDetail" class="msg-detail"></div>
+        <div id="msgList"></div>
+      </div>
+      <div class="db-card">
+        <h3>✍️ Enviar Mensagem ao CEO</h3>
+        <div class="fg"><label>Assunto *</label><input type="text" id="ms_sub" placeholder="Assunto da mensagem"></div>
+        <div class="fg"><label>Mensagem *</label><textarea id="ms_body" style="min-height:120px;" placeholder="Escreva a sua mensagem..."></textarea></div>
+        <button class="btn-sm btn-p" onclick="sendToCEO()">Enviar ao CEO 📧</button>
+        <div id="ms_ok" style="display:none;margin-top:.75rem;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;font-size:.82rem;color:var(--success);"></div>
+      </div>
+    </div>
+
+    <!-- ── NOTIFICAÇÕES ── -->
+    <div class="panel" id="panel-notificacoes">
+      <div class="db-card">
+        <h3>🔔 Notificações <button class="btn-sm btn-o" style="margin-left:auto;font-size:.72rem;padding:.3rem .75rem;" onclick="clearAllNotifs()">Limpar tudo</button></h3>
+        <div id="notifList"></div>
+      </div>
+    </div>
+
+    <!-- ── MEUS LINKS (Parceiro & Afiliado) ── -->
+    <div class="panel" id="panel-mlinks">
+      <div class="db-card">
+        <h3>🔗 Os Meus Links Exclusivos</h3>
+        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:1.25rem;">Partilhe estes links nas suas redes sociais, WhatsApp, grupos, etc. Cada visita é rastreada e contabilizada.</p>
+        <div id="linksContainer"></div>
+      </div>
+      <div class="db-card">
+        <h3>📊 Estatísticas dos Links</h3>
+        <div id="linkStats"></div>
+      </div>
+      <div class="db-card">
+        <h3>🎟️ Convidar Amigos Agora</h3>
+        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:.75rem;">Partilhe o seu link de convite directamente pelo WhatsApp, Facebook ou copie para qualquer plataforma.</p>
+        <div id="quickInviteBox"></div>
+      </div>
+    </div>
+
+    <!-- ── ESTATÍSTICAS (Afiliado) ── -->
+    <div class="panel" id="panel-estatisticas">
+      <div class="db-card">
+        <h3>📊 Estatísticas de Performance</h3>
+        <div id="affStatsContent"></div>
+      </div>
+    </div>
+
+    <!-- ── LOJA (Parceiro) ── -->
+    <div class="panel" id="panel-loja">
+      <div class="db-card">
+        <h3>🏪 Informações da Loja</h3>
+        <div class="info-grid" id="lojaGrid"></div>
+      </div>
+      <div class="db-card">
+        <h3>📦 Produtos da Loja</h3>
+        <div id="lojaProds"></div>
+      </div>
+    </div>
+
+    <!-- ── VENDAS (Parceiro) ── -->
+    <div class="panel" id="panel-vendas">
+      <div class="db-card">
+        <h3>📈 Resumo de Vendas</h3>
+        <div id="vendasContent"></div>
+      </div>
+    </div>
+
+    <!-- ── COMISSÕES ── -->
+    <div class="panel" id="panel-comissoes">
+      <div class="db-card">
+        <h3>💵 Comissões e Pagamentos</h3>
+        <div id="comissoesContent"></div>
+      </div>
+    </div>
+
+    <!-- ── CONVITES ── -->
+    <div class="panel" id="panel-convites">
+      <div class="db-card">
+        <h3>🎟️ Convidar Amigos e Ganhar</h3>
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+          Partilhe o seu link de convite exclusivo. Quando alguém se registar através do seu link, receberá uma notificação e ganhos especiais!
+        </p>
+        <div class="invite-qr" id="inviteEmoji">🎁</div>
+        <div id="inviteLinkBox"></div>
+        <div style="background:rgba(0,120,212,.08);border:1px solid rgba(0,120,212,.2);border-radius:12px;padding:1rem;margin-top:1rem;font-size:.82rem;">
+          <strong>Como funciona:</strong><br>
+          1️⃣ Copie o link abaixo e partilhe com amigos<br>
+          2️⃣ Quando o amigo se registar através do link, o sistema regista automaticamente<br>
+          3️⃣ Acumule convites confirmados e receba benefícios exclusivos!
+        </div>
+        <div style="margin-top:1rem;" id="inviteStats"></div>
+      </div>
+    </div>
+
+    <!-- ── FOTO DE PERFIL ── -->
+    <div class="panel" id="panel-foto">
+      <div class="db-card">
+        <h3>📷 Foto de Perfil</h3>
+        <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;">
+          <img id="fotoPreviewLarge" src="../images/logo.jpeg" alt="" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--primary);">
+          <div>
+            <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem;">A sua foto de perfil aparece no seu painel e é visível para o CEO no painel de gestão.</p>
+            <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()" style="padding:1rem;margin-bottom:.5rem;">
+              📤 Clique para seleccionar imagem<br><small style="color:var(--text-muted);">JPG, PNG, WEBP — máx. 2MB</small>
+            </div>
+            <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="changeProfilePhoto(this)">
+          </div>
+        </div>
+        <div id="photoMsg" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- ── EDITAR PERFIL ── -->
+    <div class="panel" id="panel-editarperfil">
+      <div class="db-card">
+        <h3>✏️ Editar Dados Pessoais</h3>
+        <form onsubmit="saveProfile(event)">
+          <div class="fr2">
+            <div class="fg"><label>Nome Completo *</label><input type="text" id="ep_nome" required></div>
+            <div class="fg"><label>E-mail *</label><input type="email" id="ep_email" required></div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label>Telemóvel *</label><input type="tel" id="ep_tel" required></div>
+            <div class="fg"><label>Bairro / Localidade *</label><input type="text" id="ep_bairro" required></div>
+          </div>
+          <div class="fg"><label>Província</label>
+            <select id="ep_prov"><option>Luanda</option><option>Benguela</option><option>Huambo</option><option>Cabinda</option><option>Huíla</option><option>Malanje</option><option>Outra</option></select>
+          </div>
+          <div id="epPartner" style="display:none;">
+            <hr style="border-color:var(--border);margin:1rem 0;">
+            <div class="fr2">
+              <div class="fg"><label>Nome da Loja</label><input type="text" id="ep_loja"></div>
+              <div class="fg"><label>Categoria</label><select id="ep_cat"><option>Beleza & Saúde</option><option>Casa & Lar</option><option>Moda</option><option>Bebé</option><option>Tecnologia</option><option>Outro</option></select></div>
+            </div>
+          </div>
+          <div id="epAfiliado" style="display:none;">
+            <hr style="border-color:var(--border);margin:1rem 0;">
+            <div class="fg"><label>Canal de Promoção</label><select id="ep_canal"><option>Redes Sociais</option><option>WhatsApp</option><option>Blog/Website</option><option>YouTube</option><option>E-mail Marketing</option><option>Outro</option></select></div>
+          </div>
+          <div id="epMsg" style="display:none;margin-bottom:.75rem;font-size:.85rem;"></div>
+          <button type="submit" class="btn-sm btn-p">Guardar Alterações ✅</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── ALTERAR SENHA ── -->
+    <div class="panel" id="panel-senha">
+      <div class="db-card" style="max-width:420px;">
+        <h3>🔐 Alterar Palavra-passe</h3>
+        <div class="fg"><label>Senha Actual *</label><input type="password" id="sp_cur" placeholder="••••••••"></div>
+        <div class="fg"><label>Nova Senha *</label><input type="password" id="sp_new" placeholder="Mínimo 8 caracteres"></div>
+        <div class="fg"><label>Confirmar Nova Senha *</label><input type="password" id="sp_conf" placeholder="Repita"></div>
+        <div id="pwdMsg" style="display:none;margin-bottom:.75rem;font-size:.85rem;border-radius:8px;padding:.65rem;"></div>
+        <button class="btn-sm btn-p" onclick="changePwd()">Alterar Senha 🔐</button>
+      </div>
+    </div>
+
+  
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+      <div style="display:flex;align-items:center;gap:.65rem;font-size:.82rem;flex-wrap:wrap;">
+        <a href="products.html" style="color:var(--primary);font-weight:700;text-decoration:none;">🛍️ Produtos</a>
+        <span style="color:var(--text-muted);">·</span>
+        <a href="cart.html" style="color:var(--text-muted);text-decoration:none;">🛒 Carrinho</a>
+        <span style="color:var(--text-muted);">·</span>
+        <a href="../index.html#services" style="color:var(--text-muted);text-decoration:none;">🛠️ Serviços</a>
+        <span style="color:var(--text-muted);">·</span>
+        <a href="../index.html" style="color:var(--text-muted);text-decoration:none;">🏠 Início</a>
+        <span style="color:var(--text-muted);">·</span>
+        <span onclick="showP('convites')" style="color:#f59e0b;font-weight:700;cursor:pointer;">🎟️ Convidar</span>
+      </div>
+      <button class="db-logout" onclick="doLogout()" style="width:auto;padding:.5rem 1.25rem;">🚪 Terminar Sessão</button>
+    </div>
+
+</div><!-- /panelArea -->
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+
+// Apply saved design theme
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+})();
+
+// ── AUTH GUARD ──
+const session = HepoAuth.requireAuth(['cliente','parceiro','afiliado']);
+if (!session) throw '';
+
+let user = HepoAuth.getUserById(session.id) || session;
+const RL = { cliente:'Cliente', parceiro:'Parceiro', afiliado:'Afiliado' };
+const RI = { cliente:'👤', parceiro:'🤝', afiliado:'💰' };
+
+// ── INIT HEADER ──
+function initHeader() {
+  user = HepoAuth.getUserById(session.id) || session;
+  const avatarEl = document.getElementById('dbAvatar');
+  if (user.foto) { avatarEl.src = user.foto; }
+  else { avatarEl.style.display='none'; const av=document.createElement('div'); av.style.cssText='width:80px;height:80px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:2rem;border:3px solid var(--primary);'; av.textContent=RI[user.role]||'👤'; document.querySelector('.db-avatar-wrap').prepend(av); }
+
+  document.getElementById('dbName').textContent = user.nome||user.nomeCompleto||user.email;
+  const rb = document.getElementById('dbRoleBadge');
+  rb.textContent = RL[user.role]||user.role;
+  rb.className = 'role-badge role-'+user.role;
+
+  const sp = document.getElementById('dbStatusPill');
+  sp.textContent = user.status==='ativo'?'✅ Activo':user.status==='pendente'?'⏳ Pendente':'⛔ Suspenso';
+  sp.className = 'status-pill '+(user.status==='ativo'?'s-ativo':user.status==='pendente'?'s-pendente':'s-suspenso');
+
+  document.getElementById('dbMeta').textContent = user.email;
+
+  if (user.status==='pendente') document.getElementById('pendingWarn').style.display='block';
+
+  // Role-specific nav
+  if (user.role==='parceiro') { document.getElementById('navParceiro').style.display='block'; document.getElementById('ql-links').style.display='flex'; document.getElementById('ql-vendas').style.display='flex'; }
+  if (user.role==='afiliado') { document.getElementById('navAfiliado').style.display='block'; document.getElementById('ql-links').style.display='flex'; }
+
+  // Notification badges
+  const nc = HepoAuth.getUnreadNotifCount(user.id);
+  const mc = HepoAuth.getUnreadCount(user.id);
+  if (nc>0) { document.getElementById('notif-count').style.display='inline'; document.getElementById('notif-count').textContent=nc; }
+  if (mc>0) { document.getElementById('notif-msgs').style.display='inline'; document.getElementById('notif-msgs').textContent=mc; }
+}
+initHeader();
+
+// ── PANEL NAVIGATION ──
+function showP(name) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.db-nav a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const navEl = document.getElementById('nav-'+name) || document.getElementById('nav-'+name+'2');
+  if (navEl) navEl.classList.add('active');
+  // Lazy renders
+  if (name==='mensagens') renderMessages();
+  if (name==='notificacoes') renderNotifications();
+  if (name==='mlinks') renderLinks();
+  if (name==='estatisticas') renderAffStats();
+  if (name==='convites') renderConvites();
+  if (name==='comissoes') renderComissoes();
+  if (name==='vendas') renderVendas();
+}
+
+// ── PERFIL ──
+function renderPerfil() {
+  user = HepoAuth.getUserById(session.id)||session;
+  // Stats
+  const sg = document.getElementById('statsGrid');
+  if (user.role==='cliente') {
+    sg.innerHTML=`<div class="stat-box"><div class="stat-v" style="color:var(--primary);">${user.totalOrders||0}</div><div class="stat-l">Pedidos</div></div><div class="stat-box"><div class="stat-v" style="color:var(--success);">${HepoAuth.formatMoney(user.totalGasto||0)}</div><div class="stat-l">Total Gasto</div></div><div class="stat-box"><div class="stat-v" style="color:var(--accent);">${(user.clickStats||{}).total||0}</div><div class="stat-l">Cliques nos Links</div></div>`;
+  } else if (user.role==='parceiro') {
+    sg.innerHTML=`<div class="stat-box"><div class="stat-v" style="color:var(--primary);">${user.totalVendas||0}</div><div class="stat-l">Vendas</div></div><div class="stat-box"><div class="stat-v" style="color:var(--warning);">${HepoAuth.formatMoney(user.comissoesPendentes||0)}</div><div class="stat-l">Comissões Pendentes</div></div><div class="stat-box"><div class="stat-v" style="color:var(--success);">${HepoAuth.formatMoney(user.comissoesPagas||0)}</div><div class="stat-l">Comissões Pagas</div></div>`;
+  } else {
+    sg.innerHTML=`<div class="stat-box"><div class="stat-v" style="color:var(--primary);">${user.totalVendas||0}</div><div class="stat-l">Vendas Afiliadas</div></div><div class="stat-box"><div class="stat-v" style="color:var(--warning);">${HepoAuth.formatMoney(user.comissoesPendentes||0)}</div><div class="stat-l">A Receber</div></div><div class="stat-box"><div class="stat-v" style="color:var(--accent);">${(user.clickStats||{}).total||0}</div><div class="stat-l">Cliques Totais</div></div>`;
+  }
+  // Info
+  document.getElementById('infoGridMain').innerHTML=`
+    <div class="info-item"><div class="info-lbl">Nome Completo</div><div class="info-val">${user.nome||user.nomeCompleto||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">E-mail</div><div class="info-val">${user.email||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Telemóvel</div><div class="info-val">${user.telefone||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Localização</div><div class="info-val">${user.bairro||'—'}, ${user.provincia||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Código de Referência</div><div class="info-val" style="color:var(--primary);font-family:monospace;">${user.refCode||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Registado em</div><div class="info-val">${HepoAuth.formatDateShort(user.registeredAt)}</div></div>`;
+
+  // Extra info
+  const ec = document.getElementById('extraCard');
+  if (user.role==='parceiro') {
+    ec.style.display='block';
+    document.getElementById('extraCardTitle').textContent='🏪 Informações da Loja';
+    document.getElementById('infoGridExtra').innerHTML=`
+      <div class="info-item"><div class="info-lbl">Nome da Loja</div><div class="info-val">${user.loja||'—'}</div></div>
+      <div class="info-item"><div class="info-lbl">Categoria</div><div class="info-val">${user.categoria||'—'}</div></div>
+      <div class="info-item"><div class="info-lbl">Plano</div><div class="info-val">${user.plano||'—'}</div></div>
+      <div class="info-item"><div class="info-lbl">NIF</div><div class="info-val">${user.nif||'Não fornecido'}</div></div>`;
+  } else if (user.role==='afiliado') {
+    ec.style.display='block';
+    document.getElementById('extraCardTitle').textContent='💰 Informações de Afiliado';
+    document.getElementById('infoGridExtra').innerHTML=`
+      <div class="info-item"><div class="info-lbl">Canal</div><div class="info-val">${user.canal||'—'}</div></div>
+      <div class="info-item"><div class="info-lbl">Audiência</div><div class="info-val">${user.audiencia||'—'}</div></div>
+      <div class="info-item"><div class="info-lbl">Nível</div><div class="info-val">${(user.totalVendas||0)>=20?'🌟 VIP':'Normal'}</div></div>
+      <div class="info-item"><div class="info-lbl">Cliques Totais</div><div class="info-val">${(user.clickStats||{}).total||0}</div></div>`;
+  }
+
+  // Show invite card
+  if (user.refCode) {
+    const inv = document.getElementById('profileInviteCard');
+    if (inv) {
+      inv.style.display = 'block';
+      const lk = HepoAuth.generateLinks(user.refCode);
+      const mini = document.getElementById('profileInviteLinkMini');
+      if (mini) mini.innerHTML = `<div class="link-url" onclick="copyLink('${lk.convite}',this)">
+        <span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:.75rem;">${lk.convite}</span>
+        <span class="copy-btn">📋</span>
+      </div>`;
+    }
+  }
+
+  // Fill edit form
+  document.getElementById('ep_nome').value=user.nome||user.nomeCompleto||'';
+  document.getElementById('ep_email').value=user.email||'';
+  document.getElementById('ep_tel').value=user.telefone||'';
+  document.getElementById('ep_bairro').value=user.bairro||'';
+  document.getElementById('ep_prov').value=user.provincia||'Luanda';
+  if (user.role==='parceiro') {
+    document.getElementById('epPartner').style.display='block';
+    document.getElementById('ep_loja').value=user.loja||'';
+  }
+  if (user.role==='afiliado') document.getElementById('epAfiliado').style.display='block';
+}
+
+// ── PEDIDOS ──
+function renderOrders() {
+  const orders = HepoAuth.getOrders().filter(o=>o.userId===user.id).reverse();
+  const el = document.getElementById('ordersList');
+  if (!orders.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📦</div><p>Sem pedidos ainda.<br><a href="products.html" style="color:var(--primary);">Ver produtos →</a></p></div>'; return; }
+  el.innerHTML=orders.map(o=>`
+    <div class="order-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;">
+        <div>
+          <div style="font-weight:800;font-size:.92rem;color:var(--primary);">${o.id}</div>
+          <div style="font-size:.8rem;color:var(--text-muted);margin:.2rem 0;">${(o.items||[]).map(i=>i.name+'×'+i.qty).join(' · ')}</div>
+          <div style="font-size:.78rem;color:var(--text-muted);">📍 ${o.municipio||o.morada||''}, ${o.provincia||''}</div>
+          <div style="font-size:.78rem;color:var(--text-muted);">💳 ${o.metodoPagamento||'—'}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-weight:800;color:var(--primary);">${HepoAuth.formatMoney(o.total)}</div>
+          <div style="font-size:.72rem;color:var(--text-muted);">${HepoAuth.formatDateShort(o.createdAt)}</div>
+          <div style="margin-top:.35rem;"><span class="sbadge ${o.status}">${{pendente:'Pendente',processando:'A Processar',entregue:'Entregue ✅',cancelado:'Cancelado'}[o.status]||o.status}</span></div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ── MENSAGENS ──
+function renderMessages() {
+  const inbox = HepoAuth.getInboxFor(user.id);
+  const el = document.getElementById('msgList');
+  if (!inbox.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📭</div><p>Sem mensagens ainda.</p></div>'; return; }
+  el.innerHTML=inbox.map(m=>{
+    const unread = !m.readBy.includes(user.id);
+    return `<div class="msg-item ${unread?'unread':''}" onclick="openMsg('${m.id}','${m.fromNome}','${escHtml(m.assunto)}','${escHtml(m.corpo)}','${m.sentAt}')">
+      <div style="display:flex;justify-content:space-between;"><span class="msg-from">${m.fromNome}${unread?'<span style="color:var(--primary);margin-left:.4rem;">●</span>':''}</span><span style="font-size:.7rem;color:var(--text-muted);">${HepoAuth.timeAgo(m.sentAt)}</span></div>
+      <div class="msg-subj">${m.assunto}</div>
+      <div class="msg-prev">${m.corpo}</div>
+    </div>`;
+  }).join('');
+  // Update badge
+  const mc = inbox.filter(m=>!m.readBy.includes(user.id)).length;
+  const badge = document.getElementById('notif-msgs');
+  if (mc>0) { badge.style.display='inline'; badge.textContent=mc; } else badge.style.display='none';
+}
+
+function escHtml(s) { return (s||'').replace(/'/g,'&apos;').replace(/"/g,'&quot;'); }
+
+function openMsg(id, from, assunto, corpo, sentAt) {
+  HepoAuth.markRead(id, user.id);
+  const d = document.getElementById('msgDetail');
+  d.className='msg-detail open';
+  d.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
+      <div><strong>${from}</strong><div style="font-size:.75rem;color:var(--text-muted);">${HepoAuth.formatDate(sentAt)}</div></div>
+      <button class="btn-sm btn-o" onclick="document.getElementById('msgDetail').className='msg-detail'" style="font-size:.72rem;padding:.3rem .75rem;">✕ Fechar</button>
+    </div>
+    <div style="font-weight:700;font-size:.95rem;margin-bottom:.75rem;">${assunto}</div>
+    <div style="font-size:.88rem;line-height:1.7;white-space:pre-wrap;">${corpo}</div>`;
+  renderMessages();
+}
+
+function sendToCEO() {
+  const sub = document.getElementById('ms_sub').value.trim();
+  const body = document.getElementById('ms_body').value.trim();
+  const ok = document.getElementById('ms_ok');
+  if (!sub||!body) { ok.style.cssText='display:block;color:var(--danger);background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:.65rem;font-size:.82rem;'; ok.textContent='⚠️ Preencha assunto e mensagem.'; return; }
+  HepoAuth.sendMessage({ fromId:user.id, toId:0, fromNome:user.nome||user.nomeCompleto, assunto:sub, corpo:body });
+  document.getElementById('ms_sub').value=''; document.getElementById('ms_body').value='';
+  ok.style.cssText='display:block;color:var(--success);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:.65rem;font-size:.82rem;';
+  ok.textContent='✅ Mensagem enviada ao CEO com sucesso!';
+  setTimeout(()=>ok.style.display='none',4000);
+}
+
+// ── NOTIFICAÇÕES ──
+function renderNotifications() {
+  const notifs = HepoAuth.getNotificationsFor(user.id);
+  const el = document.getElementById('notifList');
+  if (!notifs.length) { el.innerHTML='<div class="empty"><div class="empty-icon">🔔</div><p>Sem notificações.</p></div>'; return; }
+  el.innerHTML=notifs.map(n=>`
+    <div class="notif-item ${n.lida?'':'unread'}" onclick="HepoAuth.markNotifRead('${n.id}');this.classList.remove('unread');">
+      <div class="notif-title">${{novo_registo:'🆕',novo_pedido:'📦',status_pedido:'🚚',mensagem:'📧',comissao:'💵',aprovacao:'✅'}[n.tipo]||'🔔'} ${n.titulo}</div>
+      <div class="notif-body">${n.corpo}</div>
+      <div class="notif-time">${HepoAuth.timeAgo(n.createdAt)}</div>
+    </div>`).join('');
+  // Update badge
+  const nc = notifs.filter(n=>!n.lida).length;
+  const badge = document.getElementById('notif-count');
+  if (nc>0) { badge.style.display='inline'; badge.textContent=nc; } else badge.style.display='none';
+}
+
+function clearAllNotifs() {
+  HepoAuth.clearNotifications(user.id);
+  renderNotifications();
+  document.getElementById('notif-count').style.display='none';
+}
+
+// ── LINKS ──
+function renderLinks() {
+  user = HepoAuth.getUserById(session.id)||session;
+  if (!user.refCode) { document.getElementById('linksContainer').innerHTML='<div class="empty"><p>Links disponíveis após activação da conta.</p></div>'; return; }
+  const links = HepoAuth.generateLinks(user.refCode);
+  const cs = user.clickStats||{total:0,produtos:0,loja:0,convites:0};
+
+  document.getElementById('linksContainer').innerHTML=`
+    <div class="link-card">
+      <h4>🛍️ Link de Produtos</h4>
+      <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.5rem;">Partilhe este link para que os utilizadores vejam os produtos disponíveis.</p>
+      <div class="link-url" onclick="copyLink('${links.produtos}',this)">
+        <span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${links.produtos}</span>
+        <span class="copy-btn">📋 Copiar</span>
+      </div>
+      <div class="stats-mini">
+        <div class="stat-mini-item"><div class="n">${cs.produtos||0}</div>cliques produtos</div>
+      </div>
+    </div>
+    ${user.role==='parceiro'?`
+    <div class="link-card">
+      <h4>🏪 Link da Loja</h4>
+      <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.5rem;">Link directo para a página principal da HepoMarket com a sua referência.</p>
+      <div class="link-url" onclick="copyLink('${links.loja}',this)">
+        <span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${links.loja}</span>
+        <span class="copy-btn">📋 Copiar</span>
+      </div>
+      <div class="stats-mini">
+        <div class="stat-mini-item"><div class="n">${cs.loja||0}</div>cliques loja</div>
+      </div>
+    </div>`:''}
+    <div class="link-card">
+      <h4>🎟️ Link de Convites</h4>
+      <p style="font-size:.78rem;color:var(--text-muted);margin-bottom:.5rem;">Convide novos utilizadores para a HepoMarket através do seu link exclusivo.</p>
+      <div class="link-url" onclick="copyLink('${links.convite}',this)">
+        <span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${links.convite}</span>
+        <span class="copy-btn">📋 Copiar</span>
+      </div>
+      <div class="stats-mini">
+        <div class="stat-mini-item"><div class="n">${cs.convites||0}</div>convites</div>
+      </div>
+    </div>`;
+
+  // Quick invite box
+  const qib = document.getElementById('quickInviteBox');
+  if (qib && user.refCode) {
+    const lk = HepoAuth.generateLinks(user.refCode);
+    qib.innerHTML = `<div class="link-url" onclick="copyLink('${lk.convite}',this)" style="margin-bottom:.75rem;">
+      <span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${lk.convite}</span>
+      <span class="copy-btn">📋</span>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+      <a href="https://wa.me/?text=${encodeURIComponent('Junte-se à HepoMarket! '+lk.convite)}" target="_blank" style="flex:1;min-width:110px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:.55rem;border-radius:8px;text-align:center;font-size:.78rem;font-weight:700;text-decoration:none;">💬 WhatsApp</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(lk.convite)}" target="_blank" style="flex:1;min-width:110px;background:rgba(24,119,242,.15);border:1px solid rgba(24,119,242,.3);color:#1877f2;padding:.55rem;border-radius:8px;text-align:center;font-size:.78rem;font-weight:700;text-decoration:none;">📘 Facebook</a>
+    </div>`;
+  }
+
+  // Stats overview
+  document.getElementById('linkStats').innerHTML=`
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-v" style="color:var(--primary);">${cs.total||0}</div><div class="stat-l">Total de Cliques</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--success);">${cs.produtos||0}</div><div class="stat-l">Cliques Produtos</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--warning);">${cs.convites||0}</div><div class="stat-l">Convites Realizados</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-top:.75rem;font-size:.82rem;color:var(--text-muted);">
+      ℹ️ <strong>Como funciona:</strong> Cada vez que alguém abre o seu link, o contador é incrementado automaticamente. Os cliques são rastreados em tempo real.
+    </div>`;
+}
+
+function copyLink(url, el) {
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn = el.querySelector('.copy-btn');
+    if (btn) { btn.textContent='✅ Copiado!'; setTimeout(()=>btn.textContent='📋 Copiar',2000); }
+    showToast('✅ Link copiado para a área de transferência!');
+  }).catch(()=>{
+    // Fallback
+    const ta=document.createElement('textarea'); ta.value=url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    showToast('✅ Link copiado!');
+  });
+}
+
+// ── ESTATÍSTICAS (Afiliado) ──
+function renderAffStats() {
+  user = HepoAuth.getUserById(session.id)||session;
+  const cs = user.clickStats||{total:0,produtos:0,loja:0,convites:0};
+  const allOrders = HepoAuth.getOrders().filter(o=>o.refCode===user.refCode);
+  const confirmed = allOrders.filter(o=>o.status==='entregue');
+  const totalComm = confirmed.reduce((a,o)=>a+Math.round(o.total*0.05),0);
+
+  document.getElementById('affStatsContent').innerHTML=`
+    <div class="stats-grid" style="margin-bottom:1.25rem;">
+      <div class="stat-box"><div class="stat-v" style="color:var(--primary);">${cs.total||0}</div><div class="stat-l">Cliques Totais</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--success);">${allOrders.length}</div><div class="stat-l">Pedidos Gerados</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--warning);">${HepoAuth.formatMoney(totalComm)}</div><div class="stat-l">Total Comissões</div></div>
+    </div>
+    <div style="margin-bottom:1.25rem;">
+      <h4 style="font-size:.88rem;font-weight:700;margin-bottom:.75rem;">Cliques por Tipo</h4>
+      ${[['Produtos',cs.produtos||0,'#0078d4'],['Loja',cs.loja||0,'#10b981'],['Convites',cs.convites||0,'#f59e0b']].map(([l,v,c])=>`
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;">
+          <span style="width:80px;font-size:.8rem;color:var(--text-muted);">${l}</span>
+          <div style="flex:1;background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;">
+            <div style="width:${cs.total?Math.round(v/cs.total*100):0}%;height:100%;border-radius:100px;background:${c};transition:width .5s;"></div>
+          </div>
+          <span style="width:30px;text-align:right;font-size:.82rem;font-weight:700;">${v}</span>
+        </div>`).join('')}
+    </div>
+    ${allOrders.length?`
+    <h4 style="font-size:.88rem;font-weight:700;margin-bottom:.75rem;">Pedidos Via Meu Link</h4>
+    ${allOrders.reverse().map(o=>`
+      <div style="padding:.75rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-weight:700;font-size:.85rem;color:var(--primary);">${o.id}</div><div style="font-size:.75rem;color:var(--text-muted);">${HepoAuth.formatDateShort(o.createdAt)}</div></div>
+        <div style="text-align:right;"><div style="font-weight:700;font-size:.85rem;">${HepoAuth.formatMoney(o.total)}</div><div style="font-size:.72rem;color:var(--success);">Comissão: ${HepoAuth.formatMoney(Math.round(o.total*0.05))}</div></div>
+      </div>`).join('')}`:'<div class="empty"><div class="empty-icon">📊</div><p>Ainda sem pedidos via o seu link.</p></div>'}`;
+}
+
+// ── COMISSÕES ──
+function renderComissoes() {
+  user = HepoAuth.getUserById(session.id)||session;
+  const banks = HepoAuth.getBank();
+  const bankHtml = banks.length ? `
+    <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:12px;padding:1rem;margin-bottom:1rem;">
+      <div style="font-weight:700;font-size:.88rem;margin-bottom:.5rem;">🏦 Dados para Pagamento das Comissões</div>
+      ${banks.map(b=>`<div style="font-size:.8rem;color:var(--text-muted);">${b.banco} · Titular: <strong>${b.titular}</strong> · <strong>${b.numero}</strong>${b.mcx?` · Multicaixa: <strong>${b.mcx}</strong>`:''}</div>`).join('')}
+    </div>` : '';
+
+  document.getElementById('comissoesContent').innerHTML=`
+    ${bankHtml}
+    <div class="stats-grid" style="margin-bottom:1.25rem;">
+      <div class="stat-box"><div class="stat-v" style="color:var(--warning);">${HepoAuth.formatMoney(user.comissoesPendentes||0)}</div><div class="stat-l">A Receber</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--success);">${HepoAuth.formatMoney(user.comissoesPagas||0)}</div><div class="stat-l">Já Recebidas</div></div>
+      <div class="stat-box"><div class="stat-v" style="color:var(--primary);">${user.totalVendas||0}</div><div class="stat-l">Vendas Totais</div></div>
+    </div>
+    <div class="empty"><div class="empty-icon">💵</div><p>As comissões detalhadas aparecem aqui à medida que as vendas forem confirmadas.<br><strong>Taxa de comissão:</strong> ${user.role==='afiliado'?'5% por venda':user.plano==='Básico'?'8%':user.plano==='Profissional'?'5%':'3%'} sobre o valor confirmado.</p></div>`;
+}
+
+// ── VENDAS (Parceiro) ──
+function renderVendas() {
+  const orders = HepoAuth.getOrders().filter(o=>o.parceiro===user.id||o.parceiroNome===user.loja);
+  document.getElementById('vendasContent').innerHTML = !orders.length
+    ? '<div class="empty"><div class="empty-icon">📈</div><p>Nenhuma venda ainda. Aguarde activação da conta pelo CEO.</p></div>'
+    : orders.map(o=>`<div class="order-card"><div style="display:flex;justify-content:space-between;"><strong>${o.id}</strong><span>${HepoAuth.formatMoney(o.total)}</span></div><div style="font-size:.78rem;color:var(--text-muted);">${o.nomeCliente} · ${HepoAuth.formatDateShort(o.createdAt)}</div></div>`).join('');
+}
+
+// ── LOJA ──
+function renderLoja() {
+  document.getElementById('lojaGrid').innerHTML=`
+    <div class="info-item"><div class="info-lbl">Nome da Loja</div><div class="info-val">${user.loja||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Categoria</div><div class="info-val">${user.categoria||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Plano</div><div class="info-val">${user.plano||'—'}</div></div>
+    <div class="info-item"><div class="info-lbl">Estado</div><div class="info-val"><span class="sbadge ${user.status==='ativo'?'entregue':'pendente'}">${user.status==='ativo'?'Activa':'Pendente'}</span></div></div>`;
+  document.getElementById('lojaProds').innerHTML='<div class="empty"><div class="empty-icon">🛍️</div><p>Os produtos da sua loja são geridos pelo CEO.<br>Entre em contacto via Mensagens.</p></div>';
+}
+
+// ── CONVITES ──
+function renderConvites() {
+  user = HepoAuth.getUserById(session.id)||session;
+  if (!user.refCode) { document.getElementById('inviteLinkBox').innerHTML='<p style="color:var(--text-muted);">Links disponíveis após activação.</p>'; return; }
+  const links = HepoAuth.generateLinks(user.refCode);
+  document.getElementById('inviteLinkBox').innerHTML=`
+    <div style="font-size:.82rem;color:var(--text-muted);margin-bottom:.5rem;">O seu link exclusivo de convite:</div>
+    <div class="link-url" onclick="copyLink('${links.convite}',this)">
+      <span style="flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${links.convite}</span>
+      <span class="copy-btn">📋 Copiar</span>
+    </div>
+    <div style="display:flex;gap:.65rem;margin-top:.75rem;flex-wrap:wrap;">
+      <a href="https://wa.me/?text=${encodeURIComponent('Junte-se à HepoMarket! '+links.convite)}" target="_blank" style="flex:1;min-width:120px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:.6rem;border-radius:8px;text-align:center;font-size:.82rem;font-weight:700;text-decoration:none;">💬 WhatsApp</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(links.convite)}" target="_blank" style="flex:1;min-width:120px;background:rgba(24,119,242,.15);border:1px solid rgba(24,119,242,.3);color:#1877f2;padding:.6rem;border-radius:8px;text-align:center;font-size:.82rem;font-weight:700;text-decoration:none;">📘 Facebook</a>
+      <button class="btn-sm btn-p" style="flex:1;min-width:120px;" onclick="copyLink('${links.convite}',this)">📋 Copiar Link</button>
+    </div>`;
+  const cs = user.clickStats||{};
+  document.getElementById('inviteStats').innerHTML=`
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1rem;">
+      <div style="font-weight:700;font-size:.85rem;margin-bottom:.5rem;">📊 Resultados dos Convites</div>
+      <div style="font-size:.82rem;color:var(--text-muted);">Convites enviados (cliques): <strong style="color:var(--primary);">${cs.convites||0}</strong></div>
+    </div>`;
+}
+
+// ── FOTO DE PERFIL ──
+function uploadAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size>2*1024*1024) { showToast('⚠️ Imagem demasiado grande. Máx. 2MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const foto = e.target.result;
+    HepoAuth.updateUser(user.id, { foto });
+    user.foto = foto;
+    document.getElementById('dbAvatar').src = foto;
+    document.getElementById('dbAvatar').style.display='block';
+    document.getElementById('fotoPreviewLarge').src = foto;
+    showToast('✅ Foto de perfil actualizada!');
+  };
+  reader.readAsDataURL(file);
+}
+
+function changeProfilePhoto(input) {
+  uploadAvatar(input);
+  const msg = document.getElementById('photoMsg');
+  msg.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;font-size:.82rem;color:var(--success);';
+  msg.textContent='✅ Foto actualizada com sucesso!';
+  setTimeout(()=>msg.style.display='none',3000);
+}
+
+// ── EDITAR PERFIL ──
+function saveProfile(e) {
+  e.preventDefault();
+  const updates = {
+    nome:document.getElementById('ep_nome').value.trim(),
+    nomeCompleto:document.getElementById('ep_nome').value.trim(),
+    email:document.getElementById('ep_email').value.trim().toLowerCase(),
+    telefone:document.getElementById('ep_tel').value.trim(),
+    bairro:document.getElementById('ep_bairro').value.trim(),
+    provincia:document.getElementById('ep_prov').value,
+  };
+  if (user.role==='parceiro') { updates.loja=document.getElementById('ep_loja').value.trim(); updates.categoria=document.getElementById('ep_cat').value; }
+  if (user.role==='afiliado') updates.canal=document.getElementById('ep_canal').value;
+  HepoAuth.updateUser(user.id, updates);
+  user={...user,...updates};
+  HepoAuth.setSession({...HepoAuth.getSession(),...updates});
+  const msg=document.getElementById('epMsg');
+  msg.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;color:var(--success);';
+  msg.textContent='✅ Dados actualizados!';
+  setTimeout(()=>msg.style.display='none',3000);
+  renderPerfil(); initHeader();
+}
+
+// ── ALTERAR SENHA ──
+function changePwd() {
+  const cur=document.getElementById('sp_cur').value;
+  const np=document.getElementById('sp_new').value;
+  const cp=document.getElementById('sp_conf').value;
+  const msg=document.getElementById('pwdMsg');
+  msg.style.display='block';
+  if (user.password!==cur) { msg.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;font-size:.85rem;color:var(--danger);'; msg.textContent='Senha actual incorrecta.'; return; }
+  if (np!==cp) { msg.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;font-size:.85rem;color:var(--danger);'; msg.textContent='As senhas não coincidem.'; return; }
+  if (np.length<8) { msg.style.cssText='display:block;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:.65rem;font-size:.85rem;color:var(--danger);'; msg.textContent='Mínimo 8 caracteres.'; return; }
+  HepoAuth.updateUser(user.id,{password:np}); user.password=np;
+  msg.style.cssText='display:block;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:.65rem;font-size:.85rem;color:var(--success);';
+  msg.textContent='✅ Senha alterada com sucesso!';
+  ['sp_cur','sp_new','sp_conf'].forEach(id=>document.getElementById(id).value='');
+}
+
+function showToast(msg) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+function doLogout() { HepoAuth.logout(); window.location.replace('login.html'); }
+
+// ── INIT ──
+renderPerfil();
+renderOrders();
+if (user.role==='parceiro') renderLoja();
+
+// Check invite info on load
+const inviteRef = new URLSearchParams(window.location.search).get('invite');
+if (inviteRef) {
+  const info = HepoAuth.getInviteInfo(inviteRef);
+  if (info) showToast('🎉 Convidado por: '+info.nome);
+}
+</script>
+</body>
+</html>

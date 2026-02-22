@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quem Somos – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    .team-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:2rem; text-align:center; transition:var(--transition); }
+    .team-card:hover { border-color:var(--primary); transform:translateY(-4px); }
+    .team-avatar { width:80px; height:80px; border-radius:50%; background:var(--gradient); display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1rem; }
+    .team-card h3 { font-weight:700; margin-bottom:0.25rem; }
+    .team-card .role { color:var(--primary); font-size:0.85rem; font-weight:600; margin-bottom:0.75rem; }
+    .team-card p { font-size:0.85rem; color:var(--text-muted); line-height:1.6; }
+    .values-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.25rem; }
+    .value-card { text-align:center; padding:2rem 1.5rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; }
+    .value-card .icon { font-size:2rem; margin-bottom:1rem; }
+    .value-card h3 { font-weight:700; margin-bottom:0.5rem; }
+    .value-card p { font-size:0.85rem; color:var(--text-muted); }
+    .mission-box { background:linear-gradient(135deg,rgba(0,120,212,0.15),rgba(0,180,216,0.08)); border:1px solid rgba(0,120,212,0.25); border-radius:20px; padding:3rem; margin-bottom:4rem; }
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-outline">Entrar</a>
+      <a href="register.html" class="btn-primary">Cadastrar</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <h1>Quem <span class="gradient-text">Somos</span></h1>
+    <p>Uma plataforma angolana construída com paixão para transformar o comércio digital em Angola e no mundo.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="mission-box" data-animate>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+        <div>
+          <span class="section-tag">A Nossa Missão</span>
+          <h2 style="font-size:2rem;font-weight:800;margin:1rem 0;">Democratizar o comércio digital em Angola</h2>
+          <p style="color:var(--text-muted);line-height:1.8;margin-bottom:1rem;">A HepoMarket nasceu em Cacuaco, Luanda, com uma visão clara: criar uma plataforma acessível, moderna e sustentável que permita a qualquer angolano vender, comprar e gerar renda extra de forma simples e segura.</p>
+          <p style="color:var(--text-muted);line-height:1.8;">Acreditamos que o comércio digital é o futuro de Angola, e queremos ser a ponte que conecta compradores, vendedores e afiliados num ecossistema auto-sustentável e confiável.</p>
+        </div>
+        <div style="text-align:center;font-size:5rem;">🇦🇴</div>
+      </div>
+    </div>
+
+    <div class="section-header"><span class="section-tag">Liderança</span><h2>Equipa de Liderança</h2></div>
+    <div class="team-grid">
+      <div class="team-card" data-animate>
+        <div class="team-avatar">👔</div>
+        <h3>Maximino Vicetaca Hepo Evaristo</h3>
+        <div class="role">CEO & Fundador</div>
+        <p>Visionário por trás da HepoMarket, com experiência em comércio digital e empreendedorismo angolano. Comprometido com a missão de transformar o mercado digital em Angola.</p>
+      </div>
+      <div class="team-card" data-animate>
+        <div class="team-avatar">💻</div>
+        <h3>Equipa de Tecnologia</h3>
+        <div class="role">Desenvolvimento & Inovação</div>
+        <p>Responsáveis por manter a plataforma estável, segura e sempre com as melhores funcionalidades para parceiros e clientes.</p>
+      </div>
+      <div class="team-card" data-animate>
+        <div class="team-avatar">📈</div>
+        <h3>Equipa Comercial</h3>
+        <div class="role">Parcerias & Crescimento</div>
+        <p>Dedicados a encontrar e qualificar os melhores parceiros angolanos e internacionais para a plataforma.</p>
+      </div>
+      <div class="team-card" data-animate>
+        <div class="team-avatar">💬</div>
+        <h3>Apoio ao Cliente</h3>
+        <div class="role">Suporte & Satisfação</div>
+        <p>Disponíveis 24/7 para garantir que compradores, vendedores e afiliados tenham sempre a melhor experiência.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="background:var(--dark-2);">
+  <div class="container">
+    <div class="section-header"><span class="section-tag">Os Nossos Valores</span><h2>O que nos guia</h2></div>
+    <div class="values-grid">
+      <div class="value-card" data-animate><div class="icon">🎯</div><h3>Foco no Cliente</h3><p>A experiência do utilizador é a nossa prioridade máxima.</p></div>
+      <div class="value-card" data-animate><div class="icon">🔐</div><h3>Confiança & Segurança</h3><p>Todos os parceiros são verificados. Todos os pagamentos, protegidos.</p></div>
+      <div class="value-card" data-animate><div class="icon">🌍</div><h3>Impacto Local</h3><p>Orgulhosamente angolano, com visão internacional.</p></div>
+      <div class="value-card" data-animate><div class="icon">🚀</div><h3>Inovação Contínua</h3><p>Sempre a melhorar, sempre a crescer, sempre a inovar.</p></div>
+      <div class="value-card" data-animate><div class="icon">🤝</div><h3>Parcerias Genuínas</h3><p>O sucesso dos nossos parceiros é o nosso sucesso.</p></div>
+      <div class="value-card" data-animate><div class="icon">⚡</div><h3>Agilidade</h3><p>Processos rápidos, respostas rápidas, entregas rápidas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" style="text-align:center;">
+  <div class="container">
+    <h2 style="font-size:2rem;font-weight:800;margin-bottom:1rem;">📍 A Nossa Localização</h2>
+    <p style="color:var(--text-muted);margin-bottom:2rem;">HepoMarket – Cacuaco, Luanda, Angola</p>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3rem;max-width:500px;margin:0 auto;" data-animate>
+      <p>🏢 <strong>Sede:</strong> Cacuaco, Luanda, Angola</p><br>
+      <p>📞 <strong>Telefone:</strong> +244 952 100 356</p><br>
+      <p>📧 <strong>E-mail:</strong> mvicetaca@gmail.com</p><br>
+      <p>🕐 <strong>Horário:</strong> Segunda a Sexta, 08h00 – 18h00</p><br>
+      <a href="https://wa.me/244952100356" class="btn-whatsapp" target="_blank">💬 Contactar pelo WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ai-badge">IA</span></button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header"><div class="ai-avatar">🤖</div><div><strong>Hepo Assistant</strong><span class="ai-status">● Online</span></div><button class="ai-close" id="aiClose">×</button></div>
+    <div class="ai-messages" id="aiMessages"><div class="ai-msg bot">Olá! Posso ajudá-lo com informações sobre a HepoMarket! 😊</div></div>
+    <div class="ai-input-area"><input type="text" id="aiInput" placeholder="Faça uma pergunta..."><button id="aiSend" class="ai-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+  </div>
+</div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+// Update nav based on session
+(function() {
+  const s = window.HepoAuth && HepoAuth.getSession();
+  if (s) {
+    const loginBtns = document.querySelectorAll('a[href="login.html"].btn-outline');
+    loginBtns.forEach(btn => { btn.textContent = '👤 Conta'; btn.href = 'dashboard.html'; });
+    const regBtns = document.querySelectorAll('a[href="register.html"].btn-primary');
+    regBtns.forEach(btn => btn.style.display = 'none');
+  }
+})();
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

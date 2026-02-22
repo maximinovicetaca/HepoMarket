@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termos e Condições – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .terms-content { max-width:800px; margin:0 auto; }
+    .terms-content h2 { font-size:1.3rem; font-weight:800; margin:2rem 0 1rem; color:var(--primary); }
+    .terms-content h3 { font-size:1.05rem; font-weight:700; margin:1.5rem 0 0.75rem; }
+    .terms-content p, .terms-content li { color:var(--text-muted); line-height:1.8; margin-bottom:0.75rem; font-size:0.95rem; }
+    .terms-content ul { padding-left:1.5rem; list-style:disc; }
+    .terms-header-box { background:rgba(0,120,212,0.08); border:1px solid rgba(0,120,212,0.2); border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:2rem; font-size:0.9rem; color:var(--text-muted); }
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions"><a href="login.html" class="btn-outline">Entrar</a><button class="hamburger" id="hamburger"><span></span><span></span><span></span></button></div>
+  </div>
+</nav>
+
+<div class="page-hero"><div><h1>Termos e <span class="gradient-text">Condições</span></h1><p>Leia atentamente os nossos termos antes de utilizar a plataforma HepoMarket.</p></div></div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="terms-content">
+      <div class="terms-header-box">📅 Última atualização: Janeiro de 2024 | Versão: 1.0<br>Estes Termos e Condições regulam o uso da plataforma HepoMarket. Ao criar uma conta ou realizar uma compra, concorda com estes termos.</div>
+
+      <h2>1. Identificação da Empresa</h2>
+      <p>A HepoMarket é uma plataforma de comércio eletrónico registada em Angola, com sede em Cacuaco, Luanda. Contacto: mvicetaca@gmail.com | +244 952 100 356.</p>
+
+      <h2>2. Elegibilidade</h2>
+      <p>Para utilizar a plataforma HepoMarket, o utilizador deve ter pelo menos 18 anos de idade ou contar com autorização de um representante legal. Ao criar uma conta, confirma que as informações fornecidas são verdadeiras e completas.</p>
+
+      <h2>3. Conta de Utilizador</h2>
+      <ul>
+        <li>Cada utilizador só pode ter uma conta activa na plataforma;</li>
+        <li>É responsabilidade do utilizador manter a confidencialidade das suas credenciais de acesso;</li>
+        <li>A HepoMarket reserva-se o direito de suspender contas que violem estes termos;</li>
+        <li>Em caso de suspeita de acesso não autorizado, contacte imediatamente o nosso apoio.</li>
+      </ul>
+
+      <h2>4. Programa de Parceiros</h2>
+      <p>Parceiros são vendedores registados que listam os seus produtos na plataforma HepoMarket. Ao tornar-se parceiro, concorda com:</p>
+      <ul>
+        <li>Disponibilizar apenas produtos legais e de qualidade comprovada;</li>
+        <li>Respeitar os prazos de entrega indicados na plataforma;</li>
+        <li>Aceitar as comissões definidas no plano escolhido;</li>
+        <li>Fornecer informações verídicas sobre os produtos listados;</li>
+        <li>Responder a reclamações de clientes em até 48 horas.</li>
+      </ul>
+
+      <h2>5. Programa de Afiliados</h2>
+      <p>Afiliados recebem comissões por vendas realizadas através dos seus links únicos de rastreio. As comissões são calculadas sobre o valor líquido da venda (excluindo entrega e impostos) e pagas mensalmente, desde que o valor acumulado seja superior a 5.000 Kz.</p>
+
+      <h2>6. Política de Pagamentos</h2>
+      <ul>
+        <li>Todos os preços são expressos em Kwanzas Angolanos (Kz);</li>
+        <li>A HepoMarket não se responsabiliza por problemas de pagamento causados pelo banco do cliente;</li>
+        <li>Em caso de fraude ou pagamento indevido, o valor será reembolsado em até 7 dias úteis;</li>
+        <li>Formas de pagamento aceites: Multicaixa Express, transferência bancária, TPA e pagamento na entrega.</li>
+      </ul>
+
+      <h2>7. Política de Entregas e Devoluções</h2>
+      <p>Os prazos de entrega são indicativos e podem variar consoante a localização e disponibilidade do produto. Devoluções são aceites em até 7 dias após a receção do produto, desde que:</p>
+      <ul>
+        <li>O produto apresente defeito de fabrico;</li>
+        <li>O produto recebido seja diferente do descrito;</li>
+        <li>O produto não tenha sido utilizado e esteja na embalagem original.</li>
+      </ul>
+
+      <h2>8. Propriedade Intelectual</h2>
+      <p>Todos os conteúdos da plataforma HepoMarket, incluindo logotipos, textos, imagens e código, são propriedade exclusiva da HepoMarket. É proibida a reprodução total ou parcial sem autorização por escrito.</p>
+
+      <h2>9. Privacidade e Protecção de Dados</h2>
+      <p>A HepoMarket compromete-se a proteger os dados pessoais dos utilizadores, utilizando-os apenas para fins de prestação de serviços. Os dados não serão partilhados com terceiros sem consentimento, exceto quando exigido por lei.</p>
+
+      <h2>10. Responsabilidade</h2>
+      <p>A HepoMarket actua como intermediária entre compradores e vendedores. Não nos responsabilizamos pela qualidade dos produtos de terceiros, mas disponibilizamos mecanismos de reclamação e resolução de conflitos.</p>
+
+      <h2>11. Modificações aos Termos</h2>
+      <p>A HepoMarket reserva-se o direito de modificar estes termos a qualquer momento. As alterações serão comunicadas por e-mail e publicadas na plataforma com 15 dias de antecedência.</p>
+
+      <h2>12. Lei Aplicável</h2>
+      <p>Estes termos são regidos pela legislação angolana. Quaisquer disputas serão resolvidas pelos tribunais competentes de Luanda, Angola.</p>
+
+      <h2>13. Contacto</h2>
+      <p>Para questões sobre estes termos: mvicetaca@gmail.com | +244 952 100 356 | Cacuaco, Luanda, Angola.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ai-badge">IA</span></button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header"><div class="ai-avatar">🤖</div><div><strong>Hepo Assistant</strong><span class="ai-status">● Online</span></div><button class="ai-close" id="aiClose">×</button></div>
+    <div class="ai-messages" id="aiMessages"><div class="ai-msg bot">Tem dúvidas sobre os nossos termos? Posso ajudar! 📋</div></div>
+    <div class="ai-input-area"><input type="text" id="aiInput" placeholder="Faça uma pergunta..."><button id="aiSend" class="ai-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+  </div>
+</div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

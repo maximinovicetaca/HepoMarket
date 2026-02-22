@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serviços – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;}
+    body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+    .srv-hero{padding:calc(var(--nav-h,70px) + 3rem) 1.5rem 3rem;text-align:center;max-width:700px;margin:0 auto;}
+    .srv-hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;margin-bottom:1rem;color:#fff;}
+    .srv-hero p{font-size:1.05rem;color:rgba(215,220,240,.85);line-height:1.7;margin-bottom:2rem;}
+    .srv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto;padding:0 1.5rem 5rem;}
+    .srv-card{background:rgba(16,16,28,.85);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2rem;backdrop-filter:blur(12px);transition:.25s;position:relative;overflow:hidden;}
+    .srv-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent-color,var(--gradient));opacity:0;transition:.25s;}
+    .srv-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.4);border-color:rgba(255,255,255,.18);}
+    .srv-card:hover::after{opacity:1;}
+    .srv-icon{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.25rem;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+    .srv-card h2{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:.65rem;}
+    .srv-card p{color:rgba(210,215,235,.85);line-height:1.7;margin-bottom:1.25rem;font-size:.9rem;}
+    .srv-features{list-style:none;padding:0;margin:0 0 1.5rem;}
+    .srv-features li{font-size:.85rem;color:rgba(200,210,230,.82);padding:.3rem 0;display:flex;align-items:center;gap:.5rem;}
+    .srv-features li::before{content:'✓';color:var(--success,#10b981);font-weight:700;flex-shrink:0;}
+    .srv-price{display:flex;align-items:center;gap:.65rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+    .price-from{font-size:.75rem;color:rgba(200,210,230,.6);font-weight:600;}
+    .price-val{font-size:1.35rem;font-weight:900;color:var(--primary);}
+    .price-unit{font-size:.78rem;color:rgba(200,210,230,.6);}
+    .srv-btn{display:inline-block;padding:.75rem 1.5rem;background:var(--gradient);border-radius:10px;color:#fff;font-size:.88rem;font-weight:700;text-decoration:none;transition:.2s;border:none;cursor:pointer;font-family:inherit;width:100%;text-align:center;}
+    .srv-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,120,212,.35);}
+    .srv-btn.outline{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(215,220,240,.85);}
+    .srv-btn.outline:hover{background:rgba(255,255,255,.08);}
+    .contact-cta{text-align:center;padding:3rem 1.5rem 5rem;max-width:700px;margin:0 auto;}
+    .contact-cta h2{font-size:2rem;font-weight:800;color:#fff;margin-bottom:.85rem;}
+    .contact-cta p{color:rgba(210,215,235,.82);margin-bottom:2rem;line-height:1.7;}
+    .cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+    .badge-new{position:absolute;top:1rem;right:1rem;background:var(--gradient);color:#fff;font-size:.68rem;font-weight:700;padding:.2rem .6rem;border-radius:20px;}
+    @media(max-width:600px){.srv-grid{grid-template-columns:1fr;}}
+  </style>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt="HepoMarket Logo"><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="services.html" class="active">Serviços</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-btn" title="Carrinho"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></a>
+      <a href="login.html" class="btn-outline" id="btnLogin">Entrar</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="srv-hero">
+  <span style="display:inline-block;background:rgba(0,120,212,.15);border:1px solid rgba(0,120,212,.3);color:#5bbfff;border-radius:100px;padding:.3rem 1rem;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;">🛠️ Serviços Profissionais</span>
+  <h1>Técnicos Qualificados <span style="background:linear-gradient(135deg,#0078d4,#00b4d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">em Angola</span></h1>
+  <p>Da instalação eléctrica ao climatizador, do pavimento ao tecto falso. Profissionais verificados, orçamento gratuito, garantia de obra.</p>
+  <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+    <a href="contact.html" class="btn-primary" style="font-size:1rem;padding:.9rem 2rem;">📞 Orçamento Gratuito</a>
+    <a href="products.html" class="btn-outline" style="font-size:1rem;padding:.9rem 2rem;">🛍️ Ver Produtos</a>
+  </div>
+</div>
+
+<!-- Services Grid -->
+<div class="srv-grid">
+
+  <!-- Electricidade -->
+  <div class="srv-card" style="--accent-color:linear-gradient(135deg,#f59e0b,#ef4444);">
+    <div class="srv-icon" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">⚡</div>
+    <h2>Electricidade</h2>
+    <p>Instalações eléctricas completas para residências e empresas. Quadros eléctricos, tomadas, iluminação LED, domótica e automação residencial.</p>
+    <ul class="srv-features">
+      <li>Instalação eléctrica nova e remodelação</li>
+      <li>Quadros eléctricos e disjuntores</li>
+      <li>Iluminação LED de alta eficiência</li>
+      <li>Automação e domótica residencial</li>
+      <li>Geradores e sistemas UPS</li>
+      <li>Certificação técnica incluída</li>
+    </ul>
+    <div class="srv-price">
+      <span class="price-from">A partir de</span>
+      <span class="price-val">5.000 Kz</span>
+      <span class="price-unit">/ serviço</span>
+    </div>
+    <a href="contact.html?service=eletricidade" class="srv-btn">⚡ Solicitar Orçamento</a>
+  </div>
+
+  <!-- Frio & Climatização -->
+  <div class="srv-card" style="--accent-color:linear-gradient(135deg,#0ea5e9,#0284c7);">
+    <span class="badge-new">🔥 Popular</span>
+    <div class="srv-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);">❄️</div>
+    <h2>Frio & Climatização</h2>
+    <p>Instalação e manutenção de ar condicionado de todas as marcas. Câmaras frigoríficas, sistemas de ventilação industrial e climatização de escritórios.</p>
+    <ul class="srv-features">
+      <li>Instalação de splits e multi-splits</li>
+      <li>Câmaras frigoríficas comerciais</li>
+      <li>Ventilação e climatização industrial</li>
+      <li>Manutenção preventiva programada</li>
+      <li>Carga de gás e higienização</li>
+      <li>Assistência de emergência 24h</li>
+    </ul>
+    <div class="srv-price">
+      <span class="price-from">A partir de</span>
+      <span class="price-val">8.000 Kz</span>
+      <span class="price-unit">/ instalação</span>
+    </div>
+    <a href="contact.html?service=frio-climatizacao" class="srv-btn">❄️ Solicitar Orçamento</a>
+  </div>
+
+  <!-- Ladrilho & Pinturas -->
+  <div class="srv-card" style="--accent-color:linear-gradient(135deg,#10b981,#059669);">
+    <div class="srv-icon" style="background:linear-gradient(135deg,#10b981,#059669);">🧱</div>
+    <h2>Ladrilho & Pinturas</h2>
+    <p>Assentamento de pavimentos, azulejos e revestimentos cerâmicos com precisão. Pintura interior e exterior com produtos premium de qualidade durável.</p>
+    <ul class="srv-features">
+      <li>Pavimentos cerâmicos e porcelânatos</li>
+      <li>Azulejos e revestimentos murais</li>
+      <li>Pintura interior (quarto, sala, etc.)</li>
+      <li>Pintura exterior e fachadas</li>
+      <li>Impermeabilização de casas de banho</li>
+      <li>Materiais incluídos no orçamento</li>
+    </ul>
+    <div class="srv-price">
+      <span class="price-from">A partir de</span>
+      <span class="price-val">3.500 Kz</span>
+      <span class="price-unit">/ m²</span>
+    </div>
+    <a href="contact.html?service=ladrilho-pinturas" class="srv-btn">🧱 Solicitar Orçamento</a>
+  </div>
+
+  <!-- Tectos Falsos -->
+  <div class="srv-card" style="--accent-color:linear-gradient(135deg,#8b5cf6,#7c3aed);">
+    <div class="srv-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);">🏗️</div>
+    <h2>Tectos Falsos</h2>
+    <p>Aplicação profissional de tectos falsos com design moderno. Gesso cartonado, PVC decorativo, alumínio e madeira com iluminação integrada.</p>
+    <ul class="srv-features">
+      <li>Gesso cartonado (drywall) standard e moldado</li>
+      <li>PVC decorativo — várias cores e texturas</li>
+      <li>Alumínio e madeira premium</li>
+      <li>Iluminação embutida e spots LED</li>
+      <li>Isolamento acústico e térmico</li>
+      <li>Designs 2D e 3D personalizados</li>
+    </ul>
+    <div class="srv-price">
+      <span class="price-from">A partir de</span>
+      <span class="price-val">4.500 Kz</span>
+      <span class="price-unit">/ m²</span>
+    </div>
+    <a href="contact.html?service=teto-falso" class="srv-btn">🏗️ Solicitar Orçamento</a>
+  </div>
+
+  <!-- Canalização -->
+  <div class="srv-card" style="--accent-color:linear-gradient(135deg,#06b6d4,#0284c7);">
+    <div class="srv-icon" style="background:linear-gradient(135deg,#06b6d4,#0284c7);">🚿</div>
+    <h2>Canalização</h2>
+    <p>Instalação, reparação e manutenção de sistemas de canalização. Detecção e resolução de fugas, remodelação de casas de banho e cozinhas.</p>
+    <ul class="srv-features">
+      <li>Instalação de canalização nova</li>
+      <li>Reparação de fugas e rupturas</li>
+      <li>Remodelação de casa de banho</li>
+      <li>Instalação de esquentadores e caldeiras</li>
+      <li>Desentupimentos e limpeza de fossas</li>
+      <li>Emergências 24 horas</li>
+    </ul>
+    <div class="srv-price">
+      <span class="price-from">A partir de</span>
+      <span class="price-val">4.000 Kz</span>
+      <span class="price-unit">/ serviço</span>
+    </div>
+    <a href="contact.html?service=canalizacao" class="srv-btn">🚿 Solicitar Orçamento</a>
+  </div>
+
+  <!-- Acessórios Electrónicos -->
+  <div class="srv-card" style="--accent-color:linear-gradient(135deg,#6366f1,#4f46e5);border-color:rgba(99,102,241,.25);">
+    <span class="badge-new">✨ Novo</span>
+    <div class="srv-icon" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">📱</div>
+    <h2>Acessórios Electrónicos</h2>
+    <p>Venda de acessórios tecnológicos de qualidade. Cabos, carregadores, fones Bluetooth, colunas portáteis, smartwatches, tablets e muito mais.</p>
+    <ul class="srv-features">
+      <li>Fones e auscultadores Bluetooth</li>
+      <li>Cabos USB-C, Lightning e micro-USB</li>
+      <li>Carregadores rápidos e power banks</li>
+      <li>Colunas portáteis e sistemas de som</li>
+      <li>Smartwatches e pulseiras fitness</li>
+      <li>Capas, películas e acessórios</li>
+    </ul>
+    <div class="srv-price">
+      <span class="price-from">A partir de</span>
+      <span class="price-val">1.500 Kz</span>
+      <span class="price-unit">/ produto</span>
+    </div>
+    <a href="products.html?cat=eletronicos" class="srv-btn">📱 Ver Produtos</a>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="contact-cta">
+  <h2>Pronto para começar?</h2>
+  <p>Entre em contacto connosco para um orçamento gratuito e sem compromisso. A nossa equipa de técnicos certificados está disponível em Luanda e arredores.</p>
+  <div class="cta-buttons">
+    <a href="contact.html" class="btn-primary" style="padding:.9rem 2.5rem;font-size:1rem;">📞 Contacto</a>
+    <a href="https://wa.me/244952100356" target="_blank" class="btn-outline" style="padding:.9rem 2.5rem;font-size:1rem;">💬 WhatsApp</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2025 HepoMarket. Todos os direitos reservados.</p>
+      <div class="footer-bottom-links"><a href="terms.html">Privacidade</a><a href="terms.html">Termos</a></div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+(function(){const s=window.HepoAuth&&HepoAuth.getSession();if(s){const b=document.getElementById('btnLogin');if(b){b.textContent='👤 Painel';b.href=s.role==='ceo'?'admin.html':'dashboard.html';}}})();
+const hamburger=document.getElementById('hamburger');const navLinks=document.getElementById('navLinks');hamburger?.addEventListener('click',()=>navLinks?.classList.toggle('open'));
+window.addEventListener('scroll',()=>document.getElementById('navbar')?.classList.toggle('scrolled',window.scrollY>50));
+</script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .contact-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:3rem; }
+    .contact-info-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:2rem; margin-bottom:1.25rem; display:flex; gap:1rem; align-items:flex-start; }
+    .contact-icon { font-size:1.75rem; }
+    .contact-label { font-weight:700; margin-bottom:0.25rem; }
+    .contact-value { color:var(--text-muted); font-size:0.9rem; }
+    .contact-value a { color:var(--primary); transition:var(--transition); }
+    .contact-value a:hover { color:var(--secondary); }
+    @media(max-width:768px){.contact-grid{grid-template-columns:1fr;}}
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-outline">Entrar</a>
+      <a href="register.html" class="btn-primary">Cadastrar</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <h1>Entre em <span class="gradient-text">Contacto</span></h1>
+    <p>Estamos sempre disponíveis para ajudar. Fale connosco pelo meio que preferir.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;">Informações de Contacto</h2>
+        <div class="contact-info-card" data-animate>
+          <div class="contact-icon">📍</div>
+          <div><div class="contact-label">Endereço</div><div class="contact-value">Cacuaco, Luanda<br>Angola</div></div>
+        </div>
+        <div class="contact-info-card" data-animate>
+          <div class="contact-icon">📞</div>
+          <div><div class="contact-label">Telefone</div><div class="contact-value"><a href="tel:+244952100356">+244 952 100 356</a></div></div>
+        </div>
+        <div class="contact-info-card" data-animate>
+          <div class="contact-icon">📧</div>
+          <div><div class="contact-label">E-mail</div><div class="contact-value"><a href="mailto:mvicetaca@gmail.com">mvicetaca@gmail.com</a></div></div>
+        </div>
+        <div class="contact-info-card" data-animate>
+          <div class="contact-icon">💬</div>
+          <div><div class="contact-label">WhatsApp</div><div class="contact-value"><a href="https://wa.me/244952100356" target="_blank">+244 952 100 356</a><br><small style="color:var(--text-muted)">Resposta imediata</small></div></div>
+        </div>
+        <div class="contact-info-card" data-animate>
+          <div class="contact-icon">🕐</div>
+          <div><div class="contact-label">Horário de Atendimento</div><div class="contact-value">Segunda a Sexta: 08h00 – 18h00<br>Sábado: 09h00 – 13h00<br>Domingo: Fechado</div></div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <h3 style="margin-bottom:1rem;font-size:1rem;">Redes Sociais</h3>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+            <a href="https://www.facebook.com/hepomarket" target="_blank" class="btn-outline" style="padding:0.5rem 1rem;font-size:0.85rem;">📘 Facebook</a>
+            <a href="https://www.instagram.com/hepomarket" target="_blank" class="btn-outline" style="padding:0.5rem 1rem;font-size:0.85rem;">📸 Instagram</a>
+            <a href="https://www.tiktok.com/@hepomarket" target="_blank" class="btn-outline" style="padding:0.5rem 1rem;font-size:0.85rem;">🎵 TikTok</a>
+            <a href="https://www.linkedin.com/company/hepomarket" target="_blank" class="btn-outline" style="padding:0.5rem 1rem;font-size:0.85rem;">💼 LinkedIn</a>
+            <a href="https://www.youtube.com/@hepomarket" target="_blank" class="btn-outline" style="padding:0.5rem 1rem;font-size:0.85rem;">▶️ YouTube</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-card" data-animate>
+        <h2>Enviar Mensagem</h2>
+        <form id="contactForm">
+          <div class="form-group"><label>Nome Completo *</label><input type="text" placeholder="Seu nome completo" required></div>
+          <div class="form-group"><label>E-mail *</label><input type="email" placeholder="email@exemplo.com" required></div>
+          <div class="form-group"><label>Telefone</label><input type="tel" placeholder="+244 9XX XXX XXX"></div>
+          <div class="form-group"><label>Assunto *</label>
+            <select required>
+              <option value="">Selecione o assunto</option>
+              <option>Informações sobre parceria</option>
+              <option>Programa de afiliados</option>
+              <option>Problema com pedido</option>
+              <option>Informações sobre produtos</option>
+              <option>Pagamentos</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Mensagem *</label><textarea placeholder="Descreva a sua mensagem em detalhe..." required></textarea></div>
+          <button type="submit" class="btn-primary" style="width:100%;padding:0.9rem;font-size:1rem;border-radius:12px;">Enviar Mensagem 📧</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ai-badge">IA</span></button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header"><div class="ai-avatar">🤖</div><div><strong>Hepo Assistant</strong><span class="ai-status">● Online</span></div><button class="ai-close" id="aiClose">×</button></div>
+    <div class="ai-messages" id="aiMessages"><div class="ai-msg bot">Olá! Pode contactar-nos pelo WhatsApp: +244 952 100 356. Como posso ajudar? 😊</div></div>
+    <div class="ai-input-area"><input type="text" id="aiInput" placeholder="Faça uma pergunta..."><button id="aiSend" class="ai-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+  </div>
+</div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+document.getElementById('contactForm')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const toast = document.getElementById('toast');
+  toast.textContent = '✓ Mensagem enviada com sucesso! Responderemos em breve.';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+  e.target.reset();
+});
+</script>
+
+<script>
+// Update nav based on session
+(function() {
+  const s = window.HepoAuth && HepoAuth.getSession();
+  if (s) {
+    const loginBtns = document.querySelectorAll('a[href="login.html"].btn-outline');
+    loginBtns.forEach(btn => { btn.textContent = '👤 Conta'; btn.href = 'dashboard.html'; });
+    const regBtns = document.querySelectorAll('a[href="register.html"].btn-primary');
+    regBtns.forEach(btn => btn.style.display = 'none');
+  }
+})();
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

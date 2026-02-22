@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .filters-bar {
+      display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:2rem;
+      align-items:center; background:var(--surface);
+      border:1px solid var(--border); border-radius:16px; padding:1.25rem;
+    }
+    .search-bar {
+      flex:1; min-width:200px;
+      background:rgba(255,255,255,0.06); border:1px solid var(--border);
+      border-radius:100px; padding:0.65rem 1.25rem;
+      color:var(--text); font-size:0.9rem; font-family:var(--font); transition:var(--transition);
+    }
+    .search-bar:focus { outline:none; border-color:var(--primary); background:rgba(0,120,212,0.08); }
+    .search-bar::placeholder { color:var(--text-muted); }
+    .filter-btn {
+      padding:0.5rem 1.1rem; border-radius:100px; border:1px solid var(--border);
+      background:transparent; color:var(--text-muted); cursor:pointer;
+      transition:var(--transition); font-size:0.82rem; font-family:var(--font);
+      font-weight:500; white-space:nowrap;
+    }
+    .filter-btn:hover,.filter-btn.active { background:var(--gradient); color:#fff; border-color:transparent; }
+    .sort-select {
+      background:rgba(255,255,255,0.06); border:1px solid var(--border);
+      border-radius:100px; padding:0.55rem 1rem; color:var(--text);
+      font-size:0.82rem; cursor:pointer; font-family:var(--font);
+    }
+    .sort-select:focus { outline:none; }
+    .sort-select option { background:var(--surface); }
+    .results-count { color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem; }
+    .results-count span { color:var(--primary); font-weight:700; }
+
+    /* GRID */
+    .products-real-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(250px,1fr));
+      gap:1.5rem;
+    }
+
+    /* CARD */
+    .real-product-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden; transition:var(--transition);
+      cursor:pointer; display:flex; flex-direction:column; position:relative;
+    }
+    .real-product-card:hover {
+      transform:translateY(-6px);
+      border-color:rgba(0,120,212,0.4);
+      box-shadow:0 20px 50px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,120,212,0.15);
+    }
+    .prod-img-wrap {
+      width:100%; height:240px; overflow:hidden; position:relative;
+      background:var(--surface-2);
+    }
+    .prod-img-wrap img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform 0.5s ease; display:block;
+    }
+    .real-product-card:hover .prod-img-wrap img { transform:scale(1.07); }
+    .badge-wrap {
+      position:absolute; top:0.75rem; left:0.75rem;
+      display:flex; gap:0.4rem; z-index:2;
+    }
+    .pbadge {
+      color:#fff; font-size:0.68rem; font-weight:700;
+      padding:0.22rem 0.65rem; border-radius:100px; letter-spacing:0.3px;
+    }
+    .pbadge.default { background:var(--gradient); }
+    .pbadge.sale { background:linear-gradient(135deg,#ef4444,#dc2626); }
+    .pbadge.novo { background:linear-gradient(135deg,#10b981,#059669); }
+    .pbadge.hot  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+    .wish-btn {
+      position:absolute; top:0.75rem; right:0.75rem;
+      width:34px; height:34px; border-radius:50%;
+      background:rgba(10,10,15,0.7); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; z-index:2; transition:var(--transition);
+      font-size:1rem; backdrop-filter:blur(4px);
+    }
+    .wish-btn:hover { background:rgba(239,68,68,0.3); border-color:#ef4444; }
+    .prod-info {
+      padding:1rem 1.2rem 1.2rem; display:flex; flex-direction:column; flex:1;
+    }
+    .prod-cat { font-size:0.7rem; color:var(--primary); font-weight:700; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:0.25rem; }
+    .prod-name { font-weight:700; font-size:0.95rem; color:var(--text); margin-bottom:0.25rem; line-height:1.35; }
+    .prod-partner { font-size:0.75rem; color:var(--text-muted); margin-bottom:0.55rem; }
+    .prod-rating { display:flex; align-items:center; gap:0.35rem; margin-bottom:0.75rem; }
+    .stars { color:#f59e0b; font-size:0.8rem; }
+    .rev-count { font-size:0.72rem; color:var(--text-muted); }
+    .prod-footer { display:flex; align-items:center; justify-content:space-between; margin-top:auto; gap:0.5rem; }
+    .prod-price { font-size:1.1rem; font-weight:800; color:var(--primary); }
+    .prod-add-btn {
+      background:var(--gradient); color:#fff; border:none; border-radius:10px;
+      padding:0.52rem 1rem; font-size:0.8rem; cursor:pointer;
+      transition:var(--transition); font-weight:700; font-family:var(--font); white-space:nowrap;
+    }
+    .prod-add-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,120,212,0.45); }
+
+    /* MODAL */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:9000;
+      background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center;
+      padding:1rem; opacity:0; pointer-events:none; transition:opacity 0.3s ease;
+      backdrop-filter:blur(8px);
+    }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal-box {
+      background:var(--surface); border:1px solid var(--border); border-radius:24px;
+      max-width:720px; width:100%; max-height:90vh; overflow-y:auto;
+      display:grid; grid-template-columns:1.1fr 1fr;
+      transform:scale(0.9); transition:transform 0.3s ease;
+    }
+    .modal-overlay.open .modal-box { transform:scale(1); }
+    .modal-img-panel {
+      border-radius:24px 0 0 24px; overflow:hidden; min-height:340px;
+    }
+    .modal-img-panel img { width:100%; height:100%; object-fit:cover; display:block; }
+    .modal-body { padding:2rem; display:flex; flex-direction:column; }
+    .modal-close {
+      align-self:flex-end; background:rgba(255,255,255,0.08); border:1px solid var(--border);
+      border-radius:50%; width:32px; height:32px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:1.1rem; color:var(--text);
+      transition:var(--transition); margin-bottom:1rem;
+    }
+    .modal-close:hover { background:rgba(239,68,68,0.25); border-color:#ef4444; }
+    .m-cat { font-size:0.7rem; color:var(--primary); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.35rem; }
+    .m-name { font-size:1.25rem; font-weight:800; margin-bottom:0.35rem; line-height:1.2; }
+    .m-partner { font-size:0.8rem; color:var(--text-muted); margin-bottom:0.65rem; }
+    .m-price { font-size:1.75rem; font-weight:900; color:var(--primary); margin-bottom:0.75rem; }
+    .m-desc { font-size:0.86rem; color:var(--text-muted); line-height:1.7; margin-bottom:1.1rem; flex:1; }
+    .m-qty { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.1rem; }
+    .m-qty-btn { width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer; font-size:1.1rem; transition:var(--transition); }
+    .m-qty-btn:hover { border-color:var(--primary); color:var(--primary); }
+    .m-qty-num { font-weight:700; font-size:1.1rem; min-width:24px; text-align:center; }
+    .m-add-btn {
+      background:var(--gradient); color:#fff; border:none; border-radius:12px;
+      padding:0.85rem; font-size:0.95rem; font-weight:700; cursor:pointer;
+      transition:var(--transition); font-family:var(--font); width:100%;
+    }
+    .m-add-btn:hover { box-shadow:0 8px 25px rgba(0,120,212,0.5); transform:translateY(-1px); }
+    .m-wa-btn {
+      display:flex; align-items:center; justify-content:center; gap:0.5rem;
+      background:#25d366; color:#fff; border-radius:12px; padding:0.75rem;
+      font-size:0.88rem; font-weight:700; margin-top:0.65rem;
+      cursor:pointer; transition:var(--transition); text-decoration:none;
+    }
+    .m-wa-btn:hover { background:#1da851; transform:translateY(-1px); }
+
+    .empty-state { text-align:center; padding:5rem 2rem; grid-column:1/-1; }
+    .empty-state .icon { font-size:4rem; margin-bottom:1rem; }
+
+    @media(max-width:768px) {
+      .modal-box { grid-template-columns:1fr; }
+      .modal-img-panel { min-height:200px; border-radius:24px 24px 0 0; }
+      .products-real-grid { grid-template-columns:repeat(auto-fill, minmax(155px,1fr)); gap:0.85rem; }
+      .prod-img-wrap { height:160px; }
+    }
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo">
+      <img src="../images/logo.jpeg" alt="HepoMarket Logo">
+      <span>HepoMarket</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-btn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <a href="login.html" class="btn-outline">Entrar</a>
+      <a href="register.html" class="btn-primary">Cadastrar</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <h1>Todos os <span class="gradient-text">Produtos</span></h1>
+    <p>Explore os melhores produtos dos nossos parceiros em Angola. Qualidade garantida e entrega rápida.</p>
+  </div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="filters-bar">
+      <input type="text" class="search-bar" placeholder="🔍 Pesquisar produtos..." id="searchBar">
+      <button class="filter-btn active" data-cat="todos">Todos</button>
+      <button class="filter-btn" data-cat="beleza">💄 Beleza</button>
+      <button class="filter-btn" data-cat="casa">🏠 Casa & Lar</button>
+      <button class="filter-btn" data-cat="moda">👜 Moda</button>
+      <button class="filter-btn" data-cat="bebe">🍼 Bebé</button>
+      <select class="sort-select" id="sortSelect">
+        <option value="default">Ordenar por</option>
+        <option value="price-asc">Preço: Menor primeiro</option>
+        <option value="price-desc">Preço: Maior primeiro</option>
+        <option value="name">Nome A-Z</option>
+        <option value="rating">Melhor avaliação</option>
+      </select>
+    </div>
+
+    <p class="results-count">Mostrando <span id="resultCount">20</span> produtos disponíveis</p>
+
+    <div class="products-real-grid" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-img-panel">
+      <img src="" alt="" id="mImg">
+    </div>
+    <div class="modal-body">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="m-cat" id="mCat"></div>
+      <div class="m-name" id="mName"></div>
+      <div class="m-partner" id="mPartner"></div>
+      <div class="m-price" id="mPrice"></div>
+      <p class="m-desc" id="mDesc"></p>
+      <div class="m-qty">
+        <button class="m-qty-btn" id="qMinus">−</button>
+        <span class="m-qty-num" id="qNum">1</span>
+        <button class="m-qty-btn" id="qPlus">+</button>
+        <span style="font-size:0.8rem;color:var(--text-muted)">unid.</span>
+      </div>
+      <button class="m-add-btn" id="mAddCart">🛒 Adicionar ao Carrinho</button>
+      <a class="m-wa-btn" id="mWA" href="#" target="_blank">💬 Encomendar via WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle">
+    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="ai-badge">IA</span>
+  </button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header">
+      <div class="ai-avatar">🤖</div>
+      <div><strong>Hepo Assistant</strong><span class="ai-status">● Online</span></div>
+      <button class="ai-close" id="aiClose">×</button>
+    </div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="ai-msg bot">Olá! Posso ajudá-lo a encontrar o produto ideal. Pergunte-me! 😊</div>
+    </div>
+    <div class="ai-input-area">
+      <input type="text" id="aiInput" placeholder="Procura algum produto?">
+      <button id="aiSend" class="ai-send-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+<script>
+// ── Apenas produtos adicionados pelo CEO ──
+function getCEOProducts() {
+  try {
+    return JSON.parse(localStorage.getItem('hepo_admin_products') || '[]');
+  } catch(e) { return []; }
+}
+
+const catIcons  = {beleza:'💄',casa:'🏠',moda:'👜',bebe:'🍼',eletronicos:'📱',outro:'📦'};
+const catColors = {beleza:'#ec4899',casa:'#10b981',moda:'#8b5cf6',bebe:'#f59e0b',eletronicos:'#6366f1',outro:'#0078d4'};
+
+let currentProduct = null;
+let qty = 1;
+
+function getStars(n) { return '★'.repeat(n||5) + '☆'.repeat(5-(n||5)); }
+
+function renderGrid(products) {
+  const grid = document.getElementById('productsGrid');
+  document.getElementById('resultCount').textContent = products.length;
+
+  if (!products.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="icon">🛍️</div><h3>Sem produtos disponíveis</h3><p style="color:var(--text-muted);margin-top:.5rem">Os produtos serão adicionados em breve.</p></div>`;
+    return;
+  }
+
+  // Promoções sempre primeiro
+  const sorted = [
+    ...products.filter(p => p.promo || (p.badge||'').toLowerCase().includes('promo')),
+    ...products.filter(p => !p.promo && !(p.badge||'').toLowerCase().includes('promo')),
+  ];
+
+  grid.innerHTML = sorted.map(p => {
+    const icon = catIcons[p.cat] || '📦';
+    const color = catColors[p.cat] || '#0078d4';
+    const isPromo = p.promo || (p.badge||'').toLowerCase().includes('promo');
+    return `
+    <div class="real-product-card" onclick="openModal('${p.id}')" style="${isPromo ? 'border-color:rgba(239,68,68,.4);' : ''}">
+      <div class="prod-img-wrap" style="background:linear-gradient(135deg,${color}20,${color}08);min-height:180px;display:flex;align-items:center;justify-content:center;font-size:5rem;">
+        ${isPromo ? `<div class="badge-wrap"><span class="pbadge hot">🔥 ${p.badge||'Promo'}</span></div>` : p.badge ? `<div class="badge-wrap"><span class="pbadge">${p.badge}</span></div>` : ''}
+        <span style="transition:transform .3s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">${icon}</span>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">${catLabels[p.cat] || '📦 Produto'}</div>
+        <div class="prod-name">${p.nome}</div>
+        <div class="prod-partner">🏪 ${p.parceiro || 'HepoMarket'}</div>
+        <div class="prod-rating"><span class="stars">${getStars(5)}</span></div>
+        <div class="prod-footer">
+          <div>
+            <span class="prod-price" style="${isPromo?'color:#ef4444;':''}">${parseInt(p.preco||0).toLocaleString('pt-PT')} Kz</span>
+            ${p.precoAntigo ? `<span style="text-decoration:line-through;color:var(--text-muted);font-size:.78rem;margin-left:.35rem;">${parseInt(p.precoAntigo).toLocaleString('pt-PT')} Kz</span>` : ''}
+          </div>
+          <button class="prod-add-btn" onclick="event.stopPropagation();quickAdd('${p.id}')">+ Carrinho</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let wishlist = JSON.parse(localStorage.getItem('hepoWishlist') || '[]');
+
+function quickAdd(id) {
+  const prods = getCEOProducts();
+  const p = prods.find(x => x.id === id);
+  if (p) addToCart({ id:p.id, name:p.nome, price:parseInt(p.preco||0).toLocaleString('pt-PT')+' Kz', partner:p.parceiro||'HepoMarket', emoji:catIcons[p.cat]||'📦' });
+}
+
+function openModal(id) {
+  const prods = getCEOProducts();
+  const p = prods.find(x => x.id === id);
+  if (!p) return;
+  currentProduct = p; qty = 1;
+  const icon = catIcons[p.cat] || '📦';
+  const color = catColors[p.cat] || '#0078d4';
+  // Use icon instead of img
+  const imgEl = document.getElementById('mImg');
+  if (imgEl) {
+    imgEl.style.display = 'none';
+    let iconDiv = document.getElementById('mIconDisplay');
+    if (!iconDiv) {
+      iconDiv = document.createElement('div');
+      iconDiv.id = 'mIconDisplay';
+      iconDiv.style.cssText = `font-size:5rem;text-align:center;padding:1.5rem;background:linear-gradient(135deg,${color}20,${color}08);border-radius:12px;margin-bottom:1rem;`;
+      imgEl.parentNode.insertBefore(iconDiv, imgEl);
+    }
+    iconDiv.textContent = icon;
+    iconDiv.style.background = `linear-gradient(135deg,${color}20,${color}08)`;
+  }
+  const catEl = document.getElementById('mCat');
+  if (catEl) catEl.textContent = catLabels[p.cat] || 'Produto';
+  const nameEl = document.getElementById('mName');
+  if (nameEl) nameEl.textContent = p.nome;
+  const partEl = document.getElementById('mPartner');
+  if (partEl) partEl.textContent = '🏪 ' + (p.parceiro || 'HepoMarket');
+  const priceEl = document.getElementById('mPrice');
+  if (priceEl) priceEl.textContent = parseInt(p.preco||0).toLocaleString('pt-PT') + ' Kz';
+  const descEl = document.getElementById('mDesc');
+  if (descEl) descEl.textContent = p.descricao || 'Produto disponível na HepoMarket.';
+  const qEl = document.getElementById('qNum');
+  if (qEl) qEl.textContent = 1;
+  const msg = encodeURIComponent(`Olá HepoMarket! Tenho interesse no produto: *${p.nome}* – ${parseInt(p.preco||0).toLocaleString('pt-PT')} Kz. Podem confirmar disponibilidade?`);
+  const waEl = document.getElementById('mWA');
+  if (waEl) waEl.href = `https://wa.me/244952100356?text=${msg}`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('qMinus').addEventListener('click', () => { if (qty > 1) { qty--; document.getElementById('qNum').textContent = qty; } });
+document.getElementById('qPlus').addEventListener('click',  () => { qty++; document.getElementById('qNum').textContent = qty; });
+document.getElementById('mAddCart').addEventListener('click', () => {
+  if (!currentProduct) return;
+  for (let i = 0; i < qty; i++) addToCart({ id:currentProduct.id, name:currentProduct.nome, price:parseInt(currentProduct.preco||0).toLocaleString('pt-PT')+' Kz', partner:currentProduct.parceiro||'HepoMarket', emoji:catIcons[currentProduct.cat]||'📦' });
+  closeModal();
+});
+
+// Filters & sort
+let activeFilter = 'todos';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.cat;
+    applyFilters();
+  });
+});
+document.getElementById('searchBar').addEventListener('input', applyFilters);
+document.getElementById('sortSelect').addEventListener('change', applyFilters);
+
+function applyFilters() {
+  const q = document.getElementById('searchBar').value.toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
+  let r = getCEOProducts().filter(p => {
+    const mc = activeFilter === 'todos' || p.cat === activeFilter;
+    const mq = (p.nome||'').toLowerCase().includes(q) || (p.descricao||'').toLowerCase().includes(q);
+    return mc && mq;
+  });
+  if (sort === 'price-asc')  r.sort((a,b) => (a.preco||0) - (b.preco||0));
+  if (sort === 'price-desc') r.sort((a,b) => (b.preco||0) - (a.preco||0));
+  if (sort === 'name')       r.sort((a,b) => (a.nome||'').localeCompare(b.nome||''));
+  renderGrid(r);
+}
+
+// Inicializar com produtos CEO
+renderGrid(getCEOProducts());
+</script>
+
+<script>
+// Update nav based on session
+(function() {
+  const s = window.HepoAuth && HepoAuth.getSession();
+  if (s) {
+    const loginBtns = document.querySelectorAll('a[href="login.html"].btn-outline');
+    loginBtns.forEach(btn => { btn.textContent = '👤 Conta'; btn.href = 'dashboard.html'; });
+    const regBtns = document.querySelectorAll('a[href="register.html"].btn-primary');
+    regBtns.forEach(btn => btn.style.display = 'none');
+  }
+})();
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

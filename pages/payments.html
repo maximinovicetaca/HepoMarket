@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formas de Pagamento – HepoMarket</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .payment-methods { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
+    .payment-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:2rem; transition:var(--transition); }
+    .payment-card:hover { border-color:var(--primary); transform:translateY(-3px); }
+    .payment-icon { font-size:2.5rem; margin-bottom:1rem; }
+    .payment-card h3 { font-weight:700; margin-bottom:0.75rem; }
+    .payment-card p { color:var(--text-muted); font-size:0.9rem; line-height:1.7; margin-bottom:1rem; }
+    .payment-steps { font-size:0.85rem; color:var(--text-muted); }
+    .payment-steps li { margin-bottom:0.4rem; padding-left:1rem; position:relative; }
+    .payment-steps li::before { content:'→'; position:absolute; left:0; color:var(--primary); }
+    .bank-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; }
+    .bank-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1rem; text-align:center; font-weight:700; font-size:0.9rem; transition:var(--transition); }
+    .bank-card:hover { border-color:var(--primary); }
+    .bank-card .bank-emoji { font-size:1.75rem; margin-bottom:0.5rem; }
+  </style>
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('../images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-logo"><img src="../images/logo.jpeg" alt=""><span>HepoMarket</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="products.html">Produtos</a></li>
+      <li><a href="partners.html">Parceiros</a></li>
+      <li><a href="affiliates.html">Afiliados</a></li>
+      <li><a href="about.html">Quem Somos</a></li>
+      <li><a href="contact.html">Contacto</a></li>
+      <li><a href="support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="cart-btn"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></a>
+      <a href="login.html" class="btn-outline">Entrar</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div><h1>Formas de <span class="gradient-text">Pagamento</span></h1><p>Pagamentos seguros e convenientes com os métodos mais usados em Angola.</p></div>
+</div>
+
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header"><span class="section-tag">Métodos Disponíveis</span><h2>Escolha a forma mais conveniente</h2></div>
+    <div class="payment-methods">
+      <div class="payment-card" data-animate>
+        <div class="payment-icon">📱</div>
+        <h3>Multicaixa Express</h3>
+        <p>O método mais rápido e popular em Angola. Disponível 24/7 diretamente no seu telemóvel.</p>
+        <ul class="payment-steps">
+          <li>Abra a app Multicaixa Express</li>
+          <li>Selecione "Pagamento de Serviços"</li>
+          <li>Insira a referência do pedido</li>
+          <li>Confirme com o seu PIN</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.6rem;background:rgba(16,185,129,0.1);border-radius:8px;font-size:0.8rem;color:var(--success);">✓ Confirmação imediata</div>
+      </div>
+      <div class="payment-card" data-animate>
+        <div class="payment-icon">🏦</div>
+        <h3>Transferência Bancária</h3>
+        <p>Transfira diretamente da sua conta bancária para a conta HepoMarket. Seguro e rastreável.</p>
+        <ul class="payment-steps">
+          <li>Aceda ao seu banco online</li>
+          <li>Use os dados bancários fornecidos</li>
+          <li>Inclua o número do pedido na descrição</li>
+          <li>Envie o comprovativo pelo WhatsApp</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.6rem;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.8rem;color:var(--warning);">⏱ Confirmação: 1-2 horas</div>
+      </div>
+      <div class="payment-card" data-animate>
+        <div class="payment-icon">💳</div>
+        <h3>Pagamento por TPA</h3>
+        <p>Para compras presenciais nos nossos pontos de recolha, disponível pagamento por TPA (terminal).</p>
+        <ul class="payment-steps">
+          <li>Dirija-se ao ponto de recolha</li>
+          <li>Apresente o número do pedido</li>
+          <li>Pague com cartão Multicaixa ou Visa</li>
+          <li>Levante o produto</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.6rem;background:rgba(99,102,241,0.1);border-radius:8px;font-size:0.8rem;color:var(--accent);">📍 Disponível em Cacuaco, Luanda</div>
+      </div>
+      <div class="payment-card" data-animate>
+        <div class="payment-icon">🚚</div>
+        <h3>Pagamento na Entrega</h3>
+        <p>Receba o produto em casa e pague ao entregador. Disponível apenas em Luanda.</p>
+        <ul class="payment-steps">
+          <li>Selecione "Pagamento na Entrega"</li>
+          <li>Confirme o endereço de entrega</li>
+          <li>Prepare o valor exato em dinheiro</li>
+          <li>Receba o produto e pague o entregador</li>
+        </ul>
+        <div style="margin-top:1rem;padding:0.6rem;background:rgba(0,120,212,0.1);border-radius:8px;font-size:0.8rem;color:var(--primary);">🏙️ Apenas Luanda (+ 1.500 Kz taxa)</div>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:4rem;"><span class="section-tag">Bancos Parceiros</span><h2>Bancos aceites para transferência</h2></div>
+    <div class="bank-grid" data-animate>
+      <div class="bank-card"><div class="bank-emoji">🏦</div>BPC</div>
+      <div class="bank-card"><div class="bank-emoji">🏦</div>BAI</div>
+      <div class="bank-card"><div class="bank-emoji">🏦</div>BFA</div>
+      <div class="bank-card"><div class="bank-emoji">🏦</div>Standard Bank</div>
+      <div class="bank-card"><div class="bank-emoji">🏦</div>BNI</div>
+      <div class="bank-card"><div class="bank-emoji">🏦</div>BIC Angola</div>
+    </div>
+
+    <div style="background:rgba(0,120,212,0.08);border:1px solid rgba(0,120,212,0.2);border-radius:16px;padding:2rem;margin-top:3rem;text-align:center;" data-animate>
+      <h3 style="margin-bottom:0.75rem;">🔐 Pagamentos 100% Seguros</h3>
+      <p style="color:var(--text-muted);max-width:500px;margin:0 auto 1.5rem;">Todos os pagamentos são processados de forma segura e encriptada. O seu dinheiro só é transferido ao vendedor após a confirmação da entrega.</p>
+      <a href="contact.html" class="btn-primary" style="font-size:0.9rem;padding:0.7rem 1.75rem">Precisa de Ajuda?</a>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="ai-badge">IA</span></button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header"><div class="ai-avatar">🤖</div><div><strong>Hepo Assistant</strong><span class="ai-status">● Online</span></div><button class="ai-close" id="aiClose">×</button></div>
+    <div class="ai-messages" id="aiMessages"><div class="ai-msg bot">Dúvidas sobre pagamentos? Estou aqui para ajudar! 💳</div></div>
+    <div class="ai-input-area"><input type="text" id="aiInput" placeholder="Pergunte sobre pagamentos..."><button id="aiSend" class="ai-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+  </div>
+</div>
+<script src="../js/hepo-auth.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+// Update nav based on session
+(function() {
+  const s = window.HepoAuth && HepoAuth.getSession();
+  if (s) {
+    const loginBtns = document.querySelectorAll('a[href="login.html"].btn-outline');
+    loginBtns.forEach(btn => { btn.textContent = '👤 Conta'; btn.href = 'dashboard.html'; });
+    const regBtns = document.querySelectorAll('a[href="register.html"].btn-primary');
+    regBtns.forEach(btn => btn.style.display = 'none');
+  }
+})();
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

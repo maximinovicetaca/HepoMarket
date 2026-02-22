@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HepoMarket – Plataforma de Comércio Inteligente</title>
+  <link rel="icon" href="images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<script>
+(function(){
+  try {
+    const t = JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');
+    const themes = ['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];
+    const bases  = ['base-escuro','base-meia-luz','base-slate'];
+    if (t.color && themes.includes(t.color)) document.documentElement.className += ' theme-'+t.color;
+    if (t.base  && bases.includes(t.base))   document.documentElement.className += ' ' + t.base;
+    if (t.fontSize) document.documentElement.style.fontSize = t.fontSize + 'px';
+  } catch(e){}
+})();
+</script>
+<style>
+body::before{content:'';position:fixed;inset:0;z-index:-2;background-image:url('images/bg-hero.jpg');background-size:cover;background-position:center;background-attachment:fixed;animation:bgBreath 20s ease-in-out infinite alternate;}
+@keyframes bgBreath{from{transform:scale(1)}to{transform:scale(1.04)}}
+body::after{content:'';position:fixed;inset:0;z-index:-1;background:rgba(5,8,24,0.88);}
+body.design-apple{--primary:#0a84ff;--gradient:linear-gradient(135deg,#0a84ff,#5e5ce6);}
+body.design-win11{--primary:#0067c0;--gradient:linear-gradient(135deg,#0067c0,#1a7fd4);}
+body.design-samsung{--primary:#1428a0;--gradient:linear-gradient(135deg,#1428a0,#b537f2);}
+</style>
+<script>
+(function(){
+  try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.color){const themes=['azul','verde','roxo','laranja','rosa','ouro','vermelho','teal'];themes.forEach(th=>document.body.classList.remove('theme-'+th));document.body.classList.add('theme-'+t.color);}if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);if(t.fontSize)document.documentElement.style.fontSize=t.fontSize+'px';}catch(e){}
+  try{const bg=localStorage.getItem('hepo_hero_bg');if(bg){const st=document.createElement('style');st.textContent='body::before{background-image:url("'+bg+'")!important}';document.head.appendChild(st);}}catch(e){}
+})();
+</script>
+<script>
+// V10: Clear previously stored products
+(function(){
+  const vKey='hepo_v';
+  if(localStorage.getItem(vKey)!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem(vKey,'10');
+  }
+})();
+</script>
+</head>
+<body class="root-page">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.jpeg" alt="HepoMarket Logo">
+      <span>HepoMarket</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Início</a></li>
+      <li><a href="pages/products.html">Produtos</a></li>
+      <li><a href="pages/partners.html">Parceiros</a></li>
+      <li><a href="pages/affiliates.html">Afiliados</a></li>
+      <li><a href="pages/services.html">🛠️ Serviços</a></li>
+      <li><a href="pages/about.html">Quem Somos</a></li>
+      <li><a href="pages/contact.html">Contacto</a></li>
+      <li><a href="pages/support.html">Apoio</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="pages/cart.html" class="cart-btn" title="Carrinho">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <a href="pages/login.html" class="btn-outline">Entrar</a>
+      <a href="pages/register.html" class="btn-primary">Cadastrar</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<div class="hero-wrapper">
+  <div class="hero-photo-bg">
+    <div class="hero-bg-img"></div>
+    <div class="photo-overlay"></div>
+  </div>
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge animate-fade-up">🇦🇴 Plataforma Nº1 em Angola</div>
+    <h1 class="hero-title animate-fade-up delay-1">
+      Bem-vindo ao<br>
+      <span class="gradient-text">HepoMarket</span>
+    </h1>
+    <p class="hero-subtitle animate-fade-up delay-2">
+      A plataforma de comércio inteligente com parceiros qualificados, afiliados e renda extra. Venda, compre e cresça no mercado angolano e internacional.
+    </p>
+    <div class="hero-actions animate-fade-up delay-3">
+      <a href="pages/products.html" class="btn-hero-primary">Explorar Produtos</a>
+      <a href="pages/affiliates.html" class="btn-hero-outline">Tornar-se Afiliado</a>
+    </div>
+    <div class="hero-stats animate-fade-up delay-4">
+      <div class="stat"><span class="stat-number" data-target="500">0</span><span>+</span><p>Parceiros</p></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-number" data-target="10000">0</span><span>+</span><p>Produtos</p></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-number" data-target="25000">0</span><span>+</span><p>Clientes</p></div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="floating-card card-1">
+      <div style="font-size:1.6rem;">💰</div>
+      <div><strong>Renda Extra</strong><br><small>Ganhe comissões reais</small></div>
+    </div>
+    <div class="floating-card card-2">
+      <div style="font-size:1.6rem;">🚚</div>
+      <div><strong>Entrega Rápida</strong><br><small>24–48 horas Luanda</small></div>
+    </div>
+    <div class="floating-card card-3">
+      <div style="font-size:1.6rem;">🔒</div>
+      <div><strong>100% Seguro</strong><br><small>Pagamento protegido</small></div>
+    </div>
+
+    <!-- Phone mockup with real products -->
+    <div class="phone-mockup">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="phone-header">
+          <img src="images/logo.jpeg" style="width:18px;height:18px;border-radius:4px;object-fit:cover;" alt="">
+          HepoMarket
+        </div>
+        <div class="phone-promo-banner">🔥 Produtos disponíveis</div>
+        <div id="phoneMockupProds" style="padding:.5rem .75rem;">
+          <!-- Preenchido dinamicamente pelos produtos do CEO -->
+          <div style="text-align:center;padding:1.5rem .5rem;color:rgba(255,255,255,.45);font-size:.75rem;">
+            <div style="font-size:1.8rem;margin-bottom:.35rem;">🛍️</div>
+            Produtos a carregar…
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /hero-wrapper -->
+
+<!-- ===== FEATURES ===== -->
+<section class="features section-pad" id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Como Funciona</span>
+      <h2>Uma plataforma, infinitas possibilidades</h2>
+      <p>Venda os seus produtos, promova os de terceiros e construa uma fonte de renda sustentável.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" data-animate>
+        <div class="feature-icon" style="--icon-color:#0078d4">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Programa de Parceiros</h3>
+        <p>Registe a sua loja virtual e venda os seus produtos na nossa plataforma com visibilidade máxima no mercado.</p>
+        <a href="pages/partners.html" class="feature-link">Saiba mais →</a>
+      </div>
+      <div class="feature-card" data-animate>
+        <div class="feature-icon" style="--icon-color:#00b4d8">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Renda Extra por Afiliação</h3>
+        <p>Promova produtos de parceiros qualificados e ganhe comissões atrativas por cada venda realizada.</p>
+        <a href="pages/affiliates.html" class="feature-link">Saiba mais →</a>
+      </div>
+      <div class="feature-card" data-animate>
+        <div class="feature-icon" style="--icon-color:#6366f1">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </div>
+        <h3>Carrinho Inteligente</h3>
+        <p>Compre produtos de múltiplos parceiros num único carrinho com pagamento unificado e seguro.</p>
+        <a href="pages/products.html" class="feature-link">Saiba mais →</a>
+      </div>
+      <div class="feature-card" data-animate>
+        <div class="feature-icon" style="--icon-color:#10b981">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3>Parceiros Qualificados</h3>
+        <p>Todos os nossos parceiros são verificados e avaliados para garantir a melhor experiência ao cliente.</p>
+        <a href="pages/partners.html" class="feature-link">Saiba mais →</a>
+      </div>
+      <div class="feature-card" data-animate>
+        <div class="feature-icon" style="--icon-color:#f59e0b">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <h3>Pagamentos Seguros</h3>
+        <p>Múltiplas formas de pagamento incluindo Multicaixa Express, transferência bancária e cartão.</p>
+        <a href="pages/payments.html" class="feature-link">Saiba mais →</a>
+      </div>
+      <div class="feature-card" data-animate>
+        <div class="feature-icon" style="--icon-color:#ef4444">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Assistente IA 24/7</h3>
+        <p>Nosso assistente inteligente responde dúvidas, processa pedidos e suporta clientes automaticamente.</p>
+        <a href="pages/support.html" class="feature-link">Saiba mais →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED PRODUCTS ===== -->
+<section class="products-section section-pad" id="products">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">🔥 Em Promoção</span>
+      <h2>Produtos em Destaque & Promoção</h2>
+      <p>As melhores ofertas dos nossos parceiros. Promoções activas sempre no topo!</p>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <!-- Products loaded by JS -->
+    </div>
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="pages/products.html" class="btn-primary" style="font-size:1rem;padding:0.9rem 2.5rem">Ver Todos os Produtos</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SERVIÇOS ===== -->
+<section class="services-section section-pad" id="services">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">🛠️ Serviços</span>
+      <h2>Prestação de Serviços Profissionais</h2>
+      <p>Técnicos qualificados para todos os seus projectos em Angola. Orçamento gratuito.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid">
+      <a href="pages/support.html?service=eletricidade" class="service-card" data-animate>
+        <div class="service-icon" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">⚡</div>
+        <h3>Electricidade</h3>
+        <p>Instalações eléctricas residenciais e comerciais, quadros eléctricos, tomadas, iluminação LED e automação.</p>
+        <ul class="service-list">
+          <li>✓ Instalação completa</li>
+          <li>✓ Manutenção preventiva</li>
+          <li>✓ Certificação técnica</li>
+        </ul>
+        <span class="service-cta">Solicitar Orçamento →</span>
+      </a>
+      <a href="pages/support.html?service=frio-climatizacao" class="service-card" data-animate>
+        <div class="service-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">❄️</div>
+        <h3>Frio & Climatização</h3>
+        <p>Instalação e manutenção de ar condicionado, câmaras frigoríficas, sistemas de ventilação e climatização.</p>
+        <ul class="service-list">
+          <li>✓ Todas as marcas</li>
+          <li>✓ Manutenção programada</li>
+          <li>✓ Assistência 24h</li>
+        </ul>
+        <span class="service-cta">Solicitar Orçamento →</span>
+      </a>
+      <a href="pages/support.html?service=ladrilho-pinturas" class="service-card" data-animate>
+        <div class="service-icon" style="background:linear-gradient(135deg,#10b981,#059669)">🧱</div>
+        <h3>Ladrilho & Pinturas</h3>
+        <p>Assentamento de pavimentos, azulejos, revestimentos cerâmicos e pintura interior e exterior profissional.</p>
+        <ul class="service-list">
+          <li>✓ Materiais incluídos</li>
+          <li>✓ Acabamento premium</li>
+          <li>✓ Garantia de obra</li>
+        </ul>
+        <span class="service-cta">Solicitar Orçamento →</span>
+      </a>
+      <a href="pages/support.html?service=teto-falso" class="service-card" data-animate>
+        <div class="service-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">🏗️</div>
+        <h3>Tectos Falsos</h3>
+        <p>Aplicação de tectos falsos em gesso cartonado, PVC, alumínio e madeira com design moderno e funcional.</p>
+        <ul class="service-list">
+          <li>✓ Design personalizado</li>
+          <li>✓ Iluminação integrada</li>
+          <li>✓ Isolamento acústico</li>
+        </ul>
+        <span class="service-cta">Solicitar Orçamento →</span>
+      </a>
+      <a href="pages/support.html?service=canalizacao" class="service-card" data-animate>
+        <div class="service-icon" style="background:linear-gradient(135deg,#06b6d4,#0284c7)">🚿</div>
+        <h3>Canalização</h3>
+        <p>Instalação e reparação de canalizações, casas de banho, cozinhas, detectção e resolução de fugas.</p>
+        <ul class="service-list">
+          <li>✓ Emergências 24/7</li>
+          <li>✓ Detecção de fugas</li>
+          <li>✓ Materiais de qualidade</li>
+        </ul>
+        <span class="service-cta">Solicitar Orçamento →</span>
+      </a>
+      <a href="pages/products.html?cat=eletronicos" class="service-card" data-animate style="border-color:rgba(99,102,241,.3);">
+        <div class="service-icon" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">📱</div>
+        <h3>Acessórios Electrónicos</h3>
+        <p>Venda de acessórios electrónicos: cabos, carregadores, fones, colunas, smartwatches, tablets e muito mais.</p>
+        <ul class="service-list">
+          <li>✓ Marcas internacionais</li>
+          <li>✓ Garantia de qualidade</li>
+          <li>✓ Entrega em Luanda</li>
+        </ul>
+        <span class="service-cta">Ver Produtos →</span>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="pages/contact.html" class="btn-primary" style="font-size:1rem;padding:.9rem 2.5rem;">📞 Contactar para Orçamento Gratuito</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BECOME PARTNER / AFFILIATE ===== -->
+<section class="cta-split section-pad">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-card cta-partner" data-animate>
+        <div class="cta-icon">🤝</div>
+        <h2>Seja um Parceiro</h2>
+        <p>Registe a sua loja virtual na HepoMarket e alcance milhares de clientes em Angola e além-fronteiras. Beneficie de ferramentas de gestão, análise de vendas e suporte dedicado.</p>
+        <ul class="cta-list">
+          <li>✓ Painel de controlo exclusivo</li>
+          <li>✓ Análise de vendas em tempo real</li>
+          <li>✓ Suporte prioritário</li>
+          <li>✓ Maior visibilidade no mercado</li>
+        </ul>
+        <a href="pages/partners.html" class="btn-white">Adicionar como Parceiro</a>
+      </div>
+      <div class="cta-card cta-affiliate" data-animate>
+        <div class="cta-icon">💰</div>
+        <h2>Seja um Afiliado</h2>
+        <p>Ganhe comissões promovendo produtos de parceiros qualificados. Uma oportunidade real de renda extra sem precisar de ter stock ou loja física.</p>
+        <ul class="cta-list">
+          <li>✓ Comissões competitivas</li>
+          <li>✓ Links de rastreio únicos</li>
+          <li>✓ Pagamentos pontuais</li>
+          <li>✓ Materiais de marketing incluídos</li>
+        </ul>
+        <a href="pages/affiliates.html" class="btn-white">Cadastrar como Afiliado</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials section-pad">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Depoimentos</span>
+      <h2>O que dizem os nossos parceiros</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card" data-animate>
+        <div class="stars">★★★★★</div>
+        <p>"A HepoMarket transformou o meu negócio. Passei a vender para clientes que nunca teria alcançado sozinho."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">AM</div>
+          <div><strong>André Mulanga</strong><br><small>Parceiro – Luanda</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-animate>
+        <div class="stars">★★★★★</div>
+        <p>"Como afiliada, ganho comissões mensais consistentes apenas partilhando links. Recomendo a todos!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">CS</div>
+          <div><strong>Carla Santos</strong><br><small>Afiliada – Benguela</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-animate>
+        <div class="stars">★★★★★</div>
+        <p>"Plataforma moderna, segura e com excelente apoio ao cliente. É a melhor opção no mercado angolano."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JP</div>
+          <div><strong>João Pedro</strong><br><small>Parceiro – Huambo</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-box" data-animate>
+      <div class="newsletter-text">
+        <h2>Fique por dentro das novidades</h2>
+        <p>Subscreva a nossa newsletter e receba ofertas exclusivas, novos parceiros e atualizações da plataforma.</p>
+      </div>
+      <form class="newsletter-form" id="newsletterForm">
+        <input type="email" placeholder="O seu e-mail" required>
+        <button type="submit" class="btn-primary">Subscrever</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="images/logo.jpeg" alt="HepoMarket">
+          <span>HepoMarket</span>
+        </div>
+        <p>Plataforma de comércio inteligente com sede em Luanda, Angola. Conectando compradores, vendedores e afiliados.</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/hepomarket" target="_blank" class="social-btn" title="Facebook">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/hepomarket" target="_blank" class="social-btn" title="Instagram">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/hepomarket" target="_blank" class="social-btn" title="LinkedIn">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="https://wa.me/244952100356" target="_blank" class="social-btn" title="WhatsApp">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@hepomarket" target="_blank" class="social-btn" title="TikTok">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@hepomarket" target="_blank" class="social-btn" title="YouTube">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Plataforma</h4>
+        <ul>
+          <li><a href="pages/products.html">Produtos</a></li>
+          <li><a href="pages/partners.html">Parceiros</a></li>
+          <li><a href="pages/affiliates.html">Afiliados</a></li>
+          <li><a href="pages/cart.html">Carrinho</a></li>
+          <li><a href="pages/payments.html">Formas de Pagamento</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="pages/services.html">🛠️ Serviços</a></li>
+      <li><a href="pages/about.html">Quem Somos</a></li>
+          <li><a href="pages/contact.html">Contacto</a></li>
+          <li><a href="pages/support.html">Apoio ao Cliente</a></li>
+          <li><a href="pages/terms.html">Termos e Condições</a></li>
+          <li><a href="pages/contracts.html">Contratos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li>📍 Cacuaco, Luanda, Angola</li>
+          <li>📞 <a href="tel:+244952100356">+244 952 100 356</a></li>
+          <li>📧 <a href="mailto:mvicetaca@gmail.com">mvicetaca@gmail.com</a></li>
+          <li>🕐 Seg-Sex: 08h-18h</li>
+        </ul>
+        <div style="margin-top:1rem">
+          <a href="https://wa.me/244952100356" class="btn-whatsapp" target="_blank">
+            💬 WhatsApp Agora
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 HepoMarket. Todos os direitos reservados. </p>
+      <div class="footer-bottom-links">
+        <a href="pages/terms.html">Privacidade</a>
+        <a href="pages/terms.html">Termos</a>
+        <a href="pages/contracts.html">Contratos</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== AI ASSISTANT ===== -->
+<div class="ai-assistant" id="aiAssistant">
+  <button class="ai-toggle" id="aiToggle" title="Assistente IA HepoMarket">
+    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="ai-badge">IA</span>
+  </button>
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-chat-header">
+      <div class="ai-avatar">🤖</div>
+      <div>
+        <strong>Hepo Assistant</strong>
+        <span class="ai-status">● Online</span>
+      </div>
+      <button class="ai-close" id="aiClose">×</button>
+    </div>
+    <div class="ai-messages" id="aiMessages">
+      <div class="ai-msg bot">
+        Olá! Sou o Hepo Assistant, gerente automático da HepoMarket. Como posso ajudá-lo hoje? 😊
+      </div>
+    </div>
+    <div class="ai-input-area">
+      <input type="text" id="aiInput" placeholder="Escreva a sua mensagem...">
+      <button id="aiSend" class="ai-send-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CART NOTIFICATION ===== -->
+<div class="toast" id="toast"></div>
+
+<script src="js/hepo-auth.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+(function() {
+  const s = window.HepoAuth && HepoAuth.getSession();
+  if (s) {
+    const loginBtns = document.querySelectorAll('a[href="pages/login.html"].btn-outline');
+    loginBtns.forEach(btn => { btn.textContent = '👤 Conta'; btn.href = 'pages/dashboard.html'; });
+    const regBtns = document.querySelectorAll('a[href="pages/register.html"].btn-primary');
+    regBtns.forEach(btn => { btn.textContent = '📊 Painel'; btn.href = s.role === 'ceo' ? 'pages/admin.html' : 'pages/dashboard.html'; });
+  }
+})();
+</script>
+
+<style>
+.hepo-logout-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--danger,#ef4444);color:#fff;border:none;border-radius:50px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 18px rgba(239,68,68,.45);transition:.2s;display:none;}
+.hepo-logout-fab:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(239,68,68,.5);}
+</style>
+
+<button class="hepo-logout-fab" id="hepoLogoutFab" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='pages/login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>
+(function(){
+  function checkSession(){
+    const s=window.HepoAuth&&HepoAuth.getSession();
+    const btn=document.getElementById('hepoLogoutFab');
+    if(btn){
+      if(s){btn.style.display='flex';btn.title='Terminar sessão: '+s.email;}
+      else btn.style.display='none';
+    }
+    // Apply design theme
+    try{const t=JSON.parse(localStorage.getItem('hepo_site_theme')||'{}');if(t.design&&t.design!=='default')document.body.classList.add('design-'+t.design);}catch(e){}
+    // Apply custom bg if set
+    try{const bg=localStorage.getItem('hepo_hero_bg');const bgEl=document.querySelector('.hero-bg-img');if(bg&&bgEl)bgEl.style.backgroundImage='url("'+bg+'")';}catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',checkSession);}else{setTimeout(checkSession,300);}
+})();
+</script>
+
+<style>.hepo-fab-logout{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:50px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;color:#ef4444;cursor:pointer;font-family:inherit;transition:.2s;display:none;backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(239,68,68,.25);}.hepo-fab-logout:hover{background:rgba(239,68,68,.3);transform:scale(1.05);}</style>
+<button class="hepo-fab-logout" id="hepoFabLogout" onclick="if(window.HepoAuth){HepoAuth.logout();window.location.href='pages/login.html'}" title="Terminar Sessão">🚪 Sair</button>
+<script>setTimeout(()=>{const s=window.HepoAuth&&HepoAuth.getSession();const b=document.getElementById('hepoFabLogout');if(b&&s){b.style.display='flex';b.title='Sair: '+s.email;}},400);</script>
+</body>
+</html>

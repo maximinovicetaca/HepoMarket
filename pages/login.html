@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HepoMarket – Entrar</title>
+  <link rel="icon" href="../images/logo.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --blue:    #0067c0;
+      --blue-h:  #1a7fd4;
+      --blue-d:  #004e90;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bg {
+      position: fixed; inset: 0; z-index: 0;
+      background: url('../images/bg-hero.jpg') center/cover no-repeat;
+      animation: bgz 30s ease-in-out infinite alternate;
+    }
+    @keyframes bgz { from{transform:scale(1)} to{transform:scale(1.04)} }
+
+    .overlay {
+      position: fixed; inset: 0; z-index: 1;
+      background: linear-gradient(180deg,
+        rgba(0,8,24,.55) 0%, rgba(0,8,24,.35) 50%, rgba(0,8,24,.72) 100%);
+    }
+
+    /* ─ Painel ─────────────────────────────────── */
+    .pnl {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 392px;
+      padding: 1rem;
+      animation: slideUp .5s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .card {
+      background: rgba(12,14,26,.84);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 18px;
+      padding: 2.2rem 2rem 1.9rem;
+      backdrop-filter: blur(38px) saturate(180%);
+      -webkit-backdrop-filter: blur(38px) saturate(180%);
+      box-shadow: 0 32px 80px rgba(0,0,0,.72),
+                  inset 0 0 0 1px rgba(255,255,255,.055);
+    }
+
+    /* ─ Avatar ──────────────────────────────────── */
+    .av {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      margin: 0 auto .9rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      background: var(--blue);
+      border: 2.5px solid rgba(255,255,255,.18);
+      box-shadow: 0 8px 28px rgba(0,103,192,.5);
+      overflow: hidden;
+      transition: background .25s, box-shadow .25s;
+    }
+    .av img { width:100%; height:100%; object-fit:cover; }
+
+    .av.parceiro { background:#0d9e6e; box-shadow:0 8px 28px rgba(13,158,110,.45); }
+    .av.afiliado { background:#b06800; box-shadow:0 8px 28px rgba(176,104,0,.45); }
+    .av.ceo      { background:#6d28d9; box-shadow:0 8px 28px rgba(109,40,217,.5); }
+
+    /* ─ Título ──────────────────────────────────── */
+    .titulo {
+      text-align: center;
+      color: #fff;
+      font-size: 1.12rem;
+      font-weight: 600;
+      margin-bottom: 1.3rem;
+    }
+
+    /* ─ Botões de perfil ─────────────────────────── */
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .32rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .rb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .22rem;
+      padding: .52rem .25rem;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.52);
+      font-size: .63rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .16s;
+      font-family: 'Inter', sans-serif;
+    }
+    .rb .ic { font-size: 1.15rem; }
+
+    .rb:hover {
+      background: rgba(255,255,255,.09);
+      color: #fff;
+      border-color: rgba(255,255,255,.26);
+      transform: translateY(-1px);
+    }
+
+    /* Estado activo por perfil */
+    .rb.ativo-cliente  { background:var(--blue);  border-color:transparent; color:#fff; box-shadow:0 3px 14px rgba(0,103,192,.4); }
+    .rb.ativo-parceiro { background:#0d9e6e; border-color:transparent; color:#fff; box-shadow:0 3px 14px rgba(13,158,110,.4); }
+    .rb.ativo-afiliado { background:#b06800; border-color:transparent; color:#fff; box-shadow:0 3px 14px rgba(176,104,0,.4); }
+    .rb.ativo-ceo      { background:#6d28d9; border-color:transparent; color:#fff; box-shadow:0 3px 14px rgba(109,40,217,.4); }
+
+    /* ─ Dica de perfil ───────────────────────────── */
+    .dica {
+      border-radius: 8px;
+      padding: .5rem .85rem;
+      font-size: .76rem;
+      line-height: 1.5;
+      margin-bottom: .85rem;
+      display: none;
+    }
+    .dica.show { display: block; }
+    .dica.parceiro { background:rgba(13,158,110,.1);  border:1px solid rgba(13,158,110,.28); color:#6ee7b7; }
+    .dica.afiliado { background:rgba(176,104,0,.1);   border:1px solid rgba(176,104,0,.28);  color:#fcd34d; }
+    .dica.ceo      { background:rgba(109,40,217,.12); border:1px solid rgba(109,40,217,.32); color:#c4b5fd; }
+
+    /* ─ Alertas ──────────────────────────────────── */
+    .al {
+      padding: .68rem .9rem;
+      border-radius: 8px;
+      font-size: .8rem;
+      line-height: 1.55;
+      margin-bottom: .8rem;
+      display: none;
+    }
+    .al.err { background:rgba(255,70,70,.15); border:1px solid rgba(255,70,70,.3); color:#ffb3b3; }
+    .al.ok  { background:rgba(70,200,100,.12); border:1px solid rgba(70,200,100,.28); color:#a3e8b0; }
+
+    /* ─ Inputs ───────────────────────────────────── */
+    .iw { position:relative; margin-bottom:.82rem; }
+
+    .inp {
+      width: 100%;
+      padding: .82rem 1rem;
+      border-radius: 9px;
+      background: rgba(255,255,255,.07);
+      border: 1.5px solid rgba(255,255,255,.12);
+      color: #fff;
+      font-size: .9rem;
+      font-family: 'Inter', sans-serif;
+      transition: all .17s;
+      outline: none;
+    }
+    .inp:focus {
+      background: rgba(255,255,255,.12);
+      border-color: rgba(0,103,192,.68);
+      box-shadow: 0 0 0 3px rgba(0,103,192,.18);
+    }
+    .inp::placeholder { color:rgba(255,255,255,.33); }
+
+    .eye {
+      position:absolute; right:.82rem; top:50%;
+      transform:translateY(-50%);
+      background:none; border:none;
+      color:rgba(255,255,255,.38);
+      cursor:pointer; font-size:.95rem;
+      padding:.2rem; transition:color .17s;
+    }
+    .eye:hover { color:#fff; }
+
+    /* ─ Botão Entrar ─────────────────────────────── */
+    .btn {
+      width:100%; padding:.87rem;
+      border-radius: 9px;
+      background: var(--blue);
+      border: none; color: #fff;
+      font-size: .92rem; font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all .17s;
+      letter-spacing: .015em;
+    }
+    .btn:hover  { background:var(--blue-h); box-shadow:0 4px 18px rgba(0,103,192,.48); }
+    .btn:active { background:var(--blue-d); transform:translateY(1px); }
+
+    .btn.parceiro { background:#0d9e6e; }
+    .btn.parceiro:hover { background:#0bb87f; box-shadow:0 4px 18px rgba(13,158,110,.48); }
+    .btn.afiliado { background:#b06800; }
+    .btn.afiliado:hover { background:#c97800; box-shadow:0 4px 18px rgba(176,104,0,.48); }
+    .btn.ceo { background:#6d28d9; }
+    .btn.ceo:hover { background:#7c3aed; box-shadow:0 4px 18px rgba(109,40,217,.5); }
+
+    /* ─ Loading ──────────────────────────────────── */
+    .ld { display:none; text-align:center; padding:.42rem; }
+    .ld.show { display:block; }
+    .dt {
+      display:inline-block; width:8px; height:8px;
+      border-radius:50%; background:#fff; margin:0 3px;
+      animation:blink 1.4s ease infinite;
+    }
+    .dt:nth-child(2){animation-delay:.2s}
+    .dt:nth-child(3){animation-delay:.4s}
+    @keyframes blink {
+      0%,80%,100%{transform:scale(.7);opacity:.4}
+      40%{transform:scale(1.2);opacity:1}
+    }
+
+    /* ─ e-mail preview no passo 2 ───────────────── */
+    .em-prev {
+      font-size:.78rem; color:rgba(255,255,255,.43);
+      margin-bottom:.7rem;
+      cursor:pointer;
+      display:flex; align-items:center; gap:.3rem;
+    }
+    .em-prev:hover { color:rgba(255,255,255,.75); }
+    .em-prev strong { color:#93c5fd; font-weight:500; }
+
+    /* ─ Links rodapé ─────────────────────────────── */
+    .foot {
+      display:flex; justify-content:space-between;
+      align-items:center; margin-top:.9rem;
+    }
+    .lk {
+      color:rgba(255,255,255,.48);
+      font-size:.77rem; cursor:pointer;
+      background:none; border:none;
+      font-family:'Inter',sans-serif;
+      transition:color .17s; text-decoration:none;
+    }
+    .lk:hover { color:#fff; }
+
+    /* ─ Divisor ──────────────────────────────────── */
+    .div {
+      display:flex; align-items:center; gap:.55rem;
+      margin:1rem 0;
+    }
+    .div::before,.div::after { content:'';flex:1;height:1px;background:rgba(255,255,255,.1); }
+    .div span { font-size:.68rem; color:rgba(255,255,255,.28); }
+
+    /* ─ Botões registo ───────────────────────────── */
+    .reg-grid { display:grid; grid-template-columns:1fr 1fr; gap:.42rem; }
+    .reg-btn {
+      display:flex; flex-direction:column;
+      align-items:center; gap:.2rem;
+      padding:.62rem .5rem;
+      border-radius:9px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.62);
+      font-size:.72rem; font-weight:600;
+      text-decoration:none;
+      transition:all .17s;
+      font-family:'Inter',sans-serif;
+    }
+    .reg-btn:hover {
+      background:rgba(255,255,255,.09); color:#fff;
+      border-color:rgba(255,255,255,.2);
+      transform:translateY(-1px);
+    }
+
+    /* ─ Passo oculto ─────────────────────────────── */
+    .step { display:none; }
+    .step.on { display:block; }
+
+    /* ─ Modal ────────────────────────────────────── */
+    .modal {
+      position:fixed; inset:0; z-index:200;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,.65);
+      backdrop-filter:blur(8px);
+      opacity:0; pointer-events:none;
+      transition:opacity .22s;
+    }
+    .modal.open { opacity:1; pointer-events:all; }
+    .modal-box {
+      background:rgba(12,14,26,.96);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:16px;
+      padding:2rem;
+      width:100%; max-width:360px;
+      backdrop-filter:blur(32px);
+    }
+    .modal-box h3 { color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:.4rem; }
+    .modal-box p  { color:rgba(255,255,255,.48);font-size:.82rem;margin-bottom:1rem;line-height:1.5; }
+    .prog { display:flex; gap:.4rem; margin-bottom:1.1rem; }
+    .pb { flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.12);transition:background .3s; }
+    .pb.done { background:#69db7c; }
+    .pb.act  { background:var(--blue); }
+    .demo-box {
+      background:rgba(0,103,192,.12);border:1px solid rgba(0,103,192,.3);
+      border-radius:8px;padding:.7rem;font-size:.8rem;color:#7ab8f5;margin-bottom:.8rem;
+    }
+
+    @media(max-width:440px){
+      .card { padding:1.7rem 1.2rem 1.5rem; }
+      .roles { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+<script>
+// V11: Limpar produtos antigos do localStorage
+(function(){
+  if(localStorage.getItem('hepo_v')!=='12'){
+    localStorage.removeItem('hepo_admin_products');
+    localStorage.setItem('hepo_v','12');
+  }
+})();
+</script>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<!-- ════════════════ PAINEL LOGIN ════════════════ -->
+<div class="pnl">
+  <div class="card">
+
+    <!-- Avatar -->
+    <div class="av" id="avEl">
+      <img src="../images/logo.jpeg" alt="HepoMarket"
+           onerror="this.parentElement.innerHTML='🛒'">
+    </div>
+
+    <!-- Título -->
+    <div class="titulo" id="tituloEl">Bem-vindo ao HepoMarket</div>
+
+    <!-- Botões de perfil -->
+    <div class="roles">
+      <button class="rb ativo-cliente" data-role="cliente" onclick="selecionarPerfil(this)">
+        <span class="ic">👤</span>Cliente
+      </button>
+      <button class="rb" data-role="parceiro" onclick="selecionarPerfil(this)">
+        <span class="ic">🤝</span>Parceiro
+      </button>
+      <button class="rb" data-role="afiliado" onclick="selecionarPerfil(this)">
+        <span class="ic">💰</span>Afiliado
+      </button>
+      <button class="rb" data-role="ceo" onclick="selecionarPerfil(this)">
+        <span class="ic">👑</span>CEO
+      </button>
+    </div>
+
+    <!-- Dica do perfil -->
+    <div class="dica" id="dicaEl"></div>
+
+    <!-- Alertas -->
+    <div class="al err" id="aErr"></div>
+    <div class="al ok"  id="aOk"></div>
+
+    <!-- PASSO 1: e-mail -->
+    <div class="step on" id="s1">
+      <div class="iw">
+        <input class="inp" type="email" id="inpEmail"
+               placeholder="O seu e-mail"
+               autocomplete="email"
+               onkeydown="if(event.key==='Enter')proximoPasso()">
+      </div>
+      <button class="btn" id="btnProximo" onclick="proximoPasso()">
+        Seguinte →
+      </button>
+    </div>
+
+    <!-- PASSO 2: senha -->
+    <div class="step" id="s2">
+      <div class="em-prev" onclick="voltarPasso()">
+        ← <strong id="emTexto"></strong>
+      </div>
+      <div class="iw">
+        <input class="inp" type="password" id="inpSenha"
+               placeholder="Palavra-passe"
+               autocomplete="current-password"
+               onkeydown="if(event.key==='Enter')fazerLogin()">
+        <button class="eye" id="eyeBtn" onclick="alternarSenha()">👁</button>
+      </div>
+      <div class="ld" id="ldEl">
+        <div class="dt"></div><div class="dt"></div><div class="dt"></div>
+      </div>
+      <button class="btn" id="btnEntrar" onclick="fazerLogin()">
+        Entrar →
+      </button>
+      <div class="foot">
+        <button class="lk" onclick="abrirModal()">Esqueceu a senha?</button>
+        <a href="register.html" class="lk">Criar conta</a>
+      </div>
+    </div>
+
+    <!-- Divisor + registo -->
+    <div class="div"><span>Novo utilizador?</span></div>
+    <div class="reg-grid">
+      <a href="register.html?tipo=parceiro" class="reg-btn">
+        <span>🤝</span><span>Ser Parceiro</span>
+      </a>
+      <a href="register.html?tipo=afiliado" class="reg-btn">
+        <span>💰</span><span>Ser Afiliado</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════ MODAL RECUPERAÇÃO ════════════════ -->
+<div class="modal" id="modalEl">
+  <div class="modal-box">
+    <h3>🔑 Recuperar Senha</h3>
+    <p>Insira o seu e-mail para receber um código de verificação.</p>
+    <div class="prog">
+      <div class="pb act"  id="pb1"></div>
+      <div class="pb"      id="pb2"></div>
+      <div class="pb"      id="pb3"></div>
+    </div>
+    <!-- R1 -->
+    <div id="rc1">
+      <div class="iw" style="margin-bottom:.7rem;">
+        <input class="inp" type="email" id="rEmail" placeholder="O seu e-mail">
+      </div>
+      <div class="al err" id="re1" style="display:none;"></div>
+      <button class="btn" onclick="enviarCodigo()">Enviar Código</button>
+    </div>
+    <!-- R2 -->
+    <div id="rc2" style="display:none;">
+      <div class="demo-box" id="demoBoxEl"></div>
+      <div class="iw" style="margin-bottom:.7rem;">
+        <input class="inp" type="text" id="rCodigo" placeholder="Código de 4 dígitos" maxlength="4">
+      </div>
+      <div class="al err" id="re2" style="display:none;"></div>
+      <button class="btn" onclick="verificarCodigo()">Verificar Código</button>
+    </div>
+    <!-- R3 -->
+    <div id="rc3" style="display:none;">
+      <div class="iw" style="margin-bottom:.6rem;">
+        <input class="inp" type="password" id="rSenha1" placeholder="Nova senha (mín. 8 caracteres)">
+      </div>
+      <div class="iw" style="margin-bottom:.7rem;">
+        <input class="inp" type="password" id="rSenha2" placeholder="Confirmar nova senha">
+      </div>
+      <div class="al err" id="re3" style="display:none;"></div>
+      <button class="btn" onclick="redefinirSenha()">Redefinir Senha</button>
+    </div>
+    <div style="text-align:center;margin-top:.9rem;">
+      <button class="lk" onclick="fecharModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ JAVASCRIPT ════════════════ -->
+<script src="../js/hepo-auth.js"></script>
+<script>
+
+/* ══════════════════════════════════════════════
+   ESTADO GLOBAL
+══════════════════════════════════════════════ */
+var perfil    = 'cliente';   /* perfil seleccionado */
+var recEmail  = '';
+var recToken  = '';
+
+/* ══════════════════════════════════════════════
+   CONFIGURAÇÃO DOS PERFIS
+   Define: ícone, título, classe de cor, dica
+══════════════════════════════════════════════ */
+var CFG = {
+  cliente: {
+    ic:    '',          /* usa imagem do logo no início; '' = não sobrepõe */
+    emoji: '👤',
+    titulo:'Entrar como Cliente',
+    cls:   '',          /* classe extra no .av e .btn */
+    dica:  '',
+  },
+  parceiro: {
+    emoji: '🤝',
+    titulo:'Entrar como Parceiro',
+    cls:   'parceiro',
+    dica:  '🤝 Use o e-mail e senha registados como Parceiro. Conta pendente? Aguarde aprovação.',
+    dicaCls:'parceiro',
+  },
+  afiliado: {
+    emoji: '💰',
+    titulo:'Entrar como Afiliado',
+    cls:   'afiliado',
+    dica:  '💰 Use o e-mail e senha registados como Afiliado. Conta pendente? Aguarde aprovação.',
+    dicaCls:'afiliado',
+  },
+  ceo: {
+    emoji: '👑',
+    titulo:'Acesso Administrativo – CEO',
+    cls:   'ceo',
+    dica:  '👑 Área restrita. Utilize as credenciais de administrador do HepoMarket.',
+    dicaCls:'ceo',
+  },
+};
+
+/* ══════════════════════════════════════════════
+   Redirecionar se já existe sessão
+══════════════════════════════════════════════ */
+(function() {
+  try {
+    var s = HepoAuth.getSession();
+    if (s) {
+      window.location.replace(s.role === 'ceo' ? 'admin.html' : 'dashboard.html');
+    }
+  } catch(e) { /* ignora */ }
+})();
+
+/* ══════════════════════════════════════════════
+   SELECCIONAR PERFIL
+══════════════════════════════════════════════ */
+function selecionarPerfil(botao) {
+  /* 1 — remove activo de todos */
+  var lista = document.querySelectorAll('.rb');
+  for (var i = 0; i < lista.length; i++) {
+    lista[i].className = 'rb';
+  }
+
+  /* 2 — activa o clicado */
+  var novoRole = botao.getAttribute('data-role');
+  botao.className = 'rb ativo-' + novoRole;
+
+  /* 3 — actualiza estado global */
+  perfil = novoRole;
+  var c = CFG[novoRole];
+
+  /* 4 — actualiza avatar */
+  var av = document.getElementById('avEl');
+  av.innerHTML = c.emoji;
+  av.className = 'av' + (c.cls ? ' ' + c.cls : '');
+
+  /* 5 — actualiza título */
+  document.getElementById('tituloEl').textContent = c.titulo;
+
+  /* 6 — actualiza botão Entrar */
+  var btnE = document.getElementById('btnEntrar');
+  btnE.className = 'btn' + (c.cls ? ' ' + c.cls : '');
+
+  /* 7 — dica */
+  var dica = document.getElementById('dicaEl');
+  if (c.dica) {
+    dica.textContent = c.dica;
+    dica.className = 'dica show' + (c.dicaCls ? ' ' + c.dicaCls : '');
+  } else {
+    dica.className = 'dica'; /* esconde */
+  }
+
+  /* 8 — se estava no passo 2, volta ao 1 */
+  var s2 = document.getElementById('s2');
+  if (s2.classList.contains('on')) {
+    voltarPasso();
+  }
+
+  /* 9 — limpa alertas */
+  limpar();
+}
+
+/* ══════════════════════════════════════════════
+   NAVEGAÇÃO ENTRE PASSOS
+══════════════════════════════════════════════ */
+function proximoPasso() {
+  var email = document.getElementById('inpEmail').value.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    erro('Introduza um e-mail válido.');
+    return;
+  }
+  document.getElementById('emTexto').textContent = email;
+  document.getElementById('s1').classList.remove('on');
+  document.getElementById('s2').classList.add('on');
+  document.getElementById('inpSenha').focus();
+  limpar();
+}
+
+function voltarPasso() {
+  document.getElementById('s2').classList.remove('on');
+  document.getElementById('s1').classList.add('on');
+  limpar();
+}
+
+function alternarSenha() {
+  var inp = document.getElementById('inpSenha');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  document.getElementById('eyeBtn').textContent = inp.type === 'password' ? '👁' : '🔒';
+}
+
+/* ══════════════════════════════════════════════
+   FAZER LOGIN
+══════════════════════════════════════════════ */
+function fazerLogin() {
+  var email = document.getElementById('inpEmail').value.trim();
+  var senha = document.getElementById('inpSenha').value;
+
+  if (!senha) { erro('Introduza a palavra-passe.'); return; }
+
+  limpar();
+  document.getElementById('btnEntrar').style.display = 'none';
+  document.getElementById('ldEl').classList.add('show');
+
+  setTimeout(function() {
+    var res;
+    try {
+      res = HepoAuth.login(email, senha, perfil);
+    } catch(e) {
+      res = { error: 'Erro interno. Tente novamente.' };
+    }
+
+    document.getElementById('btnEntrar').style.display = 'block';
+    document.getElementById('ldEl').classList.remove('show');
+
+    if (res.error) {
+      processarErro(res.error);
+      return;
+    }
+
+    ok('✅ Login efectuado! A redirecionar...');
+
+    setTimeout(function() {
+      var redir = sessionStorage.getItem('hepo_redirect_after_login') || '';
+      sessionStorage.removeItem('hepo_redirect_after_login');
+      var destino = res.user.role === 'ceo'
+        ? 'admin.html'
+        : (redir || 'dashboard.html');
+      window.location.replace(destino);
+    }, 800);
+
+  }, 900);
+}
+
+/* ══════════════════════════════════════════════
+   PROCESSAR ERROS DE LOGIN
+══════════════════════════════════════════════ */
+function processarErro(msg) {
+  var m = msg.toLowerCase();
+
+  /* CEO a usar perfil errado */
+  if (m.includes('ceo') || m.includes('"ceo"')) {
+    erroHTML(
+      '👑 Credenciais do CEO detectadas.<br>' +
+      'Clique no botão <strong>CEO</strong> acima e tente novamente.'
+    );
+    return;
+  }
+
+  /* Perfil errado */
+  if (m.includes('separador') || m.includes('tipo "') || m.includes('selecione')) {
+    erroHTML(
+      '⚠️ ' + msg + '<br>' +
+      '<small style="opacity:.75">Verifique o perfil seleccionado acima.</small>'
+    );
+    return;
+  }
+
+  /* Conta pendente */
+  if (m.includes('pendente') || m.includes('aguardar') || m.includes('aprovação')) {
+    var label = perfil === 'parceiro' ? 'Parceiro'
+              : perfil === 'afiliado' ? 'Afiliado' : 'Conta';
+    erroHTML(
+      '⏳ <strong>' + label + ' aguarda aprovação.</strong><br>' +
+      'O CEO irá activar a sua conta. Receberá um e-mail de confirmação.'
+    );
+    return;
+  }
+
+  /* Conta suspensa */
+  if (m.includes('suspensa') || m.includes('suspenso')) {
+    erroHTML('🚫 ' + msg);
+    return;
+  }
+
+  /* E-mail não encontrado */
+  if (m.includes('não encontrado') || m.includes('encontrado')) {
+    erroHTML(
+      '❌ E-mail não encontrado.<br>' +
+      '<a href="register.html" style="color:#93c5fd;text-decoration:underline;">Criar conta gratuita →</a>'
+    );
+    return;
+  }
+
+  /* Senha errada */
+  if (m.includes('passe') || m.includes('password') || m.includes('incorrecta')) {
+    erroHTML('🔑 Palavra-passe incorrecta. Tente novamente ou <button onclick="abrirModal()" style="background:none;border:none;color:#93c5fd;cursor:pointer;font-size:.8rem;text-decoration:underline;">recupere a senha</button>.');
+    return;
+  }
+
+  /* Genérico */
+  erroHTML('❌ ' + msg);
+}
+
+/* ══════════════════════════════════════════════
+   ALERTAS
+══════════════════════════════════════════════ */
+function limpar() {
+  document.getElementById('aErr').style.display = 'none';
+  document.getElementById('aOk').style.display  = 'none';
+}
+function erro(txt) {
+  var el = document.getElementById('aErr');
+  el.textContent = txt; el.style.display = 'block';
+  document.getElementById('aOk').style.display = 'none';
+}
+function erroHTML(html) {
+  var el = document.getElementById('aErr');
+  el.innerHTML = html; el.style.display = 'block';
+  document.getElementById('aOk').style.display = 'none';
+}
+function ok(txt) {
+  var el = document.getElementById('aOk');
+  el.textContent = txt; el.style.display = 'block';
+  document.getElementById('aErr').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   MODAL — RECUPERAÇÃO DE SENHA
+══════════════════════════════════════════════ */
+function abrirModal()  { document.getElementById('modalEl').classList.add('open'); passoRecup(1); }
+function fecharModal() { document.getElementById('modalEl').classList.remove('open'); }
+
+function passoRecup(n) {
+  ['rc1','rc2','rc3'].forEach(function(id, i) {
+    document.getElementById(id).style.display = i === n-1 ? 'block' : 'none';
+  });
+  ['pb1','pb2','pb3'].forEach(function(id, i) {
+    var el = document.getElementById(id);
+    el.className = 'pb' + (i < n-1 ? ' done' : i === n-1 ? ' act' : '');
+  });
+}
+
+function enviarCodigo() {
+  var email = document.getElementById('rEmail').value.trim();
+  var er = document.getElementById('re1');
+  if (!email) { er.textContent = 'Insira o e-mail.'; er.style.display = 'block'; return; }
+  er.style.display = 'none';
+  var r = HepoAuth.requestPasswordRecovery(email);
+  if (r.error) { er.textContent = r.error; er.style.display = 'block'; return; }
+  recEmail = email;
+  recToken = r.token;
+  document.getElementById('demoBoxEl').textContent = '⚠️ Modo demo — código: ' + r.token;
+  passoRecup(2);
+}
+
+function verificarCodigo() {
+  var cod = document.getElementById('rCodigo').value.trim();
+  var er  = document.getElementById('re2');
+  var r   = HepoAuth.verifyRecoveryToken(recEmail, cod);
+  if (r.error) { er.textContent = r.error; er.style.display = 'block'; return; }
+  er.style.display = 'none';
+  passoRecup(3);
+}
+
+function redefinirSenha() {
+  var p1 = document.getElementById('rSenha1').value;
+  var p2 = document.getElementById('rSenha2').value;
+  var er = document.getElementById('re3');
+  if (p1 !== p2) { er.textContent = 'As senhas não coincidem.'; er.style.display = 'block'; return; }
+  var r = HepoAuth.resetPassword(recEmail, recToken, p1);
+  if (r.error) { er.textContent = r.error; er.style.display = 'block'; return; }
+  fecharModal();
+  ok('✅ Senha redefinida com sucesso! Pode entrar agora.');
+}
+
+</script>
+</body>
+</html>
