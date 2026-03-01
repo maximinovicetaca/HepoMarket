@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HepoMarket | Cadastro</title>
+<link rel="stylesheet" href="win11.css">
+<style>
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card-form{width:100%;max-width:520px;background:var(--surface-solid);border:1px solid var(--border-strong);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);overflow:hidden}
+.form-top{background:var(--accent);padding:28px;color:#fff;text-align:center}
+.form-top img{width:56px;height:56px;border-radius:12px;object-fit:cover;margin-bottom:12px;border:3px solid rgba(255,255,255,0.3)}
+.form-top h1{font-size:22px;font-weight:800}
+.form-top p{opacity:0.85;margin-top:4px;font-size:14px}
+.form-body{padding:28px}
+.tipo-btn{flex:1;padding:12px;border:2px solid var(--border-strong);background:var(--surface-solid);border-radius:var(--radius-md);cursor:pointer;font-weight:700;font-size:14px;transition:all 0.2s;font-family:var(--font);color:var(--text-primary)}
+.tipo-btn.active{border-color:var(--accent);background:var(--accent);color:#fff}
+</style>
+</head>
+<body>
+<div class="card-form">
+  <div class="form-top">
+    <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
+    <h1 id="form-title">Cadastro HepoMarket</h1>
+    <p id="form-subtitle">Preencha o formulário para se registar</p>
+  </div>
+  <div class="form-body">
+    <!-- Selector de tipo (só aparece se não vier por convite) -->
+    <div id="tipo-selector" style="margin-bottom:20px">
+      <label class="label" style="margin-bottom:8px;display:block">Tipo de registo</label>
+      <div style="display:flex;gap:8px">
+        <button class="tipo-btn active" id="btn-tipo-parceiro" onclick="setTipo('parceiro')">🤝 Parceiro / Afiliado</button>
+        <button class="tipo-btn" id="btn-tipo-cliente" onclick="setTipo('cliente')">👤 Cliente</button>
+      </div>
+    </div>
+
+    <div id="form-section">
+      <!-- Código de convite -->
+      <div id="convite-box" style="background:var(--accent-light);border:1px solid rgba(0,120,212,0.2);border-radius:var(--radius-md);padding:12px;margin-bottom:16px;display:none">
+        <div style="font-size:13px;color:var(--accent);font-weight:700">🔗 Convite: <span id="convite-code-display"></span></div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:2px" id="convite-tipo-display"></div>
+      </div>
+
+      <!-- Dados pessoais -->
+      <div class="form-group"><label class="label">Nome Completo *</label><input class="input" id="nome" placeholder="Ex: João Sebastião Manuel"></div>
+      <div class="grid-2">
+        <div class="form-group"><label class="label">Telefone *</label><input class="input" id="tel" type="tel" placeholder="9XX XXX XXX"></div>
+        <div class="form-group"><label class="label">E-mail</label><input class="input" id="email" type="email" placeholder="email@exemplo.com"></div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group"><label class="label">Província *</label>
+          <select class="select" id="provincia">
+            <option value="">Selecione...</option>
+            <option>Luanda</option><option>Benguela</option><option>Huambo</option>
+            <option>Cabinda</option><option>Malanje</option><option>Uíge</option>
+            <option>Lunda Norte</option><option>Lunda Sul</option><option>Moxico</option>
+            <option>Cuando Cubango</option><option>Cunene</option><option>Namibe</option>
+            <option>Huíla</option><option>Bié</option><option>Kwanza Sul</option>
+            <option>Kwanza Norte</option><option>Bengo</option><option>Zaire</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="label">Município</label><input class="input" id="municipio" placeholder="Ex: Cacuaco"></div>
+      </div>
+
+      <!-- Endereço (obrigatório para clientes) -->
+      <div id="endereco-section" style="display:none">
+        <div class="form-group"><label class="label">Endereço / Bairro *</label><input class="input" id="endereco" placeholder="Ex: Bairro Popular, Rua 5, Casa 12"></div>
+        <div class="form-group"><label class="label">Ponto de referência</label><input class="input" id="referencia" placeholder="Ex: Perto do mercado Asa Branca"></div>
+      </div>
+
+      <!-- Como soube (parceiros) -->
+      <div id="origem-section">
+        <div class="form-group">
+          <label class="label">Como soube da HepoMarket?</label>
+          <select class="select" id="origem">
+            <option value="">Selecione...</option>
+            <option>WhatsApp</option><option>Facebook</option><option>Instagram</option>
+            <option>Amigo/Familiar</option><option>TikTok</option><option>Outro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px">
+          <label class="toggle"><input type="checkbox" id="termos-check"><span class="toggle-slider"></span></label>
+          Aceito os <a href="termos.html" style="color:var(--accent)">Termos e Condições</a>
+        </label>
+      </div>
+      <button onclick="submeter()" class="btn btn-primary btn-lg" style="width:100%">
+        📲 Enviar Cadastro
+      </button>
+      <div style="text-align:center;margin-top:16px">
+        <a href="index.html" style="color:var(--text-secondary);text-decoration:none;font-size:13px">← Voltar ao início</a>
+      </div>
+    </div>
+
+    <div id="sucesso" style="display:none;text-align:center;padding:20px">
+      <div style="font-size:64px;margin-bottom:16px">✅</div>
+      <div style="font-size:20px;font-weight:800;color:#107c10;margin-bottom:8px" id="sucesso-titulo">Cadastro Enviado!</div>
+      <div style="color:var(--text-secondary);margin-bottom:16px" id="sucesso-msg">O seu pedido foi submetido com sucesso.</div>
+      <div style="background:var(--accent-light);border-radius:10px;padding:12px;margin-bottom:20px;font-size:13px;color:var(--text-secondary)" id="sucesso-info"></div>
+      <a href="index.html" class="btn btn-primary">← Voltar ao Início</a>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+// Tema e fundo
+(function(){
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('hm_public_theme')||'light');
+  const c=DB.getConfig();
+  if(c.fundoTipo==='gradiente'){document.body.style.background=`linear-gradient(135deg,${c.fundoCor1||'#e8f0fe'},${c.fundoCor2||'#c2d4f8'})`;document.body.style.backgroundAttachment='fixed';}
+  else if(c.fundoTipo==='cor-solida'){document.body.style.background=c.fundoCor1||'#f3f3f3';}
+  else if(c.fundoTipo==='imagem'&&c.fundoImagem){document.body.style.background=`url(${c.fundoImagem}) center/cover fixed`;}
+})();
+
+// Verificar URL params
+const params = new URLSearchParams(location.search);
+const refCode = params.get('ref');
+const tipoParam = params.get('tipo'); // 'parceiro' ou 'cliente'
+let tipoAtual = 'parceiro';
+let conviteValido = null;
+
+// Se vier código de convite
+if (refCode) {
+  const conv = DB.getConvite(refCode);
+  if (conv && !conv.usado) {
+    conviteValido = conv;
+    document.getElementById('convite-box').style.display = 'block';
+    document.getElementById('convite-code-display').textContent = refCode;
+    // Ocultar selector de tipo e fixar pelo convite
+    const tipo = conv.tipo || tipoParam || 'parceiro';
+    document.getElementById('tipo-selector').style.display = 'none';
+    document.getElementById('convite-tipo-display').textContent = tipo === 'parceiro' ? 'Convite de Parceiro/Afiliado' : 'Convite de Cliente';
+    setTipo(tipo);
+  }
+} else if (tipoParam) {
+  setTipo(tipoParam);
+}
+
+function setTipo(tipo) {
+  tipoAtual = tipo;
+  document.getElementById('btn-tipo-parceiro').classList.toggle('active', tipo==='parceiro');
+  document.getElementById('btn-tipo-cliente').classList.toggle('active', tipo==='cliente');
+  document.getElementById('endereco-section').style.display = tipo==='cliente' ? 'block' : 'none';
+
+  const cfg = DB.getConfig();
+  if (tipo === 'parceiro') {
+    document.getElementById('form-title').textContent = 'Torne-se Parceiro';
+    document.getElementById('form-subtitle').textContent = 'Preencha o formulário e comece a ganhar comissões';
+    document.querySelector('.form-top').style.background = 'var(--accent)';
+  } else {
+    document.getElementById('form-title').textContent = 'Criar Conta Cliente';
+    document.getElementById('form-subtitle').textContent = 'Registe-se para fazer pedidos e acompanhar as suas encomendas';
+    document.querySelector('.form-top').style.background = '#107c10';
+  }
+}
+
+function submeter() {
+  const nome = document.getElementById('nome').value.trim();
+  const tel = document.getElementById('tel').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const provincia = document.getElementById('provincia').value;
+  const municipio = document.getElementById('municipio').value.trim();
+  const termos = document.getElementById('termos-check').checked;
+
+  if (!nome) { alert('Por favor, insira o seu nome completo.'); return; }
+  if (!tel || tel.length < 9) { alert('Por favor, insira um número de telefone válido.'); return; }
+  if (!provincia) { alert('Por favor, seleccione a sua província.'); return; }
+  if (!termos) { alert('Por favor, aceite os Termos e Condições.'); return; }
+
+  const cfg = DB.getConfig();
+  const wa = cfg.whatsapp || '244952100356';
+
+  if (tipoAtual === 'parceiro') {
+    const origem = document.getElementById('origem').value;
+    const dadosParceiro = {
+      nome, tel, email, provincia, municipio,
+      origem, codigoConvite: refCode||null, status: 'pendente'
+    };
+    DB.addParceiro(dadosParceiro);
+    if (conviteValido) DB.usarConvite(refCode);
+
+    const msg = encodeURIComponent(
+      `Olá! Sou *${nome}* e submeti um pedido de afiliação na HepoMarket.\n` +
+      `📞 Tel: ${tel}\n📍 ${provincia}${municipio?' · '+municipio:''}\n` +
+      `${refCode?'🔗 Código convite: '+refCode+'\n':''}` +
+      `⏳ Aguardo aprovação no painel CEO.`
+    );
+    document.getElementById('sucesso-titulo').textContent = 'Pedido Enviado!';
+    document.getElementById('sucesso-msg').textContent = 'O seu pedido de afiliação foi submetido com sucesso.';
+    document.getElementById('sucesso-info').textContent = '⏳ Um membro da equipa HepoMarket entrará em contacto consigo brevemente para confirmar a sua adesão.';
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('sucesso').style.display = 'block';
+    setTimeout(() => window.open(`https://wa.me/${wa}?text=${msg}`, '_blank'), 500);
+
+  } else {
+    // Cliente
+    const endereco = document.getElementById('endereco').value.trim();
+    const referencia = document.getElementById('referencia').value.trim();
+    if (!endereco) { alert('Por favor, insira o seu endereço para entregas.'); return; }
+
+    const token = gerarToken();
+    const dadosCliente = {
+      nome, tel, email, provincia, municipio, endereco, referencia,
+      token, tokenExp: Date.now() + 86400000, status: 'ativo'
+    };
+    const cli = DB.addCliente(dadosCliente);
+    if (conviteValido) DB.usarConvite(refCode);
+    AuthCliente.login(cli.id, token);
+
+    const msg = encodeURIComponent(
+      `Olá! Acabei de criar a minha conta de cliente na HepoMarket.\n` +
+      `👤 Nome: *${nome}*\n📞 Tel: ${tel}\n📍 ${[provincia,municipio,endereco].filter(Boolean).join(', ')}\n` +
+      `Gostaria de fazer um pedido.`
+    );
+    document.getElementById('sucesso-titulo').textContent = 'Conta Criada!';
+    document.getElementById('sucesso-msg').textContent = 'A sua conta de cliente foi criada com sucesso.';
+    document.getElementById('sucesso-info').innerHTML = '🎉 Pode agora fazer pedidos directamente via WhatsApp. Um agente HepoMarket estará disponível para o atender.';
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('sucesso').style.display = 'block';
+    setTimeout(() => window.open(`https://wa.me/${wa}?text=${msg}`, '_blank'), 500);
+  }
+}
+</script>
+</body>
+</html>

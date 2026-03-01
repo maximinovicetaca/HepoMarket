@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HepoMarket | Renda Extra com Segurança</title>
+<link rel="stylesheet" href="win11.css">
+<style>
+/* ═══ NAV ═══ */
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:600;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(255,255,255,0.9);backdrop-filter:blur(32px) saturate(180%);border-bottom:1px solid rgba(0,0,0,0.07);}
+[data-theme=dark] .site-nav{background:rgba(20,20,20,0.92);border-bottom-color:rgba(255,255,255,0.06);}
+.site-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.site-brand img{width:32px;height:32px;border-radius:8px;object-fit:cover;}
+.site-brand strong{font-size:18px;font-weight:800;color:var(--accent);}
+.nav-links{display:flex;align-items:center;gap:5px;}
+.nav-link{padding:7px 12px;border-radius:8px;font-weight:600;color:var(--text-secondary);text-decoration:none;transition:.18s;font-size:13px;}
+.nav-link:hover{background:var(--surface-hover);color:var(--text-primary);}
+.cart-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:20px;transition:.18s;}
+.cart-btn:hover{background:var(--surface-hover);}
+.cart-badge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;background:#c42b1c;color:#fff;border-radius:10px;padding:0 4px;font-size:10px;font-weight:800;border:2px solid var(--bg);display:none;align-items:center;justify-content:center;}
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;overflow:hidden;}
+#hero-bg{position:absolute;inset:0;z-index:0;}
+#hero-ov{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.hero-inner{position:relative;z-index:2;max-width:740px;width:100%;}
+:root{--htc:#ffffff;}
+.ht{color:var(--htc)!important;}
+.hts{text-shadow:0 2px 24px rgba(0,0,0,.55);}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(8px);padding:6px 18px;border-radius:24px;font-size:13px;font-weight:700;margin-bottom:22px;}
+.hero h1{font-size:clamp(30px,5.5vw,64px);font-weight:900;line-height:1.08;margin-bottom:18px;}
+.hero-p{font-size:17px;opacity:.92;margin:0 0 34px;line-height:1.7;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-ghost-hero{background:rgba(255,255,255,.15)!important;color:var(--htc)!important;border:1.5px solid rgba(255,255,255,.45)!important;backdrop-filter:blur(8px);}
+.btn-ghost-hero:hover{background:rgba(255,255,255,.28)!important;}
+.social-bar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:28px;}
+.social-link{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:var(--htc);transition:.18s;}
+.social-link:hover{background:rgba(255,255,255,.3);}
+/* ═══ BODY ═══ */
+.page-body{position:relative;z-index:10;background:var(--bg);}
+.sec{padding:72px 32px;max-width:1100px;margin:0 auto;}
+.sec-title{text-align:center;font-size:clamp(22px,4vw,34px);font-weight:800;margin-bottom:8px;}
+.sec-sub{text-align:center;color:var(--text-secondary);margin-bottom:44px;font-size:15px;}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+.feat-card{background:var(--surface-solid);border:1px solid var(--border);border-radius:18px;padding:26px;transition:.2s;}
+.feat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);}
+.feat-icon{font-size:40px;margin-bottom:14px;}
+.feat-card h3{font-size:16px;font-weight:800;margin-bottom:8px;}
+.feat-card p{color:var(--text-secondary);line-height:1.6;font-size:14px;}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:24px;}
+.prod-card{background:var(--surface-solid);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.2s;display:flex;flex-direction:column;}
+.prod-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.add-btn{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;font-weight:700;font-size:14px;cursor:pointer;transition:.18s;margin-top:auto;}
+.add-btn:hover{filter:brightness(1.1);}
+/* ═══ FOOTER ═══ */
+.site-footer{background:var(--surface-solid);border-top:1px solid var(--border);padding:44px 32px 24px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px;max-width:1100px;margin:0 auto 28px;}
+@media(max-width:600px){.footer-grid{grid-template-columns:1fr;} .nav-link{display:none;}}
+.footer-links a{display:block;color:var(--text-secondary);text-decoration:none;font-size:13px;margin-bottom:8px;transition:.15s;}
+.footer-links a:hover{color:var(--accent);}
+.footer-bottom{text-align:center;font-size:12px;color:var(--text-disabled);border-top:1px solid var(--border);padding-top:20px;max-width:1100px;margin:0 auto;}
+/* ═══ DRAWER ═══ */
+#cart-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:700;opacity:0;pointer-events:none;transition:opacity .3s;}
+#cart-scrim.open{opacity:1;pointer-events:auto;}
+#cart-drawer{position:fixed;top:0;right:0;width:440px;max-width:100vw;height:100vh;background:var(--surface-solid);border-left:1px solid var(--border-strong);box-shadow:-8px 0 48px rgba(0,0,0,.16);z-index:701;display:flex;flex-direction:column;overflow:hidden;transform:translateX(110%);transition:transform .32s cubic-bezier(.25,.46,.45,.94);}
+#cart-drawer.open{transform:translateX(0);}
+.drw-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.drw-body{flex:1;overflow-y:auto;padding:16px 20px;}
+.drw-foot{padding:14px 20px;border-top:1px solid var(--border);background:var(--surface-solid);flex-shrink:0;}
+.steps-bar{display:flex;margin-bottom:18px;}
+.step-pill{flex:1;text-align:center;padding:7px 4px;font-size:11px;font-weight:700;color:var(--text-disabled);border-bottom:2px solid var(--border);transition:.2s;}
+.step-pill.on{color:var(--accent);border-bottom-color:var(--accent);}
+.ck-step{display:none;}.ck-step.act{display:block;}
+.ci{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.ci-thumb{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;}
+.qty-ctrl{display:flex;align-items:center;gap:6px;margin-top:7px;}
+.qty-btn{width:28px;height:28px;border:1px solid var(--border-strong);border-radius:6px;background:var(--surface);cursor:pointer;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.qty-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.sum-box{background:var(--bg2);border-radius:12px;padding:14px;margin-top:14px;}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;}
+.sum-total{display:flex;justify-content:space-between;font-size:17px;font-weight:800;border-top:1px solid var(--border);padding-top:10px;margin-top:4px;}
+.cupao-ok{margin-top:8px;background:rgba(16,124,16,.1);color:#107c10;border:1px solid rgba(16,124,16,.2);border-radius:8px;padding:9px 12px;font-size:13px;font-weight:600;}
+.ck-step .form-group{margin-bottom:12px;}
+.ck-step label{display:block;font-size:11px;font-weight:700;color:var(--text-secondary);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+.confirm-box{text-align:center;padding:28px 0 16px;}
+.confirm-details{background:var(--bg2);border-radius:12px;padding:14px;font-size:13px;line-height:1.9;margin-top:14px;}
+/* ═══ AI CHAT ═══ */
+#chat-fab{position:fixed;bottom:28px;right:28px;z-index:500;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#005a9e);color:#fff;font-size:26px;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(0,120,212,.5);transition:.2s;display:flex;align-items:center;justify-content:center;}
+#chat-fab:hover{transform:scale(1.1);}
+#chat-win{position:fixed;bottom:100px;right:28px;z-index:500;width:350px;max-width:calc(100vw - 40px);border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.18);display:none;flex-direction:column;max-height:520px;background:var(--surface-solid);border:1px solid var(--border-strong);}
+#chat-win.open{display:flex;}
+.ch-head{background:linear-gradient(135deg,var(--accent),#005a9e);color:#fff;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;}
+.ch-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;}
+.cm{padding:9px 13px;border-radius:14px;font-size:13px;max-width:85%;line-height:1.55;}
+.cm.b{background:var(--accent-light);color:var(--text-primary);align-self:flex-start;}
+.cm.u{background:var(--accent);color:#fff;align-self:flex-end;}
+.ch-sugs{display:flex;gap:5px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--border);}
+.csug{font-size:11px;padding:4px 10px;border:1px solid var(--border-strong);border-radius:12px;cursor:pointer;background:var(--surface);color:var(--text-secondary);transition:.15s;}
+.csug:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.ch-inp{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--border);}
+.ch-inp input{flex:1;}
+@keyframes ell{0%,60%,100%{opacity:.2}30%{opacity:1}}
+.typing span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--text-secondary);animation:ell 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}.typing span:nth-child(3){animation-delay:.4s;}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="site-brand">
+    <img src="logo.png" alt="" onerror="this.style.display='none'">
+    <strong id="nav-brand">HepoMarket</strong>
+  </a>
+  <div class="nav-links">
+    <a href="produtos.html" class="nav-link">📦 Produtos</a>
+    <a href="blog.html" class="nav-link">📝 Blog</a>
+    <a href="cadastro.html" class="nav-link">🤝 Parceiros</a>
+    <a href="termos.html" class="nav-link">📄 Termos</a>
+    <button class="cart-btn" onclick="abrirCarrinho()" title="Ver carrinho">
+      🛒<span class="cart-badge" id="cart-badge">0</span>
+    </button>
+    <a href="login.html" class="btn btn-primary btn-sm">🔐 CEO</a>
+    <button id="theme-btn" class="btn btn-ghost btn-icon">🌙</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div id="hero-bg"></div>
+  <div id="hero-ov"></div>
+  <div class="hero-inner">
+    <span class="hero-tag ht">✨ Plataforma #1 de Renda Extra em Angola</span>
+    <h1 class="ht hts">Comece a Ganhar com a <span id="hero-brand" style="color:#ffd700">HepoMarket</span></h1>
+    <p class="hero-p ht hts" id="hero-slogan">A plataforma de marketing de afiliados em Cacuaco, Luanda.</p>
+    <div class="hero-btns">
+      <a href="cadastro.html" class="btn btn-primary btn-lg">🚀 Começar Agora</a>
+      <a href="produtos.html" class="btn btn-lg btn-ghost-hero">📦 Ver Produtos</a>
+    </div>
+    <div class="social-bar" id="social-bar"></div>
+  </div>
+</section>
+
+<div class="page-body">
+  <section class="sec">
+    <h2 class="sec-title">Por que escolher a HepoMarket?</h2>
+    <p class="sec-sub">Tudo o que precisa para gerar renda extra com segurança</p>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-icon">💼</div><h3>Seja Afiliado</h3><p>Cadastre-se como parceiro e ganhe comissões reais por cada venda realizada.</p></div>
+      <div class="feat-card"><div class="feat-icon">💳</div><h3>Pagamento Fácil</h3><p>IBAN, Multicaixa Express e mais. Comissões pagas com rapidez e segurança.</p></div>
+      <div class="feat-card"><div class="feat-icon">📦</div><h3>Produtos Verificados</h3><p>Todos os produtos aprovados pelo CEO. Negócios reais, sem esquemas.</p></div>
+      <div class="feat-card"><div class="feat-icon">🤖</div><h3>Suporte por IA 24/7</h3><p>Assistente inteligente disponível a qualquer hora para responder às suas dúvidas.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <h2 class="sec-title" style="margin-bottom:8px">Produtos em Destaque</h2>
+    <p class="sec-sub">Adicione ao carrinho, escolha a quantidade e finalize o pedido</p>
+    <div class="prod-grid" id="prod-grid"></div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="produtos.html" class="btn btn-secondary">Ver todos os produtos →</a>
+    </div>
+  </section>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <img src="logo.png" alt="" style="width:34px;height:34px;border-radius:8px;object-fit:cover" onerror="this.style.display='none'">
+        <strong id="footer-brand" style="font-size:18px;color:var(--accent)">HepoMarket</strong>
+      </div>
+      <p style="color:var(--text-secondary);font-size:13px;line-height:1.65;max-width:280px" id="footer-desc">Plataforma de marketing de afiliados. Renda Extra com Segurança em Angola.</p>
+      <div id="footer-social" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px"></div>
+    </div>
+    <div>
+      <div style="font-weight:700;margin-bottom:12px;font-size:14px">Navegação</div>
+      <div class="footer-links">
+        <a href="index.html">🏠 Início</a>
+        <a href="produtos.html">📦 Produtos</a>
+        <a href="blog.html">📝 Blog</a>
+        <a href="cadastro.html">🤝 Parceiros</a>
+        <a href="termos.html">📄 Termos</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-weight:700;margin-bottom:12px;font-size:14px">Contacto</div>
+      <div class="footer-links">
+        <a href="#" id="footer-wa">💬 WhatsApp</a>
+        <a href="login.html">🔐 Área CEO</a>
+      </div>
+      <div style="margin-top:14px;font-size:13px;color:var(--text-secondary)" id="footer-addr">📍 Cacuaco, Luanda, Angola</div>
+    </div>
+  </div>
+  <div class="footer-bottom" id="footer-copy">© 2025 HepoMarket · Todos os direitos reservados</div>
+</footer>
+
+<div id="cart-scrim" onclick="fecharCarrinho()"></div>
+
+<!-- DRAWER CARRINHO: 4 PASSOS -->
+<div id="cart-drawer">
+  <div class="drw-head">
+    <div>
+      <div style="font-weight:800;font-size:16px">🛒 O Meu Carrinho</div>
+      <div style="font-size:12px;color:var(--text-secondary)" id="drw-count">0 itens</div>
+    </div>
+    <button onclick="fecharCarrinho()" style="background:none;border:none;cursor:pointer;font-size:22px;color:var(--text-secondary);line-height:1">✕</button>
+  </div>
+  <div class="steps-bar">
+    <div class="step-pill on" id="sp1">① Carrinho</div>
+    <div class="step-pill" id="sp2">② Cupão</div>
+    <div class="step-pill" id="sp3">③ Dados</div>
+    <div class="step-pill" id="sp4">④ Confirmado</div>
+  </div>
+
+  <div class="drw-body">
+    <!-- PASSO 1: Itens + quantidades -->
+    <div class="ck-step act" id="ck1">
+      <div id="ci-list"></div>
+      <div id="ci-empty" style="display:none;text-align:center;padding:48px 0;color:var(--text-secondary)">
+        <div style="font-size:56px;margin-bottom:14px">🛒</div>
+        <div style="font-weight:700;font-size:16px">Carrinho vazio</div>
+        <div style="font-size:13px;margin-top:6px">Adicione produtos para começar</div>
+        <button onclick="fecharCarrinho()" class="btn btn-secondary btn-sm" style="margin-top:16px">Ver Produtos</button>
+      </div>
+    </div>
+
+    <!-- PASSO 2: Cupão + resumo -->
+    <div class="ck-step" id="ck2">
+      <div style="font-weight:700;margin-bottom:14px;font-size:15px">🎟️ Tem um cupão de desconto?</div>
+      <div style="display:flex;gap:8px;margin-bottom:6px">
+        <input class="input" id="cup-inp" placeholder="Código do cupão" style="flex:1;text-transform:uppercase;font-weight:700;letter-spacing:1px">
+        <button class="btn btn-secondary" onclick="aplicarCupao()">Aplicar</button>
+      </div>
+      <div id="cup-msg"></div>
+      <div class="sum-box" style="margin-top:16px">
+        <div class="sum-row"><span style="color:var(--text-secondary)">Subtotal</span><span id="rs-sub" style="font-weight:700">0 Kz</span></div>
+        <div class="sum-row" id="rs-desc-row" style="display:none"><span style="color:#107c10;font-weight:600">🎟️ Desconto</span><span id="rs-desc" style="color:#107c10;font-weight:700">-0 Kz</span></div>
+        <div class="sum-total"><span>Total a pagar</span><span id="rs-total" style="color:var(--accent)">0 Kz</span></div>
+      </div>
+      <div id="bk-info" style="margin-top:12px;font-size:12px;color:var(--text-secondary);background:var(--accent-light);border-radius:8px;padding:10px 12px;line-height:1.6"></div>
+    </div>
+
+    <!-- PASSO 3: Formulário completo do cliente -->
+    <div class="ck-step" id="ck3">
+      <div style="font-weight:700;margin-bottom:16px;font-size:15px">📋 Dados de Entrega & Pagamento</div>
+      <div class="form-group"><label>Nome completo *</label><input class="input" id="ck-nome" placeholder="O seu nome completo"></div>
+      <div class="form-group"><label>Telefone / WhatsApp *</label><input class="input" id="ck-tel" placeholder="+244 9XX XXX XXX" type="tel"></div>
+      <div class="form-group"><label>Email (opcional)</label><input class="input" id="ck-email" placeholder="email@exemplo.com" type="email"></div>
+      <div class="form-group"><label>Província</label>
+        <select class="select" id="ck-prov">
+          <option value="">-- Seleccionar --</option>
+          <option>Luanda</option><option>Benguela</option><option>Huíla</option><option>Huambo</option>
+          <option>Malanje</option><option>Uíge</option><option>Cabinda</option><option>Zaire</option>
+          <option>Cuanza Norte</option><option>Cuanza Sul</option><option>Bié</option><option>Moxico</option>
+          <option>Cuando Cubango</option><option>Cunene</option><option>Namibe</option>
+          <option>Lunda Norte</option><option>Lunda Sul</option><option>Bengo</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Município / Bairro</label><input class="input" id="ck-mun" placeholder="Ex: Cacuaco, Viana, Talatona..."></div>
+      <div class="form-group"><label>Endereço detalhado</label><input class="input" id="ck-end" placeholder="Rua, número, referência..."></div>
+      <div class="form-group"><label>Forma de Pagamento *</label>
+        <select class="select" id="ck-pag">
+          <option value="">-- Seleccionar --</option>
+          <option>IBAN / Transferência Bancária</option>
+          <option>Multicaixa Express</option>
+          <option>Dinheiro na Entrega</option>
+          <option>PayPal</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Notas (opcional)</label>
+        <textarea class="input" id="ck-notas" rows="2" placeholder="Instruções especiais, horário preferido..."></textarea>
+      </div>
+    </div>
+
+    <!-- PASSO 4: Confirmação -->
+    <div class="ck-step" id="ck4">
+      <div class="confirm-box">
+        <div style="font-size:64px">✅</div>
+        <h3 style="font-weight:800;font-size:20px;margin:12px 0 8px">Pedido Registado!</h3>
+        <p style="color:var(--text-secondary);font-size:13px;line-height:1.7" id="ck4-msg"></p>
+      </div>
+      <div class="confirm-details" id="ck4-det"></div>
+      <div id="ck4-bk" style="margin-top:14px;background:var(--accent-light);border-radius:10px;padding:12px;font-size:13px;line-height:1.6;color:var(--accent);font-weight:600"></div>
+    </div>
+  </div>
+
+  <div class="drw-foot">
+    <div id="df1">
+      <button class="btn btn-primary" style="width:100%;height:44px;font-size:15px" onclick="irPasso(2)">Continuar → Cupão & Resumo</button>
+    </div>
+    <div id="df2" style="display:none">
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="irPasso(1)" style="flex:1">← Voltar</button>
+        <button class="btn btn-primary" onclick="irPasso(3)" style="flex:2;height:44px">Continuar → Dados</button>
+      </div>
+    </div>
+    <div id="df3" style="display:none">
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="irPasso(2)" style="flex:1">← Voltar</button>
+        <button class="btn btn-primary" onclick="confirmarPedido()" style="flex:2;height:44px;background:#107c10;border-color:#107c10">✅ Confirmar Pedido</button>
+      </div>
+    </div>
+    <div id="df4" style="display:none">
+      <button class="btn btn-success" id="btn-wa" style="width:100%;height:44px;font-size:15px;margin-bottom:8px">📲 Enviar ao CEO via WhatsApp</button>
+      <button class="btn btn-ghost" style="width:100%" onclick="fecharCarrinho()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI CHAT -->
+<button id="chat-fab" onclick="toggleChat()">🤖</button>
+<div id="chat-win">
+  <div class="ch-head">
+    <div>
+      <div style="font-weight:800;font-size:14px">🤖 Assistente HepoMarket</div>
+      <div style="font-size:11px;opacity:.8">Powered by Claude AI · Sempre disponível</div>
+    </div>
+    <button onclick="toggleChat()" style="background:none;border:none;color:#fff;cursor:pointer;font-size:20px;line-height:1">✕</button>
+  </div>
+  <div class="ch-msgs" id="ch-msgs">
+    <div class="cm b">Olá! 👋 Bem-vindo à HepoMarket. Posso ajudar com produtos, pedidos, pagamentos ou parcerias!</div>
+  </div>
+  <div class="ch-sugs" id="ch-sugs">
+    <span class="csug" onclick="qs(this)">📦 Ver produtos</span>
+    <span class="csug" onclick="qs(this)">💼 Ser parceiro</span>
+    <span class="csug" onclick="qs(this)">💳 Como pagar</span>
+    <span class="csug" onclick="qs(this)">🎟️ Usar cupão</span>
+    <span class="csug" onclick="qs(this)">📲 Falar com CEO</span>
+  </div>
+  <div class="ch-inp">
+    <input class="input" id="ch-in" placeholder="Escreva a sua questão..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="btn btn-primary btn-sm" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="data.js"></script>
+<script>
+'use strict';
+
+// ── TEMA ──
+const _t = localStorage.getItem('hm_public_theme') || DB.getConfig().tema || 'light';
+document.documentElement.setAttribute('data-theme', _t);
+document.getElementById('theme-btn').textContent = _t === 'dark' ? '☀️' : '🌙';
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('hm_public_theme', n);
+  document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
+});
+
+// ── FUNDO HERO (3 camadas independentes) ──
+function aplicarFundo() {
+  const c = DB.getConfig();
+  const bg = document.getElementById('hero-bg');
+  const ov = document.getElementById('hero-ov');
+  if (c.fundoTipo === 'imagem' && c.fundoImagem) {
+    bg.style.cssText = 'position:absolute;inset:0;z-index:0;background:url("' + c.fundoImagem + '") center/cover no-repeat;';
+  } else if (c.fundoTipo === 'cor-solida') {
+    bg.style.cssText = 'position:absolute;inset:0;z-index:0;background:' + (c.fundoCor1 || '#0078D4') + ';';
+  } else {
+    bg.style.cssText = 'position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,' + (c.fundoCor1 || '#0078D4') + ',' + (c.fundoCor2 || '#005a9e') + ');';
+  }
+  const opac = c.heroOverlayOpacity !== undefined ? parseFloat(c.heroOverlayOpacity) : (c.fundoTipo === 'imagem' ? 0.50 : 0.28);
+  ov.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(0,0,0,' + (c.heroOverlay !== false ? opac : 0) + ');';
+  document.documentElement.style.setProperty('--htc', c.heroTextoCor || '#ffffff');
+}
+aplicarFundo();
+
+function aplicarAcento(cor) {
+  if (!cor) return;
+  document.documentElement.style.setProperty('--accent', cor);
+  const r = parseInt(cor.slice(1,3),16), g = parseInt(cor.slice(3,5),16), b = parseInt(cor.slice(5,7),16);
+  document.documentElement.style.setProperty('--accent-light', 'rgba('+r+','+g+','+b+',.12)');
+}
+aplicarAcento(DB.getConfig().corAcento);
+
+// ── TEXTOS ──
+function loadTexts() {
+  const c = DB.getConfig();
+  document.getElementById('nav-brand').textContent    = c.nomeEmpresa || 'HepoMarket';
+  document.getElementById('hero-brand').textContent   = c.nomeEmpresa || 'HepoMarket';
+  document.getElementById('hero-slogan').textContent  = c.slogan || 'A plataforma de marketing de afiliados em Cacuaco, Luanda.';
+  document.getElementById('footer-brand').textContent = c.nomeEmpresa || 'HepoMarket';
+  document.getElementById('footer-desc').textContent  = (c.slogan || 'Plataforma de marketing de afiliados.') + ' — ' + (c.endereco || 'Cacuaco, Luanda');
+  document.getElementById('footer-addr').textContent  = '📍 ' + (c.endereco || 'Cacuaco, Luanda, Angola');
+  // Sem nome do CEO no rodapé
+  document.getElementById('footer-copy').textContent  = '© ' + new Date().getFullYear() + ' ' + (c.nomeEmpresa || 'HepoMarket') + ' · Todos os direitos reservados';
+  if (c.whatsapp) document.getElementById('footer-wa').href = 'https://wa.me/' + c.whatsapp;
+  const defs = [{k:'facebook',i:'📘',l:'Facebook'},{k:'instagram',i:'📷',l:'Instagram'},{k:'tiktok',i:'🎵',l:'TikTok'},{k:'youtube',i:'▶️',l:'YouTube'}];
+  if (c.whatsapp) defs.push({k:'_wa',i:'💬',l:'WhatsApp',u:'https://wa.me/'+c.whatsapp});
+  const its = defs.filter(x => x.u || c[x.k]);
+  document.getElementById('social-bar').innerHTML = its.map(x => '<a href="'+(x.u||c[x.k])+'" target="_blank" class="social-link">'+x.i+' '+x.l+'</a>').join('');
+  document.getElementById('footer-social').innerHTML = its.map(x => '<a href="'+(x.u||c[x.k])+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:12px;font-size:12px;font-weight:600;text-decoration:none;background:var(--bg2);color:var(--text-secondary);border:1px solid var(--border)">'+x.i+' '+x.l+'</a>').join('');
+}
+loadTexts();
+
+// ── PRODUTOS — só botão carrinho, sem WA directo ──
+function renderProds() {
+  const prods = DB.getProdutos().slice(-8).reverse();
+  const grid  = document.getElementById('prod-grid');
+  if (!prods.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-secondary)">Nenhum produto disponível ainda.<br><a href="cadastro.html" style="color:var(--accent);font-weight:700">Torne-se parceiro!</a></div>';
+    return;
+  }
+  grid.innerHTML = prods.map(p => {
+    const temPreco = p.preco && parseFloat(p.preco) > 0;
+    return '<div class="prod-card">'
+      + (p.imagem ? '<img src="'+p.imagem+'" style="width:100%;height:168px;object-fit:cover">'
+                  : '<div style="width:100%;height:168px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:52px">📦</div>')
+      + '<div style="padding:14px 14px 10px;flex:1">'
+      + (p.categoria ? '<span style="font-size:10px;background:var(--accent-light);color:var(--accent);padding:2px 8px;border-radius:6px;font-weight:700;text-transform:uppercase">'+p.categoria+'</span>' : '')
+      + '<div style="font-weight:800;margin:8px 0 4px;font-size:15px;line-height:1.3">'+p.nome+'</div>'
+      + (p.descricao ? '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;line-height:1.5">'+p.descricao.substring(0,80)+(p.descricao.length>80?'…':'')+'</div>' : '')
+      + '<div style="color:var(--accent);font-weight:800;font-size:18px;margin-bottom:4px">'+(temPreco ? formatarKz(p.preco) : 'Consulte o preço')+'</div>'
+      + '</div>'
+      + '<button class="add-btn" onclick="addCart(\''+p.id+'\')">🛒 Adicionar ao Carrinho</button>'
+      + '</div>';
+  }).join('');
+}
+renderProds();
+
+// ── CARRINHO ──
+let _passo = 1, _cupao = null;
+
+function updBadge() {
+  const n = Carrinho.count();
+  const b = document.getElementById('cart-badge');
+  b.style.display = n > 0 ? 'flex' : 'none';
+  b.textContent = n;
+  document.getElementById('drw-count').textContent = n + (n === 1 ? ' item' : ' itens');
+}
+updBadge();
+
+function addCart(id) {
+  const p = DB.getProdutos().find(x => x.id === id);
+  if (!p) return;
+  Carrinho.add({ prodId: p.id, nome: p.nome, preco: parseFloat(p.preco) || 0, imagem: p.imagem || '' });
+  updBadge();
+  toast('✅ ' + p.nome + ' adicionado ao carrinho!', 'success');
+}
+
+function abrirCarrinho() {
+  _passo = 1; _cupao = null;
+  renderItens(); calcTotais(); irPasso(1);
+  document.getElementById('cart-drawer').classList.add('open');
+  document.getElementById('cart-scrim').classList.add('open');
+}
+function fecharCarrinho() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('cart-scrim').classList.remove('open');
+}
+
+function renderItens() {
+  const items = Carrinho.get();
+  const list  = document.getElementById('ci-list');
+  const empty = document.getElementById('ci-empty');
+  if (!items.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = items.map(x =>
+    '<div class="ci">'
+    + '<div class="ci-thumb">' + (x.imagem ? '<img src="'+x.imagem+'" style="width:56px;height:56px;border-radius:10px;object-fit:cover">' : '📦') + '</div>'
+    + '<div style="flex:1;min-width:0">'
+    + '<div style="font-weight:700;font-size:13px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+x.nome+'</div>'
+    + '<div style="color:var(--accent);font-weight:700;font-size:13px">'+formatarKz(x.preco)+' / un.</div>'
+    + '<div class="qty-ctrl">'
+    + '<button class="qty-btn" onclick="Carrinho.setQtd(\''+x.prodId+'\','+(x.qtd-1)+');renderItens();updBadge();calcTotais()">−</button>'
+    + '<span style="font-weight:800;min-width:28px;text-align:center;font-size:15px">'+x.qtd+'</span>'
+    + '<button class="qty-btn" onclick="Carrinho.setQtd(\''+x.prodId+'\','+(x.qtd+1)+');renderItens();updBadge();calcTotais()">+</button>'
+    + '<span style="margin-left:6px;font-size:12px;color:var(--text-secondary);font-weight:600">= '+formatarKz(x.preco*x.qtd)+'</span>'
+    + '</div></div>'
+    + '<button onclick="Carrinho.remove(\''+x.prodId+'\');renderItens();updBadge();calcTotais()" style="background:none;border:none;color:var(--text-disabled);cursor:pointer;font-size:18px;padding:2px;flex-shrink:0" title="Remover">✕</button>'
+    + '</div>'
+  ).join('');
+}
+
+function calcTotais() {
+  const sub  = Carrinho.subtotal();
+  const desc = _cupao ? (_cupao.tipo === 'percentagem' ? sub*_cupao.valor/100 : parseFloat(_cupao.valor)||0) : 0;
+  const tot  = Math.max(0, sub - desc);
+  document.getElementById('rs-sub').textContent   = formatarKz(sub);
+  document.getElementById('rs-total').textContent = formatarKz(tot);
+  const dr = document.getElementById('rs-desc-row');
+  dr.style.display = (_cupao && desc > 0) ? 'flex' : 'none';
+  if (_cupao && desc > 0) document.getElementById('rs-desc').textContent = '- ' + formatarKz(desc);
+  const bk  = DB.getDadosBancarios();
+  const inf = document.getElementById('bk-info');
+  if (inf) {
+    let t = '💳 Pagamentos aceites: IBAN';
+    if (bk.iban) t += ' (' + bk.iban + ')';
+    if (bk.multicaixa) t += ' · Multicaixa: ' + bk.multicaixa;
+    inf.textContent = t;
+  }
+}
+
+function aplicarCupao() {
+  const cod = (document.getElementById('cup-inp').value || '').trim();
+  const res = Cupoes.validar(cod);
+  const el  = document.getElementById('cup-msg');
+  if (res.ok) {
+    _cupao = res.cupao;
+    el.innerHTML = '<div class="cupao-ok">✅ Cupão <strong>'+cod.toUpperCase()+'</strong> — '
+      + (_cupao.tipo === 'percentagem' ? _cupao.valor+'%' : formatarKz(_cupao.valor)) + ' de desconto aplicado!</div>';
+    calcTotais();
+    toast('🎟️ Cupão aplicado!', 'success');
+  } else {
+    _cupao = null;
+    el.innerHTML = '<div style="color:#c42b1c;font-size:13px;margin-top:8px;font-weight:600;padding:8px 12px;background:rgba(196,43,28,.08);border-radius:8px">❌ '+res.msg+'</div>';
+    calcTotais();
+  }
+}
+
+function irPasso(n) {
+  if (n >= 2 && Carrinho.count() === 0) { toast('O carrinho está vazio!', 'error'); return; }
+  _passo = n;
+  for (let i = 1; i <= 4; i++) {
+    const ck = document.getElementById('ck'+i); if (ck) ck.classList.toggle('act', i===n);
+    const df = document.getElementById('df'+i); if (df) df.style.display = i===n ? 'block' : 'none';
+    const sp = document.getElementById('sp'+i); if (sp) sp.classList.toggle('on', i<=n);
+  }
+  if (n === 2) calcTotais();
+}
+
+// ── CONFIRMAR PEDIDO + NOTIFICAÇÃO CEO ──
+function confirmarPedido() {
+  const nome = (document.getElementById('ck-nome').value || '').trim();
+  const tel  = (document.getElementById('ck-tel').value || '').trim();
+  const pag  = document.getElementById('ck-pag').value;
+  if (!nome) { toast('O nome é obrigatório', 'error'); document.getElementById('ck-nome').focus(); return; }
+  if (!tel)  { toast('O telefone é obrigatório', 'error'); document.getElementById('ck-tel').focus(); return; }
+  if (!pag)  { toast('Seleccione o pagamento', 'error'); document.getElementById('ck-pag').focus(); return; }
+
+  const c     = DB.getConfig();
+  const bk    = DB.getDadosBancarios();
+  const items = Carrinho.get();
+  const sub   = Carrinho.subtotal();
+  const desc  = _cupao ? (_cupao.tipo==='percentagem' ? sub*_cupao.valor/100 : parseFloat(_cupao.valor)||0) : 0;
+  const total = Math.max(0, sub - desc);
+  const numPed = 'PED-' + Date.now().toString().slice(-6);
+  const email  = document.getElementById('ck-email').value;
+  const prov   = document.getElementById('ck-prov').value;
+  const mun    = document.getElementById('ck-mun').value;
+  const end    = document.getElementById('ck-end').value;
+  const notas  = document.getElementById('ck-notas').value;
+  const addr   = [prov, mun, end].filter(Boolean).join(', ') || '—';
+
+  // Gravar no DB
+  items.forEach(x => {
+    DB.addPedido({ numero:numPed, produto:x.nome, qtd:x.qtd, total:x.preco*x.qtd, totalGeral:total,
+      nomeCliente:nome, telCliente:tel, emailCliente:email,
+      provincia:prov, municipio:mun, endereco:end, metodoPagamento:pag, notas,
+      codigoCupao:_cupao?_cupao.codigo:'', estado:'pendente' });
+  });
+  if (_cupao) Cupoes.usar(_cupao.id);
+
+  // Notificação no painel CEO
+  DB.addNotificacao({
+    tipo:'pedido',
+    titulo:'🛒 Novo Pedido ' + numPed,
+    mensagem: nome + ' fez um pedido de ' + formatarKz(total) + '. Aguarda confirmação.',
+    link:'pedidos'
+  });
+
+  // Mensagem WhatsApp
+  const linhaProds = items.map(x => x.qtd+'× '+x.nome+' — '+formatarKz(x.preco*x.qtd)).join('\n');
+  const waMsg = ['🛒 *NOVO PEDIDO HepoMarket*','📋 *Nº:* '+numPed,'','👤 *Cliente:* '+nome,'📞 *Tel:* '+tel,
+    (email?'📧 *Email:* '+email:''),'','📦 *Produtos:*',linhaProds,'',
+    '💰 *Subtotal:* '+formatarKz(sub), (_cupao?'🎟️ *Cupão:* '+_cupao.codigo+' (- '+formatarKz(desc)+')':''),
+    '✅ *Total:* '+formatarKz(total),'💳 *Pagamento:* '+pag,'','📍 *Entrega:* '+addr,
+    (notas?'📝 *Notas:* '+notas:''),'',bk.instrucoes?'📌 '+bk.instrucoes:'Confirme este pedido com o cliente.'
+  ].filter(x=>x!=='').join('\n');
+
+  document.getElementById('btn-wa').onclick = () => {
+    window.open('https://wa.me/'+(c.whatsapp||'244952100356')+'?text='+encodeURIComponent(waMsg),'_blank');
+  };
+  document.getElementById('ck4-msg').textContent = 'Obrigado, '+nome+'! O pedido '+numPed+' foi registado. O CEO foi notificado e contactará em breve.';
+  document.getElementById('ck4-det').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
+    +'<div><strong>Pedido</strong><br>'+numPed+'</div>'
+    +'<div><strong>Total</strong><br><span style="color:var(--accent);font-weight:800">'+formatarKz(total)+'</span></div>'
+    +'<div><strong>Pagamento</strong><br>'+pag+'</div>'
+    +'<div><strong>Entrega</strong><br>'+(prov||'—')+'</div></div>';
+  document.getElementById('ck4-bk').innerHTML = bk.instrucoes
+    ? '📌 <strong>Instruções:</strong> '+bk.instrucoes
+    : '📲 Clique em "Enviar via WhatsApp" para o CEO confirmar o pedido.';
+  Carrinho.clear(); updBadge(); irPasso(4);
+}
+
+// ── ASSISTENTE IA — contexto completo do negócio ──
+let _ch = [], _chatOpen = false;
+function toggleChat() {
+  _chatOpen = !_chatOpen;
+  document.getElementById('chat-win').classList.toggle('open', _chatOpen);
+  if (_chatOpen) document.getElementById('ch-in').focus();
+}
+function qs(el) { document.getElementById('ch-in').value = el.textContent.trim(); sendChat(); }
+
+function buildSys() {
+  const c  = DB.getConfig();
+  const bk = DB.getDadosBancarios();
+  const st = DB.getStats();
+  const ps = DB.getProdutos().map(p=>'• '+p.nome+(p.preco?' — '+formatarKz(p.preco):'')+(p.descricao?' ('+p.descricao.substring(0,50)+'...)':'')).join('\n') || 'Sem produtos carregados';
+  return [
+    'Eres o assistente oficial da '+( c.nomeEmpresa||'HepoMarket')+', plataforma angolana de marketing de afiliados em Cacuaco, Luanda, Angola.',
+    'FUNDADOR/CEO: '+((c.ceoPerfil&&c.ceoPerfil.nome)||'Maximino Vicetaca Hepo Evaristo')+'.',
+    'WHATSAPP DO CEO: +'+(c.whatsapp||'244952100356')+'.',
+    '',
+    'PRODUTOS DISPONÍVEIS NO SITE:',
+    ps,
+    '',
+    'FORMAS DE PAGAMENTO:',
+    '• IBAN'+(bk.iban?' — '+bk.iban:''),
+    '• Multicaixa Express'+(bk.multicaixa?' — '+bk.multicaixa:''),
+    bk.paypal?'• PayPal — '+bk.paypal:'',
+    bk.instrucoes?'Instruções: '+bk.instrucoes:'',
+    '',
+    'NÚMEROS ACTUAIS: '+st.produtos+' produtos, '+st.parceiros+' parceiros, '+st.clientes+' clientes, '+st.pedidos+' pedidos.',
+    '',
+    'COMO COMPRAR: O cliente adiciona produtos ao carrinho (botão no site), escolhe a quantidade, aplica cupão se tiver, preenche dados de entrega e confirma. Depois envia o pedido ao CEO via WhatsApp.',
+    'COMO SER PARCEIRO: Ir a cadastro.html e preencher o formulário.',
+    '',
+    'REGRAS IMPORTANTES:',
+    '• Responds SEMPRE em português angolano, amigável e directo.',
+    '• Nunca digas que não sabes — encaminha para o CEO se necessário.',
+    '• Não partilhes dados de clientes ou parceiros.',
+    '• Tom caloroso e profissional.'
+  ].filter(Boolean).join('\n');
+}
+
+async function sendChat() {
+  const inp  = document.getElementById('ch-in');
+  const msgs = document.getElementById('ch-msgs');
+  const txt  = inp.value.trim(); if (!txt) return;
+  inp.value  = '';
+  document.getElementById('ch-sugs').style.display = 'none';
+  msgs.innerHTML += '<div class="cm u">'+txt.replace(/</g,'&lt;')+'</div>';
+  const tid = 'cm'+Date.now();
+  msgs.innerHTML += '<div class="cm b" id="'+tid+'"><span class="typing"><span></span><span></span><span></span></span></div>';
+  msgs.scrollTop = 9999;
+  DB.addMensagem({nome:'Chat Web', texto:txt});
+  _ch.push({role:'user', content:txt});
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:500, system:buildSys(), messages:_ch.slice(-10)})
+    });
+    const d   = await r.json();
+    const rep = (d.content&&d.content[0]&&d.content[0].text) || localBot(txt);
+    _ch.push({role:'assistant', content:rep});
+    document.getElementById(tid).innerHTML = rep.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  } catch(e) {
+    const fb = localBot(txt); _ch.push({role:'assistant',content:fb});
+    document.getElementById(tid).textContent = fb;
+  }
+  msgs.scrollTop = 9999;
+}
+
+function localBot(t) {
+  const m = t.toLowerCase(), c = DB.getConfig(), wa = '+'+(c.whatsapp||'244952100356');
+  if (m.includes('parceiro')||m.includes('afiliado')) return '🤝 Vá a cadastro.html e registe-se como parceiro!';
+  if (m.includes('comprar')||m.includes('produto')||m.includes('preço')) return '📦 Adicione ao carrinho e siga os passos até confirmar!';
+  if (m.includes('pagar')||m.includes('pagament')||m.includes('iban')||m.includes('multicaixa')) return '💳 Aceitamos IBAN, Multicaixa Express e dinheiro na entrega. Verá os detalhes no carrinho!';
+  if (m.includes('cupão')||m.includes('cupao')||m.includes('desconto')) return '🎟️ Insira o código no passo "Cupão" durante o checkout!';
+  if (m.includes('pedido')||m.includes('encomenda')) return '🔍 Para verificar o estado do pedido contacte o CEO: WhatsApp '+wa;
+  if (m.includes('ceo')||m.includes('contacto')) return '📲 WhatsApp do CEO: '+wa;
+  return '😊 Para assistência directa contacte o CEO: '+wa;
+}
+
+// ── TOAST ──
+function toast(msg, type) {
+  const el = document.createElement('div');
+  const col = type==='success'?'#107c10':type==='error'?'#c42b1c':'var(--accent)';
+  el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;background:var(--surface-solid);border:1px solid var(--border-strong);border-left:4px solid '+col+';padding:12px 20px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);font-weight:600;font-size:14px;white-space:nowrap;pointer-events:none;';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 3000);
+}
+
+window.addEventListener('hm_update', e => {
+  if (e.detail==='produtos')  renderProds();
+  if (e.detail==='config')    { aplicarFundo(); aplicarAcento(DB.getConfig().corAcento); loadTexts(); }
+  if (e.detail==='carrinho')  updBadge();
+});
+</script>
+</body>
+</html>

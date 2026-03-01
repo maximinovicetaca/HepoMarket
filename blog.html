@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Blog HepoMarket</title>
+<link rel="stylesheet" href="win11.css">
+<style>
+.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(255,255,255,0.9);backdrop-filter:blur(32px);border-bottom:1px solid var(--border);}
+[data-theme=dark] .site-nav{background:rgba(20,20,20,0.92);}
+.site-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.site-brand img{width:32px;height:32px;border-radius:8px;object-fit:cover;}
+.site-brand strong{font-size:18px;font-weight:800;color:var(--accent);}
+.blog-hero{background:linear-gradient(135deg,var(--accent),#005a9e);color:#fff;padding:80px 32px 48px;text-align:center;}
+.blog-hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;margin-bottom:10px;}
+.blog-hero p{font-size:16px;opacity:.88;}
+.blog-wrap{max-width:1100px;margin:0 auto;padding:48px 32px;}
+.cat-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px;justify-content:center;}
+.cat-btn{padding:8px 18px;border-radius:20px;border:1px solid var(--border-strong);background:var(--surface);font-weight:600;font-size:13px;cursor:pointer;transition:.18s;}
+.cat-btn:hover,.cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
+.blog-card{background:var(--surface-solid);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:.2s;}
+.blog-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px);}
+.blog-card-img{width:100%;height:180px;object-fit:cover;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:56px;}
+.blog-card-body{padding:18px;}
+.blog-cat{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.blog-card-body h3{font-size:17px;font-weight:800;margin-bottom:8px;line-height:1.3;}
+.blog-card-body p{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;}
+.blog-meta{font-size:12px;color:var(--text-disabled);display:flex;gap:10px;}
+/* Modal */
+.blog-modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;}
+.blog-modal-ov.open{display:flex;}
+.blog-modal{background:var(--surface-solid);border-radius:20px;max-width:740px;width:100%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.blog-modal-head{position:relative;}
+.blog-modal-head img,.blog-modal-emoji{width:100%;height:220px;object-fit:cover;display:block;background:var(--accent-light);font-size:80px;display:flex;align-items:center;justify-content:center;}
+.blog-modal-close{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.blog-modal-body{padding:24px 28px;overflow-y:auto;flex:1;}
+.blog-modal-body h2{font-size:24px;font-weight:900;margin-bottom:8px;line-height:1.2;}
+.blog-modal-meta{font-size:13px;color:var(--text-secondary);margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap;}
+.blog-modal-content{font-size:15px;line-height:1.8;color:var(--text-primary);}
+.blog-modal-content p{margin-bottom:14px;}
+.empty-blog{text-align:center;padding:80px 0;color:var(--text-secondary);}
+.empty-blog .big{font-size:64px;margin-bottom:16px;}
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <a href="index.html" class="site-brand">
+    <img src="logo.png" alt="" onerror="this.style.display='none'">
+    <strong id="nav-brand">HepoMarket</strong>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="index.html" class="btn btn-ghost btn-sm">🏠 Início</a>
+    <a href="produtos.html" class="btn btn-ghost btn-sm">📦 Produtos</a>
+    <a href="cadastro.html" class="btn btn-ghost btn-sm">🤝 Parceiros</a>
+    <button id="theme-btn" class="btn btn-ghost btn-icon">🌙</button>
+  </div>
+</nav>
+
+<div class="blog-hero" id="blog-hero" style="padding-top:88px">
+  <h1>📝 Blog HepoMarket</h1>
+  <p id="blog-sub">Dicas, novidades e estratégias para o seu negócio</p>
+</div>
+
+<div class="blog-wrap">
+  <div class="cat-filters" id="cat-filters"></div>
+  <div class="blog-grid" id="blog-grid"></div>
+</div>
+
+<!-- Modal artigo -->
+<div class="blog-modal-ov" id="blog-modal-ov" onclick="if(event.target===this)fecharArtigo()">
+  <div class="blog-modal" id="blog-modal">
+    <div class="blog-modal-head" id="modal-head"></div>
+    <div class="blog-modal-body">
+      <div class="blog-cat" id="modal-cat"></div>
+      <h2 id="modal-title"></h2>
+      <div class="blog-modal-meta" id="modal-meta"></div>
+      <div class="blog-modal-content" id="modal-content"></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="fecharArtigo()" class="btn btn-secondary btn-sm">← Voltar ao Blog</button>
+        <a id="modal-wa" href="#" target="_blank" class="btn btn-success btn-sm">📲 Partilhar no WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const _t = localStorage.getItem('hm_public_theme') || 'light';
+document.documentElement.setAttribute('data-theme', _t);
+document.getElementById('theme-btn').textContent = _t==='dark'?'☀️':'🌙';
+document.getElementById('theme-btn').addEventListener('click',()=>{
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('hm_public_theme',n);
+  document.getElementById('theme-btn').textContent=n==='dark'?'☀️':'🌙';
+});
+
+const cfg=DB.getConfig();
+document.getElementById('nav-brand').textContent=cfg.nomeEmpresa||'HepoMarket';
+document.getElementById('blog-sub').textContent='Dicas, novidades e estratégias — '+(cfg.nomeEmpresa||'HepoMarket');
+
+// Aplicar fundo ao blog-hero com a cor de acento
+const acento=cfg.corAcento||'#0078D4';
+document.getElementById('blog-hero').style.background='linear-gradient(135deg,'+acento+',#005a9e)';
+
+let _filtro='todos';
+
+function getBlog(){
+  if(typeof Blog!=='undefined') return Blog.getAll().filter(a=>a.publicado);
+  return JSON.parse(localStorage.getItem('hm_blog')||'[]').filter(a=>a.publicado);
+}
+
+function renderBlog(){
+  const artigos=getBlog();
+  const filtrados=_filtro==='todos'?artigos:artigos.filter(a=>a.categoria===_filtro);
+
+  // Categorias
+  const cats=[...new Set(artigos.map(a=>a.categoria).filter(Boolean))];
+  const cf=document.getElementById('cat-filters');
+  cf.innerHTML='<button class="cat-btn'+(  _filtro==='todos'?' active':'')+'" onclick="filtrar(\'todos\',this)">🗂️ Todos</button>'
+    +cats.map(c=>'<button class="cat-btn'+(_filtro===c?' active':'')+'" onclick="filtrar(\''+c+'\',this)">'+c+'</button>').join('');
+
+  const grid=document.getElementById('blog-grid');
+  if(!filtrados.length){
+    grid.innerHTML='<div class="empty-blog" style="grid-column:1/-1"><div class="big">📝</div><div style="font-weight:700;font-size:18px">Nenhum artigo publicado ainda</div><div style="margin-top:8px;font-size:14px">Volte em breve para novas publicações!</div></div>';
+    return;
+  }
+  grid.innerHTML=filtrados.map(a=>
+    '<div class="blog-card" onclick="abrirArtigo(\''+a.id+'\')">'
+    +(a.imagem?'<img src="'+a.imagem+'" class="blog-card-img">':'<div class="blog-card-img">'+(a.emoji||'📝')+'</div>')
+    +'<div class="blog-card-body">'
+    +'<div class="blog-cat">'+(a.categoria||'Geral')+'</div>'
+    +'<h3>'+a.titulo+'</h3>'
+    +(a.resumo?'<p>'+a.resumo.substring(0,110)+(a.resumo.length>110?'…':'')+'</p>':'')
+    +'<div class="blog-meta"><span>✍️ '+(a.autor||'HepoMarket')+'</span><span>📅 '+formatarData(a.criadoEm)+'</span><span>👁️ '+(a.visualizacoes||0)+' leituras</span></div>'
+    +'</div></div>'
+  ).join('');
+}
+
+function filtrar(cat,btn){
+  _filtro=cat;
+  renderBlog();
+}
+
+function abrirArtigo(id){
+  const a = getBlog().find(x=>x.id===id); if(!a) return;
+  if(typeof Blog!=='undefined') Blog.addView(id);
+
+  document.getElementById('modal-head').innerHTML = a.imagem
+    ? '<img src="'+a.imagem+'" style="width:100%;height:220px;object-fit:cover"><button class="blog-modal-close" onclick="fecharArtigo()">✕</button>'
+    : '<div style="width:100%;height:160px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:72px">'+(a.emoji||'📝')+'</div><button class="blog-modal-close" onclick="fecharArtigo()">✕</button>';
+
+  document.getElementById('modal-cat').textContent = a.categoria||'Geral';
+  document.getElementById('modal-title').textContent = a.titulo;
+  document.getElementById('modal-meta').innerHTML = '<span>✍️ '+(a.autor||'HepoMarket')+'</span><span>📅 '+formatarData(a.criadoEm)+'</span><span>👁️ '+(a.visualizacoes||0)+' leituras</span>';
+
+  const conteudo = (a.conteudo||'').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+  document.getElementById('modal-content').innerHTML = '<p>'+conteudo+'</p>';
+
+  const waText = '📝 Leia este artigo da HepoMarket: *'+a.titulo+'*';
+  document.getElementById('modal-wa').href = 'https://wa.me/?text='+encodeURIComponent(waText);
+
+  document.getElementById('blog-modal-ov').classList.add('open');
+  history.pushState(null,'','?id='+id);
+}
+
+function fecharArtigo(){
+  document.getElementById('blog-modal-ov').classList.remove('open');
+  history.pushState(null,'',location.pathname);
+}
+
+// Abrir artigo se URL tem ?id=
+const urlId = new URLSearchParams(location.search).get('id');
+if(urlId) setTimeout(()=>abrirArtigo(urlId),300);
+
+renderBlog();
+</script>
+</body>
+</html>

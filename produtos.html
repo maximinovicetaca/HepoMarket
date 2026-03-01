@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HepoMarket | Produtos</title>
+<link rel="stylesheet" href="win11.css">
+<style>
+body { padding-top: 56px; }
+.site-nav { position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(243,243,243,0.82);backdrop-filter:blur(40px) saturate(180%);border-bottom:1px solid var(--border); }
+[data-theme="dark"] .site-nav { background:rgba(32,32,32,0.85); }
+.site-brand { display:flex;align-items:center;gap:10px;text-decoration:none; }
+.site-brand img { width:32px;height:32px;border-radius:8px;object-fit:cover; }
+.site-brand span { font-size:18px;font-weight:800;color:var(--accent); }
+.nav-links { display:flex;align-items:center;gap:8px; }
+.nav-link { padding:7px 14px;border-radius:var(--radius-sm);font-weight:600;color:var(--text-secondary);text-decoration:none;transition:all var(--transition); }
+.nav-link:hover { background:var(--surface-hover);color:var(--text-primary); }
+.prod-card { background:var(--surface-solid);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;transition:all var(--transition); }
+.prod-card:hover { box-shadow:var(--shadow-md);transform:translateY(-2px); }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <a href="index.html" class="site-brand"><img src="logo.png" alt="Logo"><span id="nav-brand">HepoMarket</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">🏠 Início</a>
+    <a href="produtos.html" class="nav-link" style="color:var(--accent);font-weight:700">📦 Produtos</a>
+    <a href="cadastro.html" class="nav-link">🤝 Parceiros</a>
+    <a href="login.html" class="btn btn-primary btn-sm">🔐 CEO</a>
+    <button id="theme-toggle" class="btn btn-ghost btn-icon">🌙</button>
+  </div>
+</nav>
+
+<div style="max-width:1200px;margin:0 auto;padding:40px 24px">
+  <div style="margin-bottom:32px">
+    <h1 style="font-size:28px;font-weight:800">📦 Produtos</h1>
+    <p style="color:var(--text-secondary);margin-top:4px">Todos os produtos disponibilizados pela HepoMarket</p>
+  </div>
+  <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap">
+    <div class="search-box" style="flex:1;min-width:200px">
+      <span>🔍</span><input id="search" placeholder="Pesquisar produto..." oninput="renderProds()">
+    </div>
+    <select class="select" id="sort" style="width:auto" onchange="renderProds()">
+      <option value="">Ordenar por...</option>
+      <option value="nome">Nome A-Z</option>
+      <option value="preco_asc">Preço ↑</option>
+      <option value="preco_desc">Preço ↓</option>
+      <option value="novo">Mais recente</option>
+    </select>
+  </div>
+  <div id="prod-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px"></div>
+</div>
+
+<div id="toast-container"></div>
+
+<footer style="text-align:center;padding:28px;color:var(--text-secondary);font-size:13px;border-top:1px solid var(--border);background:var(--surface-solid);margin-top:48px">
+  <div id="footer-social" style="margin-bottom:10px"></div>
+  © 2025 <span id="footer-brand">HepoMarket</span> · Cacuaco, Luanda · <a href="termos.html" style="color:var(--accent)">Termos</a>
+</footer>
+
+<script src="data.js"></script>
+<script>
+// Tema
+const savedTheme = localStorage.getItem('hm_public_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+document.getElementById('theme-toggle').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('hm_public_theme', next);
+  document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+});
+
+// Fundo dinâmico
+(function() {
+  const c = DB.getConfig();
+  if (c.fundoTipo === 'gradiente') {
+    document.body.style.background = `linear-gradient(135deg, ${c.fundoCor1||'#e8f0fe'}, ${c.fundoCor2||'#c2d4f8'})`;
+    document.body.style.backgroundAttachment = 'fixed';
+  } else if (c.fundoTipo === 'cor-solida') {
+    document.body.style.background = c.fundoCor1 || '#f3f3f3';
+  } else if (c.fundoTipo === 'imagem' && c.fundoImagem) {
+    document.body.style.background = `url(${c.fundoImagem}) center/cover fixed`;
+  }
+})();
+
+const cfg = DB.getConfig();
+document.getElementById('nav-brand').textContent = cfg.nomeEmpresa || 'HepoMarket';
+document.getElementById('footer-brand').textContent = cfg.nomeEmpresa || 'HepoMarket';
+
+// Redes sociais no footer
+(function() {
+  const links = [
+    {key:'facebook',icon:'📘',label:'Facebook'},
+    {key:'instagram',icon:'📷',label:'Instagram'},
+    {key:'tiktok',icon:'🎵',label:'TikTok'},
+    {key:'youtube',icon:'▶️',label:'YouTube'},
+    {key:'whatsapp',icon:'💬',label:'WhatsApp',url:`https://wa.me/${cfg.whatsapp}`}
+  ].filter(l=>l.url||cfg[l.key]);
+  document.getElementById('footer-social').innerHTML = links.map(l =>
+    `<a href="${l.url||cfg[l.key]}" target="_blank" style="color:var(--accent);margin:0 8px">${l.icon} ${l.label}</a>`
+  ).join('·');
+})();
+
+function renderProds() {
+  let prods = DB.getProdutos();
+  const q = document.getElementById('search').value.toLowerCase();
+  const sort = document.getElementById('sort').value;
+  if (q) prods = prods.filter(p => p.nome.toLowerCase().includes(q) || (p.descricao||'').toLowerCase().includes(q));
+  if (sort === 'nome') prods.sort((a,b) => a.nome.localeCompare(b.nome));
+  else if (sort === 'preco_asc') prods.sort((a,b) => (parseFloat(a.preco)||0)-(parseFloat(b.preco)||0));
+  else if (sort === 'preco_desc') prods.sort((a,b) => (parseFloat(b.preco)||0)-(parseFloat(a.preco)||0));
+  else if (sort === 'novo') prods.sort((a,b) => (b.criadoEm||'').localeCompare(a.criadoEm||''));
+
+  const grid = document.getElementById('prod-grid');
+  if (!prods.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:80px;color:var(--text-secondary)">
+      <div style="font-size:56px;opacity:0.3;margin-bottom:12px">📦</div>
+      <div style="font-size:18px;font-weight:700">Nenhum produto encontrado</div>
+      <div style="margin-top:8px">Volte mais tarde ou <a href="cadastro.html" style="color:var(--accent)">torne-se parceiro</a></div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = prods.map(p => `
+    <div class="prod-card">
+      ${p.imagem ? `<img src="${p.imagem}" style="width:100%;height:180px;object-fit:cover">` :
+        `<div style="width:100%;height:180px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:60px">📦</div>`}
+      <div style="padding:16px">
+        ${p.categoria ? `<span class="badge badge-blue" style="margin-bottom:8px">${p.categoria}</span>` : ''}
+        <div style="font-weight:800;font-size:16px;margin-bottom:6px">${p.nome}</div>
+        ${p.descricao ? `<div style="color:var(--text-secondary);font-size:13px;margin-bottom:10px;line-height:1.5">${p.descricao}</div>` : ''}
+        <div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:12px">${p.preco ? formatarKz(p.preco) : 'Consultar Preço'}</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <a href="https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent('Ola HepoMarket! Interesse em: '+p.nome)}" target="_blank" class="btn btn-secondary" style="flex:1;font-size:12px">📲 WhatsApp</a>
+          <button class="btn btn-primary" style="flex:1;font-size:12px" onclick="abrirPedido('${p.id}','${p.nome.replace(/'/g,\'\').replace(/\"|\\/g,\'\'')}','${p.preco||0}')">🛒 Pedir</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+renderProds();
+window.addEventListener('hm_update', e => { if(e.detail === 'produtos') renderProds(); });
+
+function abrirPedido(id,nome,preco) {
+  window._prodAtual={id,nome,preco};
+  document.getElementById('mp-produto').textContent=nome;
+  document.getElementById('mp-preco').textContent=preco&&preco>0?formatarKz(preco):'Consultar';
+  ['mp-nome','mp-tel','mp-email','mp-municipio','mp-endereco','mp-referencia','mp-notas'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  document.getElementById('mp-qtd').value='1';
+  document.getElementById('mp-provincia').value='';
+  document.getElementById('mp-pagamento').value='';
+  document.getElementById('modal-pedido').classList.add('open');
+}
+function fecharPedido(){document.getElementById('modal-pedido').classList.remove('open');}
+
+function submeterPedido(){
+  const nome=document.getElementById('mp-nome').value.trim();
+  const tel=document.getElementById('mp-tel').value.trim();
+  const provincia=document.getElementById('mp-provincia').value;
+  const endereco=document.getElementById('mp-endereco').value.trim();
+  if(!nome||!tel||!provincia||!endereco){alert('Preencha todos os campos obrigatórios (*)');return;}
+  const p=window._prodAtual||{};
+  const qtd=parseInt(document.getElementById('mp-qtd').value)||1;
+  const total=(parseFloat(p.preco)||0)*qtd;
+  const pedido={produto:p.nome,qtd,total,nomeCliente:nome,telCliente:tel,emailCliente:document.getElementById('mp-email').value,provincia,municipio:document.getElementById('mp-municipio').value,endereco,referencia:document.getElementById('mp-referencia').value,metodoPagamento:document.getElementById('mp-pagamento').value,notas:document.getElementById('mp-notas').value};
+  const ped=DB.addPedido(pedido);
+  const cfg2=DB.getConfig();
+  const bk=DB.getDadosBancarios();
+  let instrucoes=bk.instrucoes?'\n\n'+bk.instrucoes:'';
+  const msg=encodeURIComponent(`🛒 NOVO PEDIDO — ${ped.numero}\n📦 Produto: *${p.nome}*\n👤 Cliente: *${nome}*\n📞 Tel: ${tel}\n📍 ${[provincia,document.getElementById('mp-municipio').value,endereco].filter(Boolean).join(', ')}\n📦 Qtd: ${qtd}${total?'\n💰 Total: *'+formatarKz(total)+'*':''}${document.getElementById('mp-pagamento').value?'\n💳 Método: '+document.getElementById('mp-pagamento').value:''}${instrucoes}`);
+  fecharPedido();
+  window.open(`https://wa.me/${cfg2.whatsapp||'244952100356'}?text=${msg}`,'_blank');
+  const t=document.createElement('div');t.className='toast toast-success';t.innerHTML='✅ Pedido enviado!';t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;background:#fff;border:1px solid #ccc;border-left:4px solid #107c10;padding:12px 20px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);font-weight:700';document.body.appendChild(t);setTimeout(()=>t.remove(),3500);
+}
+</script>
+
+<!-- Modal Pedido -->
+<div id="modal-pedido" style="position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto" onclick="if(event.target===this)fecharPedido()">
+<div style="background:var(--surface-solid);border-radius:16px;border:1px solid rgba(0,0,0,0.1);box-shadow:0 8px 32px rgba(0,0,0,0.12);width:90%;max-width:520px;max-height:90vh;overflow-y:auto">
+  <div style="padding:20px 24px 0;display:flex;align-items:flex-start;justify-content:space-between">
+    <div><div style="font-size:18px;font-weight:800">🛒 Fazer Pedido</div><div style="color:var(--accent);font-weight:700;margin-top:2px" id="mp-produto"></div><div style="font-size:18px;font-weight:800;color:var(--accent)" id="mp-preco"></div></div>
+    <button onclick="fecharPedido()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-secondary)">✕</button>
+  </div>
+  <div style="padding:16px 24px 24px">
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+    <div style="font-weight:700;color:var(--accent);margin-bottom:10px">👤 Os Seus Dados</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-group"><label class="label">Nome *</label><input class="input" id="mp-nome" placeholder="Nome completo"></div>
+      <div class="form-group"><label class="label">Telefone *</label><input class="input" id="mp-tel" type="tel" placeholder="9XX XXX XXX"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-group"><label class="label">Email</label><input class="input" id="mp-email" type="email" placeholder="email@exemplo.com"></div>
+      <div class="form-group"><label class="label">Quantidade</label><input class="input" id="mp-qtd" type="number" value="1" min="1"></div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:12px 0">
+    <div style="font-weight:700;color:var(--accent);margin-bottom:10px">📍 Endereço de Entrega</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="form-group"><label class="label">Província *</label>
+        <select class="select" id="mp-provincia">
+          <option value="">Selecione...</option>
+          <option>Luanda</option><option>Benguela</option><option>Huambo</option><option>Cabinda</option>
+          <option>Malanje</option><option>Uíge</option><option>Lunda Norte</option><option>Lunda Sul</option>
+          <option>Moxico</option><option>Cuando Cubango</option><option>Cunene</option><option>Namibe</option>
+          <option>Huíla</option><option>Bié</option><option>Kwanza Sul</option><option>Kwanza Norte</option><option>Bengo</option><option>Zaire</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="label">Município</label><input class="input" id="mp-municipio" placeholder="Ex: Cacuaco"></div>
+    </div>
+    <div class="form-group"><label class="label">Bairro / Endereço *</label><input class="input" id="mp-endereco" placeholder="Ex: Bairro Popular, Rua 5, Casa 12"></div>
+    <div class="form-group"><label class="label">Ponto de referência</label><input class="input" id="mp-referencia" placeholder="Ex: Perto da Igreja Metodista"></div>
+    <div class="form-group"><label class="label">Método de Pagamento</label>
+      <select class="select" id="mp-pagamento">
+        <option value="">Não especificado</option><option>IBAN / Transferência</option><option>Multicaixa Express</option><option>PayPal</option><option>Dinheiro (presencial)</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="label">Observações</label><textarea class="textarea" id="mp-notas" placeholder="Cor, tamanho, preferências..." style="min-height:60px"></textarea></div>
+    <button onclick="submeterPedido()" class="btn btn-primary btn-lg" style="width:100%">📲 Confirmar Pedido</button>
+  </div>
+</div>
+</div>
+<style>#modal-pedido.open{display:flex!important}</style>
+</body>
+</html>
