@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-ao">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HepoMarket | Login CEO</title>
+<link rel="stylesheet" href="win11.css">
+<style>
+body { min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0A1628 0%,#0078D4 50%,#003E78 100%);position:relative;overflow:hidden; }
+/* Fluent background particles */
+body::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(0,120,212,.25) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(0,62,120,.3) 0%,transparent 50%);animation:bgPulse 8s ease-in-out infinite;}
+@keyframes bgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.login-card { width:380px;background:rgba(255,255,255,0.97);border-radius:22px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.1);animation:cardIn .45s var(--ease-spring) both; }
+@keyframes cardIn{from{transform:translateY(30px) scale(.92);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+[data-theme="dark"] .login-card { background:rgba(32,32,32,0.97); }
+.login-top { background:linear-gradient(135deg,#0078D4,#003E78);padding:40px;text-align:center;color:#fff;position:relative;overflow:hidden; }
+.login-top::after{content:'';position:absolute;bottom:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%;}
+.login-top img { width:72px;height:72px;border-radius:18px;object-fit:cover;border:4px solid rgba(255,255,255,0.3);margin-bottom:16px;animation:logoIn .5s .2s var(--ease-bounce) both;box-shadow:0 8px 24px rgba(0,0,0,.25); }
+@keyframes logoIn{from{transform:scale(0) rotate(-180deg)}to{transform:scale(1) rotate(0)}}
+.login-top h1 { font-size:24px;font-weight:900;letter-spacing:-.02em; }
+.login-top p { opacity:0.8;font-size:14px;margin-top:4px; }
+.login-body { padding:32px; }
+.pass-wrap { position:relative; }
+.pass-wrap input { padding-right:44px; }
+.pass-toggle { position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-secondary);transition:transform .15s; }
+.pass-toggle:hover{transform:translateY(-50%) scale(1.2);}
+.err { color:#c42b1c;font-size:13px;margin-bottom:10px;padding:9px 12px;background:rgba(196,43,28,0.08);border-radius:8px;display:none;animation:slideUp .2s var(--ease-spring) both;border-left:3px solid #c42b1c; }
+</style>
+</head>
+<body>
+<div class="login-card">
+  <div class="login-top">
+    <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
+    <h1>Painel CEO</h1>
+    <p>HepoMarket — Área Restrita</p>
+  </div>
+  <div class="login-body">
+    <div class="form-group">
+      <label class="label">Utilizador</label>
+      <input class="input" id="user" placeholder="CEO" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="label">Palavra-passe</label>
+      <div class="pass-wrap">
+        <input class="input" id="pass" type="password" placeholder="••••••••" autocomplete="current-password"
+               onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pass-toggle" onclick="togglePass()" type="button">👁️</button>
+      </div>
+    </div>
+    <div id="err-msg" class="err">❌ Utilizador ou palavra-passe incorrectos.</div>
+    <button class="btn btn-primary btn-lg" style="width:100%" onclick="doLogin()">
+      🔐 Entrar no Painel
+    </button>
+    <div style="text-align:center;margin-top:16px">
+      <a href="index.html" style="color:var(--text-secondary);font-size:13px;text-decoration:none">← Voltar ao site</a>
+    </div>
+    <div style="margin-top:24px;padding:12px;background:var(--accent-light);border-radius:8px;font-size:12px;color:var(--text-secondary);text-align:center">
+      🔒 Acesso exclusivo para o CEO da HepoMarket
+    </div>
+  </div>
+</div>
+<script src="data.js"></script>
+<script>
+document.documentElement.setAttribute('data-theme', localStorage.getItem('hm_public_theme') || 'light');
+if (Auth.isLogged()) window.location.href = 'dashboard.html';
+
+function doLogin() {
+  const u = document.getElementById('user').value;
+  const p = document.getElementById('pass').value;
+  const err = document.getElementById('err-msg');
+  if (Auth.login(u, p)) {
+    window.location.href = 'dashboard.html';
+  } else {
+    err.style.display = 'block';
+    document.getElementById('pass').value = '';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+function togglePass() {
+  const inp = document.getElementById('pass');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+</script>
+</body>
+</html>
